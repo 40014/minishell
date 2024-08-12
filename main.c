@@ -74,7 +74,6 @@ void  parse_line(t_data **data, char *input)
     remaining_input = input;
     while ((token = strsplit_by_pipe(&remaining_input)) != NULL)
     {
-        printf("%s\n", token);
         arguments = split_line_to_args(token);
         if (arguments[0] != NULL)
         {
@@ -88,39 +87,32 @@ void  parse_line(t_data **data, char *input)
             i = 0;
         }
     }
+    // printf("command:%s\n", command);
     // i = 0;
     // while (arguments[i] != NULL)
     // {
-    //     printf("%s", arguments[i]);
+    //     printf("arg:%s\n", arguments[i]);
     //     i++;
     // }
 }
 
-// void    print_use_list(t_data *head)
-// {
-//     t_data  *temp;
-//     int i = 0;
 
-//     temp = head;
-//     //printf("command: %s\n", temp->command);
-//     while (temp->argumment[i] != NULL)
-//     {
-//         printf("%s", temp->argumment[i]);
-//         i++;
-//     }
-// }
-
-void print_commands(t_data *head)
+void print_use_list(t_data *head)// for testing
 {
     t_data *temp = head;
+    int i = 0;
     while (temp)
     {
         printf("Command:%s\n", temp->command);
-        for (int i = 0; temp->argumment[i] != NULL; i++) {
+        while (temp->argumment[i] != NULL)
+        {
             printf("Arg %d:%s\n", i, temp->argumment[i]);
+            i++;
         }
+        i = 0;
         temp = temp->next;
-        if (temp) {
+        if (temp)
+        {
             printf("---- Next Command ----\n");
         }
     }
@@ -129,6 +121,9 @@ void print_commands(t_data *head)
 void ft_free_list(t_data *head)
 {
     t_data *temp;
+    int i;
+
+    i = 0;
     while (head)
     {
         temp = head;
@@ -136,11 +131,13 @@ void ft_free_list(t_data *head)
         free(temp->command);
         if (temp->argumment)
         {
-            for (int i = 0; temp->argumment[i] != NULL; i++)
+            while (temp->argumment[i] != NULL)
             {
                 free(temp->argumment[i]);
+                i++;
             }
             free(temp->argumment);
+            i = 0;
         }
         free(temp);
     }
@@ -161,10 +158,9 @@ int main()
         {
             parse_line(&data, input);
         }
-        // print_commands(data);
-        ft_free_list(data); //comming
+        print_use_list(data);
+        ft_free_list(data);
         data = NULL;
         free(input);
-        //data = NULL;
     }
 }

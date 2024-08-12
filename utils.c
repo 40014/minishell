@@ -74,7 +74,6 @@ char *strsplit_by_pipe(char **str)
     {
         if (start[i] == '\'' || start[i] == '"')
         {
-            // Toggle quote tracking
             if (quote == 0)
                 quote = start[i];
             else if (quote == start[i])
@@ -82,7 +81,6 @@ char *strsplit_by_pipe(char **str)
         }
         else if (start[i] == '|' && quote == 0)
         {
-            // Found a pipe outside of quotes
             pipe_pos = &start[i];
             break;
         }
@@ -90,11 +88,11 @@ char *strsplit_by_pipe(char **str)
     }
     if (pipe_pos != NULL)
     {
-        *pipe_pos = '\0';  // Replace pipe with null terminator to isolate the current segment
-        *str = pipe_pos + 1;  // Update the pointer to the position after the pipe
+        *pipe_pos = '\0';
+        *str = pipe_pos + 1;
     }
     else
-        *str = NULL;  // No more pipes, so set str to NULL
+        *str = NULL;
     return (start);
 }
 
