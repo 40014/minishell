@@ -2,7 +2,8 @@ NAME = minishell
 
 SOURCE = main.c utils.c ft_split.c
 
-CFLAGS = -Wall -Wextra -Werror -w
+CFLAGS = -Wall -Wextra -Werror -w #-fsanitize=address -g3
+
 
 all: $(NAME)
 
@@ -15,3 +16,4 @@ fclean: clean
 	rm -rf $(NAME)
 
 re: fclean all
+

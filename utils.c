@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 t_data *creat_node(char *command, char **arguments)
 {
 	t_data	*new_node = malloc(sizeof(t_data));
@@ -57,6 +56,40 @@ int	ft_count_args(char *input)
 	return (count + 1);
 }
 
+int check_qout(char *input)
+{
+    int i;
+    int flag;
+    int quote;
+
+    i = 0;
+    flag = 0;
+    quote = 0;
+    while (input[i] != '\0')
+    {
+        if (input[i] == '\'' || input[i] == '"')
+        {
+            if (quote == 0)
+            {
+                quote = input[i];
+                flag = 1;
+            }
+            else if (quote == input[i])
+            {
+                quote = 0;
+                flag = 0;
+            }
+        }
+		else if (input[i] == '|' && quote == 0)
+		{
+			if (input[i] == '|' && input[i + 1] == '|')
+				return (1);
+		}
+        i++;
+    }
+    return (flag);
+}
+
 char *strsplit_by_pipe(char **str)
 {
     char	*start;
@@ -72,7 +105,7 @@ char *strsplit_by_pipe(char **str)
         return NULL;
     while (start[i] != '\0')
     {
-        if (start[i] == '\'' || start[i] == '"')
+        if ((start[i] == '\'' || start[i] == '"') || (start[i] == '(' || start[i] == ')'))
         {
             if (quote == 0)
                 quote = start[i];

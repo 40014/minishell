@@ -25,14 +25,14 @@ char    **split_line_to_args(char *input)
     args = malloc(sizeof(char *) * ft_count_args(input) + 1);
     while (input[i] != '\0')
     {
-        if (input[i] == '\'' || input[i] == '"')
+        if ((input[i] == '\'' || input[i] == '"') && (input[i] == quote || quote == 0))
         {
             if (quote == 0)
                 quote = input[i];
             else if (quote == input[i])
                 quote = 0;
         }
-        else if (input[i] == ' ' && quote == 0)
+        else if (input[i] == ' ' && quote == 0 )
         {
             if (buf_index > 0)
             {
@@ -71,6 +71,11 @@ void  parse_line(t_data **data, char *input)
     int i;
 
     i = 0;
+    if (check_qout(input) == 1)
+    {
+        printf("bash: syntax error\n");
+        return ;
+    }
     remaining_input = input;
     while ((token = strsplit_by_pipe(&remaining_input)) != NULL)
     {
@@ -87,13 +92,6 @@ void  parse_line(t_data **data, char *input)
             i = 0;
         }
     }
-    // printf("command:%s\n", command);
-    // i = 0;
-    // while (arguments[i] != NULL)
-    // {
-    //     printf("arg:%s\n", arguments[i]);
-    //     i++;
-    // }
 }
 
 
@@ -147,8 +145,7 @@ int main()
 {
     t_data  *data;
     char    *input;
-    char    *str;
-    int i = 0;
+
 
     data = NULL;
     while (1)

@@ -12,7 +12,6 @@ typedef struct echo
 {
     char    **argumment;
     char    *command;
-    char    *options;
     struct data *next;
 }   t_data;
 
@@ -23,5 +22,5 @@ int	ft_count_args(char *input);
 void	ft_add_node(t_data **head, char *command, char **arguments);
 t_data *creat_node(char *command, char **arguments);
 char *strsplit_by_pipe(char **str);
-
+int check_qout(char *input);
 #endif
