@@ -45,7 +45,7 @@ int main(int arc, char **arv, char **envp)
         if (input[0] != '\0')
         {
             add_history(input);
-            if (parse_line(&data, input, env_var, &quots) == 0)
+            if (parse_line(&data, input, env_var, &quots) == 0 && quots.empty != 2)
             {
                 hold_vars->input = input;
                 hold_vars->temp = temp;

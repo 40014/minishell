@@ -31,6 +31,7 @@ typedef struct env_var
 typedef struct quot
 {
     int x;
+    int empty;
 } t_quots;
 
 typedef struct hold
@@ -40,8 +41,32 @@ typedef struct hold
 
 } t_hold;
 
+typedef struct parser
+{
+    char *input;
+    char *buffer;
+    int buf_index;
+    int i;
+    char quote;
+    t_env *env_var;
+    t_quots *quots;
+    char **args;
+    int j;
+} t_ParserState;
+
 extern int exit_code;
 
+char *replace_env_variable(const char *str, int *skip);
+char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots);
+void finalize_args(t_ParserState *state);
+void add_buffer_to_args(t_ParserState *state);
+void handle_empty_argument(t_ParserState *state);
+void init_parser_state(t_ParserState *state, char *input, t_env *env_var, t_quots *quots);
+char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots);
+char *replace_env_variable(const char *str, int *skip);
+void handle_dollar_sign(t_ParserState *state);
+void handle_quotes(t_ParserState *state);
+int handle_consecutive_quotes(t_ParserState *state);
 char handle_quote(char current_char, char quote);
 char	*ft_itoa(int n);
 char *ft_strjoine(char const *s1, char const *s2);
