@@ -20,11 +20,13 @@ int check_valid_options(char **commande)
     j = 1;
     while (commande[j] != NULL)
     {
-        if (commande[j][0] == '-')
+        i = 0;
+        if (commande[j][i] == '-')
             i++;
         else
             return (j);
-        i = 1;
+        if(commande[j][i] == '\0')
+            return(j);
         while (commande[j][i])
         {
             if (commande[j][i] != 'n')
