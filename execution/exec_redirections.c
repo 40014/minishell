@@ -77,27 +77,28 @@ int ft_find_del(char *line, char *del)
         return(1);
     return(0);
 }
-int ft_handle_heredoc(char *argument, int i)
-{
+int ft_handle_heredoc(char *argument, int i) {
     char *str;
     char *temp;
     char *line;
-    int fd[2];
     char *delimiter;
+    int fd;
 
-    pipe(fd);
     delimiter = ft_cpy_commande(argument, i + 1);
-    
     while (argument[i + 1] && argument[i + 1] != '>' && argument[i + 1] != '<')
         i++;
-    str = ft_calloc(1, 1);
-    while(1)
+    fd = open("/tmp/heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0600);
+    if (fd == -1)
     {
-        temp = str;
+        perror(fd);
+        free(delimiter);
+        return (-1);
+    }
+    while (1)
+    {
         line = get_next_line(0);
         if (line == NULL)
         {
-            free(temp);
             break;
         }
         if (ft_find_del(line, delimiter) == 1)
@@ -105,16 +106,22 @@ int ft_handle_heredoc(char *argument, int i)
             free(line);
             break;
         }
-        str = ft_strjoin(temp, line, 1, 1);
-        free(temp);
+        write(fd, line, ft_strlen(line));
         free(line);
     }
-    write(fd[1], str, ft_strlen(str));
-    close(fd[1]);
-    dup2(fd[0], STDIN_FILENO);
-    close(fd[0]);
-    free(str);
+    close(fd);
     free(delimiter);
-    return (i);
+    fd = open("/tmp/heredoc_tmp", O_RDONLY);
+    if (fd == -1)
+    {
+        perror(fd);
+        return (-1);
+    }
+    if (dup2(fd, STDIN_FILENO) == -1) {
+        perror("dup2");
+        close(fd);
+        return (-1);
+    }
+    close(fd);
+    return i;
 }
-

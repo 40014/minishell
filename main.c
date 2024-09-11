@@ -37,11 +37,10 @@ int main(int arc, char **arv, char **envp)
     hold_vars = malloc(sizeof(t_hold));
     quots.x = 0;
     data = NULL;
-    saved_stdout = dup(STDOUT_FILENO);
-    saved_stdin = dup(STDIN_FILENO);
-    hold_vars->saved_stdin = saved_stdin;
     while (1)
     {
+        saved_stdout = dup(STDOUT_FILENO);
+        saved_stdin = dup(STDIN_FILENO);
         input = readline(temp = print_prompt(env_var, NULL, NULL));
         if (input[0] != '\0')
         {
@@ -50,6 +49,7 @@ int main(int arc, char **arv, char **envp)
             {
                 hold_vars->input = input;
                 hold_vars->temp = temp;
+                hold_vars->saved_stdin = saved_stdin;
                 exec_commandes(data, &env_var, &data, &hold_vars);
                 dup2(saved_stdout, STDOUT_FILENO);
                 dup2(saved_stdin, STDIN_FILENO);
