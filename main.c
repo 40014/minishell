@@ -37,10 +37,11 @@ int main(int arc, char **arv, char **envp)
     hold_vars = malloc(sizeof(t_hold));
     quots.x = 0;
     data = NULL;
+    saved_stdout = dup(STDOUT_FILENO);
+    saved_stdin = dup(STDIN_FILENO);
+    hold_vars->saved_stdin = saved_stdin;
     while (1)
     {
-        saved_stdout = dup(STDOUT_FILENO);
-        saved_stdin = dup(STDIN_FILENO);
         input = readline(temp = print_prompt(env_var, NULL, NULL));
         if (input[0] != '\0')
         {

@@ -38,6 +38,7 @@ typedef struct hold
 {
     char *input;
     char *temp;
+    int saved_stdin;
 
 } t_hold;
 
@@ -122,7 +123,7 @@ void	ft_bzero(void *s, size_t n);
 int	ft_strchr(const char *s, int c);
 void	*ft_calloc(size_t count, size_t size);
 char	*get_next_line(int fd);
-int check_handle_redirections(char **argumment);
+int check_handle_redirections(char **argumment, int saved_stdin);
 int check_if_contain_redirections(char *cmd);
 int check_if_contain_only_redirection(char *cmd);
 char *ft_cpy_commande(char *argumment, int i);

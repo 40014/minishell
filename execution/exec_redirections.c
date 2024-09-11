@@ -82,9 +82,12 @@ int ft_handle_heredoc(char *argument, int i)
     char *str;
     char *temp;
     char *line;
+    int fd[2];
     char *delimiter;
 
+    pipe(fd);
     delimiter = ft_cpy_commande(argument, i + 1);
+    
     while (argument[i + 1] && argument[i + 1] != '>' && argument[i + 1] != '<')
         i++;
     str = ft_calloc(1, 1);
@@ -106,7 +109,10 @@ int ft_handle_heredoc(char *argument, int i)
         free(temp);
         free(line);
     }
-    printf("%s\n", str);
+    write(fd[1], str, ft_strlen(str));
+    close(fd[1]);
+    dup2(fd[0], STDIN_FILENO);
+    close(fd[0]);
     free(str);
     free(delimiter);
     return (i);
