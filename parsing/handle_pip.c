@@ -1,15 +1,15 @@
 #include "../minishell.h"
 
-char ft_handle_quote(char current_char, char quote)
+char ft_handle_quote(char current_chara, char quotee)
 {
-    if (current_char == '\'' || current_char == '"')
+    if (current_chara == '\'' || current_chara == '"')
     {
-        if (quote == 0)
-            return (current_char);
-        else if (quote == current_char)
+        if (quotee == 0)
+            return (current_chara);
+        else if (quotee == current_chara)
             return (0);
     }
-    return (quote);
+    return (quotee);
 }
 
 int find_pipe_position(char *start, char *quote)

@@ -18,11 +18,13 @@ void add_buffer_to_args(t_ParserState *state)
 
 void finalize_args(t_ParserState *state)
 {
+    // printf("test0\n");
     if (state->buf_index > 0)
     {
         state->buffer[state->buf_index] = '\0';
         state->args[state->j++] = ft_strdup(state->buffer);
     }
+    //printf("test1\n");
     if (state->buf_index == 0 && state->j == 0)
     {
         if (state->quots->empty == 1)

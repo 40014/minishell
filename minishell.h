@@ -57,6 +57,9 @@ typedef struct parser
 
 extern int exit_code;
 
+char    *ft_expand_herdoc(char  *str, t_env *env_var);
+int	check_prompt(char *input);
+char ft_handle_quote(char current_chara, char quotee);
 char *replace_env_variable(const char *str, int *skip);
 char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots);
 void finalize_args(t_ParserState *state);
@@ -64,13 +67,10 @@ void add_buffer_to_args(t_ParserState *state);
 void handle_empty_argument(t_ParserState *state);
 void init_parser_state(t_ParserState *state, char *input, t_env *env_var, t_quots *quots);
 char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots);
-char *replace_env_variable(const char *str, int *skip);
 void handle_dollar_sign(t_ParserState *state);
 void handle_quotes(t_ParserState *state);
 int handle_consecutive_quotes(t_ParserState *state);
-char handle_quote(char current_char, char quote);
 char	*ft_itoa(int n);
-char *ft_strjoine(char const *s1, char const *s2);
 int ft_skip_space(char c);
 int	check_redirections(char *input);
 char    *ft_strcpy(char *dest, const char *src);
@@ -86,7 +86,6 @@ char    *strsplit_by_pipe(char **str);
 int     ft_count_args(char *input);
 void    ft_add_node(t_data **head, char **arguments);
 t_data  *creat_node(char **arguments);
-int     check_qout(char *input);
 void    exec_commandes(t_data *commandes, t_env **envp, t_data **data, t_hold **hold_vars);
 int    exec_echo(char **commande);
 void    ft_putstr(char *str);

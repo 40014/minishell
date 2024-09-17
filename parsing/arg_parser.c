@@ -1,6 +1,5 @@
 #include "../minishell.h"
 
-
 void process_env_variable(t_ParserState *state)
 {
     char *env;
@@ -19,6 +18,8 @@ void process_env_variable(t_ParserState *state)
         state->buffer[state->buf_index] = '\0';
         env_val = replace_env_variable(state->input, &state->i);
         env = ft_environment_variables(env_val, state->env_var, state->quots);
+        if (env_val != NULL)
+            free(env_val);
         if (env != NULL)
         {
             ft_strcpy(state->buffer + state->buf_index, env);

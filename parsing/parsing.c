@@ -18,6 +18,38 @@ int ft_check(char *input)
     return (1);
 }
 
+void handle_redirection(t_ParserState *state)
+{
+    if (state->buf_index > 0)
+    {
+        state->buffer[state->buf_index] = '\0';
+        state->args[state->j++] = ft_strdup(state->buffer);
+        state->buf_index = 0;
+    }
+    if (state->input[state->i] == '>')
+    {
+        if (state->input[state->i + 1] == '>')
+        {
+            state->args[state->j] = ft_strdup(">>");
+            state->i++;
+        }
+        else
+            state->args[state->j] = ft_strdup(">");
+    }
+    else if (state->input[state->i] == '<')
+    {
+        if (state->input[state->i + 1] == '<')
+        {
+            state->args[state->j] = ft_strdup("<<");
+            state->i++;
+        }
+        else
+            state->args[state->j] = ft_strdup("<");
+    }
+    state->j++;
+    state->i++;
+}
+
 char **split_line_to_args(char *input, t_env *env_var, t_quots *quots)
 {
     char **args;
@@ -41,6 +73,39 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots)
             state.quots->x = 2;
         if ((state.input[state.i] == '\'' || state.input[state.i] == '"') && (state.input[state.i] == state.quote || state.quote == 0) && check == 1)
             handle_quotes(&state);
+        else if ((state.input[state.i] == '>' || state.input[state.i] == '<') && state.quote == 0)
+        {
+            if (state.buf_index > 0)
+            {
+                state.buffer[state.buf_index] = '\0';
+                state.args[state.j++] = ft_strdup(state.buffer);
+                state.buf_index = 0;
+            }
+            if (state.input[state.i] == '>' && state.input[state.i + 1] == '>')
+            {
+                state.args[state.j++] = ft_strdup(">>");
+                state.i = state.i + 1;
+                state.buf_index = 0;
+            }
+            else if (state.input[state.i] == '<' && state.input[state.i + 1] == '<')
+            {
+                state.args[state.j++] = ft_strdup("<<");
+                state.i = state.i + 1;
+                state.buf_index = 0;
+            }
+            else if (state.input[state.i] == '>')
+            {
+                state.args[state.j++] = ft_strdup(">");
+                state.buf_index = 0;
+            }
+            else if (state.input[state.i] == '<')
+            {
+                state.args[state.j++] = ft_strdup("<");
+                state.buf_index = 0;
+            }
+        }
+        // else if (state.input[state.i] == '<' || state.input[state.i] == '>' && state.quote == 0)
+        //     handle_redirection(&state);
         else if (state.input[state.i] == '$' && (state.quote == 0 || state.quote != '\''))
             handle_dollar_sign(&state);
         else if ((ft_skip_space(state.input[state.i]) == 1) && state.quote == 0)
@@ -56,22 +121,24 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots)
 
 int parse_line(t_data **data, char *input, t_env *env_var, t_quots *quots)
 {
-    char *command;
     char **arguments;
     char *token;
     char *remaining_input;
     int i;
 
     i = 0;
-    if (check_qout(input) == 1)
+    if ((i = check_redirections(input)) != 0)
     {
-        printf("minishell: syntax error\n");
+        if (i == 2 || i == 3)
+        {
+            if (i == 2)
+                printf("unexpected EOF while looking for matching `\'' \n");
+            else
+                printf("unexpected EOF while looking for matching `\"' \n");
+        }
+        else
+            printf("minishell: syntax error near unexpected token \n");
         exit_code = 2;
-        return (1);
-    }
-    if ((i = check_redirections(input)) == 1)
-    {
-        printf("minishell: syntax error near unexpected token `|' \n");
         return (1);
     }
     remaining_input = input;
@@ -83,5 +150,11 @@ int parse_line(t_data **data, char *input, t_env *env_var, t_quots *quots)
         else
             return (1);
     }
+    // i = 0;
+    // while (arguments[i])
+    // {
+    //     printf("arg = %s\n", arguments[i]);
+    //     i++;
+    // }
     return (0);
 }

@@ -42,7 +42,7 @@ int main(int arc, char **arv, char **envp)
         saved_stdout = dup(STDOUT_FILENO);
         saved_stdin = dup(STDIN_FILENO);
         input = readline(temp = print_prompt(env_var, NULL, NULL));
-        if (input[0] != '\0')
+        if (check_prompt(input) != 0)
         {
             add_history(input);
             if (parse_line(&data, input, env_var, &quots) == 0 && quots.empty != 2)
