@@ -14,7 +14,7 @@ int ft_strcmp(char *s1, char *s2)
 
 int exec_simple_commande(char **argumment, t_env **envp, t_data **data, t_hold **hold_vars)
 {
-    if (check_handle_redirections(argumment, (*hold_vars)->saved_stdin) == 1)
+    if (check_handle_redirections(argumment, (*hold_vars)->saved_stdin, *envp) == 1)
         return (exit_code);
     if (ft_strcmp(argumment[0], "echo") == 0)
         exit_code = exec_echo(argumment);

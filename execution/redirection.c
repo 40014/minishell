@@ -1,7 +1,7 @@
 #include "../minishell.h"
 
 
-int ft_which_redirection(char *argumment, int i, int saved_stdin)
+int ft_which_redirection(char *argumment, int i, int saved_stdin, t_env *envp)
 {
     if (argumment[i] == '>' && argumment[i + 1] == '>')
     {
@@ -11,7 +11,7 @@ int ft_which_redirection(char *argumment, int i, int saved_stdin)
     else if (argumment[i] == '<' && argumment[i + 1] == '<')
     {
         dup2(saved_stdin, STDIN_FILENO);
-        if ((i = ft_handle_heredoc(argumment, i + 1)) == -1)
+        if ((i = ft_handle_heredoc(argumment, i + 1, envp)) == -1)
             return (-1);
     }
     else if (argumment[i] == '>')
@@ -28,7 +28,7 @@ int ft_which_redirection(char *argumment, int i, int saved_stdin)
     return (i);
 }
 
-char *handle_redirections(char *argumment, int saved_stdin)
+char *handle_redirections(char *argumment, int saved_stdin, t_env *envp)
 {
     char *commande;
     int i;
@@ -42,7 +42,7 @@ char *handle_redirections(char *argumment, int saved_stdin)
     {
         while (argumment[i] != '>' && argumment[i] != '<')
             i++;
-        i = ft_which_redirection(argumment, i, saved_stdin);
+        i = ft_which_redirection(argumment, i, saved_stdin, envp);
         if (i == -1)
         {
             exit_code = 1;
@@ -53,14 +53,14 @@ char *handle_redirections(char *argumment, int saved_stdin)
     }
     return (commande);
 }
-int handle_redirection_end(char **argumment, int j, int saved_stdin)
+int handle_redirection_end(char **argumment, int j, int saved_stdin, t_env *envp)
 {
     int i;
     char *join;
     char *arg;
 
     join = ft_strjoin(argumment[j], argumment[j + 1], 1, 1);
-    arg = handle_redirections(join, saved_stdin);
+    arg = handle_redirections(join, saved_stdin, envp);
     if (exit_code == 1)
     {
         free(join);
@@ -80,7 +80,7 @@ int handle_redirection_end(char **argumment, int j, int saved_stdin)
     free(join);
     return (j);
 }
-int check_handle_redirections(char **argumment, int saved_stdin)
+int check_handle_redirections(char **argumment, int saved_stdin, t_env *envp)
 {
     int j;
     char *arg;
@@ -92,7 +92,7 @@ int check_handle_redirections(char **argumment, int saved_stdin)
         if (check_if_contain_only_redirection(argumment[j]) > 0)
         {
             join = ft_strjoin(argumment[j], argumment[j + 1], 1, 1);
-            handle_redirections(join, saved_stdin);
+            handle_redirections(join, saved_stdin, envp);
             if (exit_code == 1)
             {
                 free(join);
@@ -106,12 +106,12 @@ int check_handle_redirections(char **argumment, int saved_stdin)
         {
             if (check_if_redirection_end(argumment[j]) == 1)
             {
-                if ((j = handle_redirection_end(argumment, j, saved_stdin)) == -1)
+                if ((j = handle_redirection_end(argumment, j, saved_stdin, envp)) == -1)
                     return (1);
             }
             else
             {
-                arg = handle_redirections(argumment[j], saved_stdin);
+                arg = handle_redirections(argumment[j], saved_stdin, envp);
                 if (exit_code == 1)
                 {
                     free(arg);

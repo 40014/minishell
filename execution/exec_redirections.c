@@ -77,7 +77,8 @@ int ft_find_del(char *line, char *del)
         return(1);
     return(0);
 }
-int ft_handle_heredoc(char *argument, int i) {
+int ft_handle_heredoc(char *argument, int i, t_env *envp) 
+{
     char *str;
     char *temp;
     char *line;
@@ -106,7 +107,8 @@ int ft_handle_heredoc(char *argument, int i) {
             free(line);
             break;
         }
-        write(fd, line, ft_strlen(line));
+        temp = ft_expand_herdoc(line, envp);
+        write(fd, temp, ft_strlen(temp));
         free(line);
     }
     close(fd);
