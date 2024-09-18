@@ -109,7 +109,7 @@ int ft_handle_heredoc(char *argument, int i, t_env *envp)
         }
         temp = ft_expand_herdoc(line, envp);
         write(fd, temp, ft_strlen(temp));
-        //free(temp);
+        free(temp);
         free(line);
     }
     close(fd);
