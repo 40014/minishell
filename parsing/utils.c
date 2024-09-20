@@ -1,36 +1,76 @@
 #include "../minishell.h"
 
-t_data *creat_node(char **arguments)
+void ft_printf_error(int i)
 {
-	t_data *new_node = malloc(sizeof(t_data));
-	if (!new_node)
-		return NULL;
-	new_node->argumment = arguments;
-	new_node->next = NULL;
-	return (new_node);
-}
-
-void ft_add_node(t_data **head, char **arguments)
-{
-	t_data *new_node;
-	t_data *tmp = *head;
-
-	new_node = creat_node(arguments);
-	if (!new_node)
-		return;
-	if (*head == NULL)
+	if (i == 2 || i == 3)
 	{
-		*head = new_node;
-		return;
+		if (i == 2)
+			printf("unexpected EOF while looking for matching `\'' \n");
+		else
+			printf("unexpected EOF while looking for matching `\"' \n");
 	}
 	else
-	{
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new_node;
-	}
+		printf("minishell: syntax error near unexpected token \n");
 }
 
+// t_data *creat_node(char **arguments)
+// {
+// 	t_data *new_node = malloc(sizeof(t_data));
+// 	if (!new_node)
+// 		return NULL;
+// 	new_node->argumment = arguments;
+// 	new_node->next = NULL;
+// 	return (new_node);
+// }
+
+// void ft_add_node(t_data **head, char **arguments)
+// {
+// 	t_data *new_node;
+// 	t_data *tmp = *head;
+
+// 	new_node = creat_node(arguments);
+// 	if (!new_node)
+// 		return;
+// 	if (*head == NULL)
+// 	{
+// 		*head = new_node;
+// 		return;
+// 	}
+// 	else
+// 	{
+// 		while (tmp->next)
+// 			tmp = tmp->next;
+// 		tmp->next = new_node;
+// 	}
+// }
+
+t_data *creat_node(char **arguments, char **redirection)
+{
+    t_data *new_node = malloc(sizeof(t_data));
+    if (!new_node)
+        return NULL;
+    new_node->argumment = arguments;
+    new_node->redirection = redirection;
+    new_node->next = NULL;
+    return new_node;
+}
+void ft_add_node(t_data **head, char **arguments, char **redirection)
+{
+    t_data *new_node;
+    t_data *tmp = *head;
+
+    new_node = creat_node(arguments, redirection);
+    if (!new_node)
+        return;
+    if (*head == NULL)
+    {
+        *head = new_node;
+        return;
+    }
+    while (tmp->next)
+        tmp = tmp->next;
+    tmp->next = new_node;
+}
 
 size_t ft_strlen(const char *s)
 {

@@ -16,7 +16,8 @@
 
 typedef struct data
 {
-    char **argumment;
+    char    **argumment;
+    char    **redirection;
     struct data *next;
 } t_data;
 
@@ -24,6 +25,7 @@ typedef struct env_var
 {
     char *var;
     char *val;
+    int herdoc_expan;
     struct env_var *next;
 
 } t_env;
@@ -52,11 +54,16 @@ typedef struct parser
     t_env *env_var;
     t_quots *quots;
     char **args;
+    char **redirections;
     int j;
+    int redir_index;
 } t_ParserState;
 
 extern int exit_code;
 
+void    ft_check_expansion_herdoc(char *input, t_env *env_var);
+int ft_count_redirections(char *input);
+void ft_printf_error(int i);
 char    *ft_expand_herdoc(char  *str, t_env *env_var);
 int	check_prompt(char *input);
 char ft_handle_quote(char current_chara, char quotee);
@@ -81,11 +88,11 @@ int     ft_is_digits(char c);
 size_t  ft_strlen(const char *s);
 void    ft_free_list(t_data *head);
 int parse_line(t_data **data, char *input, t_env *env_var,t_quots *quots);
-char **split_line_to_args(char *input, t_env *env_var, t_quots *quots);
+char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***redirections);
 char    *strsplit_by_pipe(char **str);
 int     ft_count_args(char *input);
-void    ft_add_node(t_data **head, char **arguments);
-t_data  *creat_node(char **arguments);
+void ft_add_node(t_data **head, char **arguments, char **redirection);
+t_data *creat_node(char **arguments, char **redirection);
 void    exec_commandes(t_data *commandes, t_env **envp, t_data **data, t_hold **hold_vars);
 int    exec_echo(char **commande);
 void    ft_putstr(char *str);

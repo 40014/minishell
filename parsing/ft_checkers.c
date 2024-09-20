@@ -22,6 +22,62 @@ int	check_prompt(char *input)
 	}
 	return (0);
 }
+int ft_count_redirections(char *input)
+{
+    int i;
+    int count;
+    char quote;
+	char file_quote;
+
+    i = 0;
+    count = 0;
+    quote = 0;
+	file_quote = 0;
+    while (input[i] != '\0')
+    {
+        if (input[i] == '\'' || input[i] == '"')
+        {
+            if (quote == 0) 
+                quote = input[i];
+            else if (quote == input[i]) 
+                quote = 0;
+            i++;
+        }
+        else if ((input[i] == '>' || input[i] == '<') && quote == 0)
+        {
+            count++;
+            if (input[i + 1] == '>' || input[i + 1] == '<')
+                i += 2;
+            else
+                i++;
+            while (input[i] != '\0' && ft_skip_space(input[i]) == 1)
+                i++;
+            if (input[i] != '\0' && ft_skip_space(input[i]) == 0 && input[i] != '>' && input[i] != '<')
+            {
+                count++;
+                if (input[i] == '\'' || input[i] == '"')
+                {
+                    file_quote = input[i];
+                    i++;
+                    while (input[i] != '\0' && input[i] != file_quote)
+                        i++;
+                    if (input[i] == file_quote)
+                        i++;
+                }
+                else
+                {
+                    while (input[i] != '\0' && ft_skip_space(input[i]) == 0 && input[i] != '>' && input[i] != '<')
+                        i++;
+                }
+            }
+        }
+        else
+            i++;
+    }
+	//printf("cound = %d\n", count);
+    return (count);
+}
+
 int ft_count_args(char *input)
 {
 	int	count;

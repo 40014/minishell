@@ -6,6 +6,13 @@ void print_use_list(t_data *head) // for testing
     int i = 0;
     while (temp)
     {
+        while (temp->redirection[i] != NULL)
+        {
+            printf("redirection %d:%s\n", i, temp->redirection[i]);
+            i++;
+        }
+        i = 0;
+        printf("--------------------------\n");
         while (temp->argumment[i] != NULL)
         {
             printf("Arg %d:%s\n", i, temp->argumment[i]);
@@ -15,7 +22,7 @@ void print_use_list(t_data *head) // for testing
         temp = temp->next;
         if (temp)
         {
-            printf("---- Next Command ----\n");
+            printf("---- Next node ----\n");
         }
     }
 }
@@ -47,6 +54,7 @@ int main(int arc, char **arv, char **envp)
             add_history(input);
             if (parse_line(&data, input, env_var, &quots) == 0 && quots.empty != 2)
             {
+                print_use_list(data);
                 hold_vars->input = input;
                 hold_vars->temp = temp;
                 hold_vars->saved_stdin = saved_stdin;

@@ -20,6 +20,16 @@ void ft_free_list(t_data *head)
             }
             free(temp->argumment);
         }
+        if (temp->redirection)
+        {
+            i = 0;
+            while (temp->redirection[i] != NULL)
+            {
+                free(temp->redirection[i]);
+                i++;
+            }
+            free(temp->redirection);
+        }
         free(temp);
     }
 }

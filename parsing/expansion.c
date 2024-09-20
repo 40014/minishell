@@ -102,7 +102,7 @@ char    *ft_expand_herdoc(char  *str, t_env *env_var)
     result = NULL;
     while (str[i] != '\0')
     {
-        if (str[i] == '$' && ft_is_digits(str[i + 1]) == 1)
+        if (str[i] == '$' && ft_is_digits(str[i + 1]) == 1 && env_var->herdoc_expan != 1)
         {
             if (str[i + 1] == '0')
             {
@@ -112,7 +112,7 @@ char    *ft_expand_herdoc(char  *str, t_env *env_var)
             else
                 i += 2;
         }
-        else if (str[i] != '\0' && str[i] == '$' && str[i + 1] != '$')
+        else if (str[i] != '\0' && str[i] == '$' && str[i + 1] != '$' && env_var->herdoc_expan != 1)
         {
             i++;
             j = 0;

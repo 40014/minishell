@@ -18,13 +18,13 @@ void add_buffer_to_args(t_ParserState *state)
 
 void finalize_args(t_ParserState *state)
 {
-    // printf("test0\n");
+    //printf("buffer index arg = %d\n", state->buf_index);
     if (state->buf_index > 0)
     {
         state->buffer[state->buf_index] = '\0';
         state->args[state->j++] = ft_strdup(state->buffer);
     }
-    //printf("test1\n");
+    //printf("buffer index arg = %d\n", state->buf_index);
     if (state->buf_index == 0 && state->j == 0)
     {
         if (state->quots->empty == 1)
@@ -40,6 +40,7 @@ void init_parser_state(t_ParserState *state, char *input, t_env *env_var, t_quot
     state->input = input;
     state->buffer = malloc(BUFSIZ);
     state->buf_index = 0;
+    state->redir_index = 0;
     state->i = 0;
     state->quote = 0;
     state->env_var = env_var;
