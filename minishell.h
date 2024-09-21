@@ -49,6 +49,7 @@ typedef struct parser
     char *input;
     char *buffer;
     int buf_index;
+    int find_red;
     int i;
     char quote;
     t_env *env_var;

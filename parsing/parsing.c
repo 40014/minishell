@@ -50,31 +50,10 @@ void handle_redirection(t_ParserState *state)
     else if (state->input[state->i] == '<')
         state->redirections[state->redir_index++] = ft_strdup("<");
     state->i++;
-    while (ft_skip_space(state->input[state->i]) == 1)
-        state->i++;
-    if (state->input[state->i] != '\0' && ft_skip_space(state->input[state->i]) == 0)
-    {
-        if (state->input[state->i] == '\'' || state->input[state->i] == '\"' )
-        {
-            file_quote = state->input[state->i];
-            buffer[buf_index++] = state->input[state->i++];
-            while (state->input[state->i] != '\0' && state->input[state->i] != file_quote)
-                buffer[buf_index++] = state->input[state->i++];
-            if (state->input[state->i] == file_quote)
-                buffer[buf_index++] = state->input[state->i];
-            buffer[buf_index] = '\0';
-            state->redirections[state->redir_index++] = ft_strdup(buffer);
-        }
-        else
-        {
-            while (state->input[state->i] != '\0' && ft_skip_space(state->input[state->i]) == 0 && state->input[state->i] != '>' && state->input[state->i] != '<')
-                buffer[buf_index++] = state->input[state->i++];
-            buffer[buf_index] = '\0';
-            state->redirections[state->redir_index++] = ft_strdup(buffer);
-        }
-    }
+    state->find_red = 1;
+    if (state->input[state->i] == '\0')
+        state->i--;
 }
-
 
 char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***redirections)
 {
@@ -103,11 +82,7 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***r
         if ((state.input[state.i] == '\'' || state.input[state.i] == '"') && (state.input[state.i] == state.quote || state.quote == 0) && check == 1)
             handle_quotes(&state);
         else if ((state.input[state.i] == '>' || state.input[state.i] == '<') && state.quote == 0)
-        {
-            handle_redirection(&state);
-            if (state.input[state.i] == '\0')
-                break;
-        }    
+            handle_redirection(&state); 
         else if (state.input[state.i] == '$' && (state.quote == 0 || state.quote != '\''))
             handle_dollar_sign(&state);
         else if ((ft_skip_space(state.input[state.i]) == 1) && state.quote == 0)

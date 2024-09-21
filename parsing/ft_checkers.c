@@ -74,7 +74,7 @@ int ft_count_redirections(char *input)
         else
             i++;
     }
-	//printf("cound = %d\n", count);
+	printf("cound = %d\n", count);
     return (count);
 }
 

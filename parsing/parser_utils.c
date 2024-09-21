@@ -2,7 +2,13 @@
 
 void handle_empty_argument(t_ParserState *state)
 {
-    state->args[state->j++] = ft_strdup("");
+    if (state->find_red == 1)
+    {
+        state->redirections[state->redir_index++] = ft_strdup("");
+        state->find_red = 0;
+    }
+    else
+        state->args[state->j++] = ft_strdup("");
     state->i += 2;
 }
 
@@ -11,20 +17,35 @@ void add_buffer_to_args(t_ParserState *state)
     if (state->buf_index > 0)
     {
         state->buffer[state->buf_index] = '\0';
-        state->args[state->j++] = ft_strdup(state->buffer);
-        state->buf_index = 0;
+        if (state->find_red == 1)
+        {
+            printf("here suu first\n");
+            state->redirections[state->redir_index++] = ft_strdup(state->buffer);
+            state->buf_index = 0;
+            state->find_red = 0;
+        }
+        else
+        {
+            state->args[state->j++] = ft_strdup(state->buffer);
+            state->buf_index = 0;
+        }
     }
 }
 
 void finalize_args(t_ParserState *state)
 {
-    //printf("buffer index arg = %d\n", state->buf_index);
     if (state->buf_index > 0)
     {
         state->buffer[state->buf_index] = '\0';
-        state->args[state->j++] = ft_strdup(state->buffer);
+        if (state->find_red == 1)
+        {
+            printf("here suu last\n");
+            state->redirections[state->redir_index++] = ft_strdup(state->buffer);
+            state->find_red = 0;
+        }
+        else
+            state->args[state->j++] = ft_strdup(state->buffer);
     }
-    //printf("buffer index arg = %d\n", state->buf_index);
     if (state->buf_index == 0 && state->j == 0)
     {
         if (state->quots->empty == 1)
@@ -46,5 +67,6 @@ void init_parser_state(t_ParserState *state, char *input, t_env *env_var, t_quot
     state->env_var = env_var;
     state->quots = quots;
     state->j = 0;
+    state->find_red = 0;
     state->quots->empty = 0;
 }
