@@ -131,7 +131,6 @@ void exec_with_pipes(t_env **envp, t_data **data, t_hold **hold_vars)
             close(fd[1]);
         fd_in = fd[0];
         temp = temp->next;
-        wait(NULL);
     }
     waitpid(pid, &exit_status, 0);
     while (wait(&status) > 0);
