@@ -54,11 +54,11 @@ int main(int arc, char **arv, char **envp)
             add_history(input);
             if (parse_line(&data, input, env_var, &quots) == 0 && quots.empty != 2)
             {
-                print_use_list(data);
+               // print_use_list(data);
                 hold_vars->input = input;
                 hold_vars->temp = temp;
                 hold_vars->saved_stdin = saved_stdin;
-                exec_commandes(data, &env_var, &data, &hold_vars);
+                exec_commandes(&env_var, &data, &hold_vars);
                 dup2(saved_stdout, STDOUT_FILENO);
                 dup2(saved_stdin, STDIN_FILENO);
                 close(saved_stdout);

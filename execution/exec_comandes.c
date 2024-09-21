@@ -12,33 +12,33 @@ int ft_strcmp(char *s1, char *s2)
     return (s1[i] - s2[i]);
 }
 
-int exec_simple_commande(char **argumment, t_env **envp, t_data **data, t_hold **hold_vars)
+int exec_simple_commande(t_data *commande, t_env **envp, t_data **data, t_hold **hold_vars)
 {
-    if (check_handle_redirections(argumment, (*hold_vars)->saved_stdin, *envp) == 1)
+    if (check_handle_redirections(commande->redirection, (*hold_vars)->saved_stdin, *envp) == 1)
         return (exit_code);
-    if (ft_strcmp(argumment[0], "echo") == 0)
-        exit_code = exec_echo(argumment);
-    else if (ft_strcmp(argumment[0], "pwd") == 0)
-        exit_code = exec_pwd(argumment);
-    else if (ft_strcmp(argumment[0], "cd") == 0)
-        exit_code = exec_cd(argumment, *envp);
-    else if (ft_strcmp(argumment[0], "export") == 0)
-        exit_code = exec_export(argumment, envp);
-    else if (ft_strcmp(argumment[0], "env") == 0)
-        exit_code = exec_env(argumment, *envp);
-    else if (ft_strcmp(argumment[0], "unset") == 0)
-        exit_code = exec_unset(argumment, envp);
-    else if (ft_strcmp(argumment[0], "exit") == 0)
-        exit_code = exec_exit(argumment, envp, data, hold_vars);
+    if (ft_strcmp(commande->argumment[0], "echo") == 0)
+        exit_code = exec_echo(commande->argumment);
+    else if (ft_strcmp(commande->argumment[0], "pwd") == 0)
+        exit_code = exec_pwd(commande->argumment);
+    else if (ft_strcmp(commande->argumment[0], "cd") == 0)
+        exit_code = exec_cd(commande->argumment, *envp);
+    else if (ft_strcmp(commande->argumment[0], "export") == 0)
+        exit_code = exec_export(commande->argumment, envp);
+    else if (ft_strcmp(commande->argumment[0], "env") == 0)
+        exit_code = exec_env(commande->argumment, *envp);
+    else if (ft_strcmp(commande->argumment[0], "unset") == 0)
+        exit_code = exec_unset(commande->argumment, envp);
+    else if (ft_strcmp(commande->argumment[0], "exit") == 0)
+        exit_code = exec_exit(commande->argumment, envp, data, hold_vars);
     else
-        exit_code = exec_non_builtin(argumment, envp, data, hold_vars);
+        exit_code = exec_non_builtin(commande->argumment, envp, data, hold_vars);
     return (exit_code);
 }
 
-void exec_commandes(t_data *commandes, t_env **envp, t_data **data, t_hold **hold_vars)
+void exec_commandes(t_env **envp, t_data **data, t_hold **hold_vars)
 {
-    if (commandes->next == NULL && commandes != NULL)
-        exec_simple_commande(commandes->argumment, envp, data, hold_vars);
-    else if (commandes->next != NULL)
+    if ((*data)->next == NULL && (*data) != NULL)
+        exec_simple_commande((*data), envp, data, hold_vars);
+    else if ((*data)->next != NULL)
         exec_with_pipes(envp, data, hold_vars);
 }
