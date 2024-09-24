@@ -42,18 +42,22 @@ void process_env_variable(t_ParserState *state)
 void handle_dollar_sign(t_ParserState *state)
 {
     int temp_i;
+    int check_dollar;
 
+    check_dollar = 0;
     if (state->input[state->i] == '$' && (state->quote == 0 || state->quote != '\''))
     {
         if (state->quote == 0)
             state->quots->empty = 1;
         if (state->input[state->i] == '$' && (state->input[state->i + 1] == '\"' || state->input[state->i + 1] == '\'') && state->quote == 0)
+        {
             state->i++;
+            check_dollar = 1;
+        }
         temp_i = state->i + 1;
         while (state->input[temp_i] == ' ' || state->input[temp_i] == '\"' || state->input[temp_i] == '\'')
             temp_i++;
-
-        if (state->input[temp_i] == '\0' || state->input[temp_i] == ' ' || state->input[temp_i] == '\"' || state->input[temp_i] == '\'')
+        if (state->input[temp_i] == '\0' && check_dollar != 1)
             state->buffer[state->buf_index++] = '$';
         else
             process_env_variable(state);
