@@ -87,7 +87,7 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***r
             handle_redirection(&state); 
         else if (state.input[state.i] == '$' && (state.quote == 0 || state.quote != '\''))
             handle_dollar_sign(&state);
-        else if ((ft_skip_space(state.input[state.i]) == 1) && state.quote == 0)
+        else if ((ft_skip_space(state.input[state.i]) == 1) || state.input[state.i] == '>'  && state.quote == 0)
             add_buffer_to_args(&state);
         else
             state.buffer[state.buf_index++] = state.input[state.i];
@@ -119,7 +119,7 @@ int parse_line(t_data **data, char *input, t_env *env_var, t_quots *quots)
     while ((token = strsplit_by_pipe(&remaining_input)) != NULL)
     {
         arguments = split_line_to_args(token, env_var, quots, &redirections);
-        if (arguments[0] != NULL)
+        if (arguments[0] != NULL || redirections[0] != NULL)
             ft_add_node(data, arguments, redirections);
         else
             return (1);

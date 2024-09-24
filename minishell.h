@@ -132,14 +132,9 @@ int	ft_strchr(const char *s, int c);
 void	*ft_calloc(size_t count, size_t size);
 char	*get_next_line(int fd);
 int check_handle_redirections(char **argumment, int saved_stdin, t_env *envp);
-int check_if_contain_redirections(char *cmd);
-int check_if_contain_only_redirection(char *cmd);
-char *ft_cpy_commande(char *argumment, int i);
-int ft_handle_output(char *argument, int i);
-int ft_handle_input(char *argument, int i);
-int ft_handle_append(char *argument, int i);
-int ft_handle_heredoc(char *argument, int i, t_env *envp);
-int free_and_shift(char **argumment, int j);
-int check_if_redirection_end(char *argumment);
+int ft_handle_output(char *file_name);
+int ft_handle_append(char *file_name);
+int ft_handle_input(char *file_name);
+int ft_handle_heredoc(char *delimiter, t_env *envp);
 
 #endif

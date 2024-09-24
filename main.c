@@ -54,7 +54,7 @@ int main(int arc, char **arv, char **envp)
             add_history(input);
             if (parse_line(&data, input, env_var, &quots) == 0 && quots.empty != 2)
             {
-                // print_use_list(data);
+                //print_use_list(data);
                 hold_vars->input = input;
                 hold_vars->temp = temp;
                 hold_vars->saved_stdin = saved_stdin;
