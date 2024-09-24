@@ -17,8 +17,6 @@ void add_buffer_to_args(t_ParserState *state)
     if (state->buf_index > 0)
     {
         state->buffer[state->buf_index] = '\0';
-        if (state->input[state->i] == '>')
-            state->find_red = 1;
         if (state->find_red == 1)
         {
             state->redirections[state->redir_index++] = ft_strdup(state->buffer);

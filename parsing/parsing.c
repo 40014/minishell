@@ -52,7 +52,9 @@ void handle_redirection(t_ParserState *state)
         state->i++;
     }
     else if (state->input[state->i] == '>')
+    {
         state->redirections[state->redir_index++] = ft_strdup(">");
+    }
     else if (state->input[state->i] == '<')
         state->redirections[state->redir_index++] = ft_strdup("<");
     state->find_red = 1;
@@ -87,7 +89,7 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***r
             handle_redirection(&state); 
         else if (state.input[state.i] == '$' && (state.quote == 0 || state.quote != '\''))
             handle_dollar_sign(&state);
-        else if ((ft_skip_space(state.input[state.i]) == 1) || state.input[state.i] == '>'  && state.quote == 0)
+        else if ((ft_skip_space(state.input[state.i]) == 1) && state.quote == 0)
             add_buffer_to_args(&state);
         else
             state.buffer[state.buf_index++] = state.input[state.i];
