@@ -62,6 +62,7 @@ typedef struct parser
 
 extern int exit_code;
 
+int ft_skip_spaces_and_check_pipe(char *input, int *i);
 void    ft_check_expansion_herdoc(char *input, t_env *env_var);
 int ft_count_redirections(char *input);
 void ft_printf_error(int i);
@@ -80,7 +81,7 @@ void handle_quotes(t_ParserState *state);
 int handle_consecutive_quotes(t_ParserState *state);
 char	*ft_itoa(int n);
 int ft_skip_space(char c);
-int	check_redirections(char *input);
+int check_errors(char *input);
 char    *ft_strcpy(char *dest, const char *src);
 char    *ft_strdup(const char *s1);
 char    *ft_strjoinee(char *s1, const char *s2);

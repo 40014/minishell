@@ -7,6 +7,7 @@ PARSING =	main.c \
 			parsing/handle_pip.c parsing/arg_parser.c \
 			parsing/ft_checkers.c parsing/parser_utils.c \
 			parsing/expansion.c parsing/checker_expansion.c \
+			parsing/redirection_utils.c parsing/syntax_error.c\
 
 EXECUTION =	execution/exec_echo.c execution/exec_pwd.c          \
 			execution/exec_env.c execution/exec_unset.c          \

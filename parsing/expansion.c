@@ -49,6 +49,26 @@ char *handle_dollar_sign_in_arguments(char *arguments, t_env *env_var, int *i)
     return (env);
 }
 
+void ft_handle_digit_argument(char **result, int *i, char *arguments)
+{
+    if (arguments[*i + 1] == '0')
+    {
+        *result = ft_strjoinee(*result, "minishell");
+        *i += 2;
+    }
+    else
+        *i += 2;
+}
+
+void ft_finalize_arguments(char **arguments, char *result, t_quots *quots)
+{
+    if (result == NULL)
+        *arguments = NULL;
+    else
+        *arguments = result;
+    quots->x = 0;
+}
+
 char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots)
 {
     int i;
@@ -60,15 +80,7 @@ char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots)
     while (arguments[i] != '\0')
     {
         if (arguments[i] == '$' && ft_is_digits(arguments[i + 1]) == 1)
-        {
-            if (arguments[i + 1] == '0')
-            {
-                result = ft_strjoinee(result, "minishell");
-                i += 2;
-            }
-            else
-                i += 2;
-        }
+            ft_handle_digit_argument(&result, &i, arguments);
         else if (arguments[i] == '$' && arguments[i + 1] != '$' && (quots->x == 0 || quots->x == 2) && arguments[i + 1] != '\0')
         {
             env_result = handle_dollar_sign_in_arguments(arguments, env_var, &i);
@@ -81,11 +93,7 @@ char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots)
             i++;
         }
     }
-    if (result == NULL)
-        arguments = NULL;
-    else
-        arguments = result;
-    quots->x = 0;
+    ft_finalize_arguments(&arguments, result, quots);
     return (arguments);
 }
 

@@ -24,7 +24,7 @@ void finalize_redirections(t_ParserState *state)
 
 void handle_redirection(t_ParserState *state)
 {
-    int buf_index = 0;
+    int buf_index;
     char buffer[BUFSIZ];
     char    file_quote;
 
@@ -32,7 +32,13 @@ void handle_redirection(t_ParserState *state)
     if (state->buf_index > 0)
     {
         state->buffer[state->buf_index] = '\0';
-        state->args[state->j++] = ft_strdup(state->buffer);
+        if (state->find_red == 1)
+        {
+            state->redirections[state->redir_index++] = ft_strdup(state->buffer);
+            state->find_red = 0;
+        }
+        else
+            state->args[state->j++] = ft_strdup(state->buffer);
         state->buf_index = 0;
     }
     if (state->input[state->i] == '>' && state->input[state->i + 1] == '>')
@@ -49,10 +55,7 @@ void handle_redirection(t_ParserState *state)
         state->redirections[state->redir_index++] = ft_strdup(">");
     else if (state->input[state->i] == '<')
         state->redirections[state->redir_index++] = ft_strdup("<");
-    state->i++;
     state->find_red = 1;
-    if (state->input[state->i] == '\0')
-        state->i--;
 }
 
 char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***redirections)
@@ -63,7 +66,6 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***r
 
     args = malloc(sizeof(char *) * (ft_count_args(input) + 1));
     *redirections = malloc(sizeof(char *) * (ft_count_redirections(input) + 1));
-
     if (!args || !*redirections)
         return NULL;
     init_parser_state(&state, input, env_var, quots);
@@ -106,7 +108,7 @@ int parse_line(t_data **data, char *input, t_env *env_var, t_quots *quots)
     int i;
 
     i = 0;
-    if ((i = check_redirections(input)) != 0)
+    if ((i = check_errors(input)) != 0)
     {
         ft_printf_error(i);
         exit_code = 2;
@@ -124,4 +126,3 @@ int parse_line(t_data **data, char *input, t_env *env_var, t_quots *quots)
     }
     return (0);
 }
-

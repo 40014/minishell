@@ -1,5 +1,14 @@
 #include "../minishell.h"
 
+int ft_skip_spaces_and_check_pipe(char *input, int *i)
+{
+    while (input[*i] != '\0' && ft_skip_space(input[*i]) == 1)
+        (*i)++;
+    if (input[*i] == '|')
+        return 1;
+    return 0;
+}
+
 char ft_handle_quote(char current_chara, char quotee)
 {
     if (current_chara == '\'' || current_chara == '"')

@@ -1,5 +1,11 @@
 #include "../minishell.h"
 
+void ft_process_quote(char *input, int *i, char *quote)
+{
+    *quote = ft_handle_quote(input[*i], *quote);
+    (*i)++;
+}
+
 void    ft_check_expansion_herdoc(char *input, t_env *env_var)
 {
     int i;
@@ -11,10 +17,7 @@ void    ft_check_expansion_herdoc(char *input, t_env *env_var)
     while (input[i] != '\0')
     {
         if (input[i] == '\'' || input[i] == '\"')
-        {
-            quote = ft_handle_quote(input[i], quote);
-            i++;
-        }
+            ft_process_quote(input, &i, &quote);
         else if (input[i] == '<' && input[i + 1] == '<' && quote == 0)
         {
             i += 2;
@@ -28,5 +31,4 @@ void    ft_check_expansion_herdoc(char *input, t_env *env_var)
         else
             i++;
     }
-
 }

@@ -19,7 +19,6 @@ void add_buffer_to_args(t_ParserState *state)
         state->buffer[state->buf_index] = '\0';
         if (state->find_red == 1)
         {
-            printf("here suu first\n");
             state->redirections[state->redir_index++] = ft_strdup(state->buffer);
             state->buf_index = 0;
             state->find_red = 0;
@@ -39,7 +38,6 @@ void finalize_args(t_ParserState *state)
         state->buffer[state->buf_index] = '\0';
         if (state->find_red == 1)
         {
-            printf("here suu last\n");
             state->redirections[state->redir_index++] = ft_strdup(state->buffer);
             state->find_red = 0;
         }

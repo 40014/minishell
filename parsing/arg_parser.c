@@ -1,18 +1,23 @@
 #include "../minishell.h"
 
+void process_exit_code(t_ParserState *state)
+{
+    char *env_val;
+
+    env_val = ft_itoa(exit_code);
+    ft_strcpy(state->buffer + state->buf_index, env_val);
+    state->buf_index += ft_strlen(env_val);
+    free(env_val);
+    state->i++;
+}
+
 void process_env_variable(t_ParserState *state)
 {
     char *env;
     char *env_val;
 
     if (state->input[state->i + 1] == '?')
-    {
-        env_val = ft_itoa(exit_code);
-        ft_strcpy(state->buffer + state->buf_index, env_val);
-        state->buf_index += ft_strlen(env_val);
-        free(env_val);
-        state->i++;
-    }
+        process_exit_code(state);
     else
     {
         state->buffer[state->buf_index] = '\0';
