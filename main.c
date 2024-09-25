@@ -59,8 +59,8 @@ int main(int arc, char **arv, char **envp)
                 // print_use_list(data);
                 hold_vars->input = input;
                 hold_vars->temp = temp;
-                hold_vars->saved_stdin = saved_stdin;
-                exec_commandes(&env_var, &data, &hold_vars);
+                quots.saved_stdin = saved_stdin;
+                exec_commandes(&env_var, &data, &hold_vars, &quots);
                 dup2(saved_stdout, STDOUT_FILENO);
                 dup2(saved_stdin, STDIN_FILENO);
                 close(saved_stdout);

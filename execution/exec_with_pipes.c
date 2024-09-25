@@ -96,7 +96,7 @@ int create_pipes(t_data *temp, t_env **env, t_data **data, t_hold **hold_vars, i
             dup2(fd_out, 1);
             close(fd_out);
         }
-        exit(exec_simple_commande(temp, env, data, hold_vars));
+        exit(exec_simple_commande(temp, env, &temp, hold_vars));
     }
     return(pid);
 }

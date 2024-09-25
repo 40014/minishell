@@ -34,14 +34,13 @@ typedef struct quot
     int x;
     int empty;
     int herdoc_expan;
+    int saved_stdin;
 } t_quots;
 
 typedef struct hold
 {
     char *input;
     char *temp;
-    int saved_stdin;
-
 } t_hold;
 
 typedef struct parser
@@ -95,7 +94,7 @@ char    *strsplit_by_pipe(char **str);
 int     ft_count_args(char *input);
 void ft_add_node(t_data **head, char **arguments, char **redirection);
 t_data *creat_node(char **arguments, char **redirection);
-void    exec_commandes(t_env **envp, t_data **data, t_hold **hold_vars);
+void exec_commandes(t_env **envp, t_data **data, t_hold **hold_vars, t_quots *quots);
 int    exec_echo(char **commande);
 void    ft_putstr(char *str);
 int    exec_cd(char **commande, t_env *envp);
@@ -123,7 +122,7 @@ int     ft_strcmp2(char *s1, char *s2);
 int    exec_non_builtin(char **comande, t_env **envp, t_data **data, t_hold **hold_vars);
 char    **ft_split(char const *s, char c);
 void    exec_with_pipes(t_env **envp, t_data **data, t_hold **hold_vars);
-int exec_simple_commande(t_data *commande, t_env **envp, t_data **data, t_hold **hold_vars);
+int exec_simple_commande(t_quots *quots, t_env **envp, t_data **data, t_hold **hold_vars);
 void	ft_putstr_fd(char const *str);
 void ft_print_in_stderr(char *s1, char *s2, char *s3);
 void ft_free_arr(char **paths);
@@ -131,10 +130,10 @@ void	ft_bzero(void *s, size_t n);
 int	ft_strchr(const char *s, int c);
 void	*ft_calloc(size_t count, size_t size);
 char	*get_next_line(int fd);
-int check_handle_redirections(char **argumment, int saved_stdin, t_env *envp);
+int check_handle_redirections(t_data *data, t_quots *quots, t_env *envp);
 int ft_handle_output(char *file_name);
 int ft_handle_append(char *file_name);
 int ft_handle_input(char *file_name);
-int ft_handle_heredoc(char *delimiter, t_env *envp);
+int ft_handle_heredoc(char *delimiter, t_env *envp, t_quots *quots);
 
 #endif

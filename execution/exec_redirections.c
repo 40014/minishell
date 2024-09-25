@@ -56,7 +56,7 @@ int ft_find_del(char *line, char *del)
         return(1);
     return(0);
 }
-int ft_handle_heredoc(char *delimiter, t_env *envp) 
+int ft_handle_heredoc(char *delimiter, t_env *envp, t_quots *quots) 
 {
     char *str;
     char *temp;
@@ -81,7 +81,7 @@ int ft_handle_heredoc(char *delimiter, t_env *envp)
             free(line);
             break;
         }
-        temp = ft_expand_herdoc(line, envp);
+        temp = ft_expand_herdoc(line, envp, quots);
         write(fd, temp, ft_strlen(temp));
         free(temp);
         free(line);

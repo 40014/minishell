@@ -41,10 +41,6 @@ char    *ft_expand_herdoc(char  *str, t_env *env_var, t_quots *quots)
 
     i = 0;
     result = NULL;
-    // if (env_var == NULL)
-    // {
-    //     return (ft_strdup(str));
-    // }
     while (str[i] != '\0')
     {
         if (str[i] == '$' && ft_is_digits(str[i + 1]) == 1 &&  quots->herdoc_expan != 1)

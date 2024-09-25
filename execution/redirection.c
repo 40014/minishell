@@ -1,7 +1,7 @@
 #include "../minishell.h"
 
 
-int ft_which_redirection(char *redirection, char *file_name, int saved_stdin, t_env *envp)
+int ft_which_redirection(char *redirection, char *file_name, t_quots *quots, t_env *envp)
 {
     if (redirection[0] == '>' && redirection[1] == '>')
     {
@@ -10,8 +10,8 @@ int ft_which_redirection(char *redirection, char *file_name, int saved_stdin, t_
     }
     else if (redirection[0] == '<' && redirection[1] == '<')
     {
-        dup2(saved_stdin, STDIN_FILENO);
-        if ((ft_handle_heredoc(file_name, envp)) == -1)
+        dup2(quots->saved_stdin, STDIN_FILENO);
+        if ((ft_handle_heredoc(file_name, envp, quots)) == -1)
             return (-1);
     }
     else if (redirection[0] == '>')
@@ -26,7 +26,7 @@ int ft_which_redirection(char *redirection, char *file_name, int saved_stdin, t_
     }
     return (0);
 }
-int check_handle_redirections(char **argumment, int saved_stdin, t_env *envp)
+int check_handle_redirections(t_data *data, t_quots *quots, t_env *envp)
 {
     int j;
     char *arg;
@@ -34,15 +34,15 @@ int check_handle_redirections(char **argumment, int saved_stdin, t_env *envp)
 
     j = 0;
     exit_code = 0;
-    while (argumment[j])
+    while (data->redirection[j])
     {     
-        if (argumment[j + 1] == NULL)
+        if (data->redirection[j + 1] == NULL)
         {
             ft_putstr_fd("ambiguous redirect\n");
             exit_code = 1;
             return(1);
         }
-        if (ft_which_redirection(argumment[j], argumment[j + 1], saved_stdin, envp) == -1)
+        if (ft_which_redirection(data->redirection[j], data->redirection[j + 1], quots, envp) == -1)
         {
             exit_code = 1;
             return (1);
