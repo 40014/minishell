@@ -22,6 +22,19 @@ void finalize_redirections(t_ParserState *state)
     state->redirections[state->redir_index] = NULL;
 }
 
+void    handle_buffer(t_ParserState *state)
+{
+    state->buffer[state->buf_index] = '\0';
+    if (state->find_red == 1)
+    {
+        state->redirections[state->redir_index++] = ft_strdup(state->buffer);
+        state->find_red = 0;
+    }
+    else
+        state->args[state->j++] = ft_strdup(state->buffer);
+    state->buf_index = 0;
+}
+
 void handle_redirection(t_ParserState *state)
 {
     int buf_index;
@@ -30,17 +43,7 @@ void handle_redirection(t_ParserState *state)
 
     buf_index = 0;
     if (state->buf_index > 0)
-    {
-        state->buffer[state->buf_index] = '\0';
-        if (state->find_red == 1)
-        {
-            state->redirections[state->redir_index++] = ft_strdup(state->buffer);
-            state->find_red = 0;
-        }
-        else
-            state->args[state->j++] = ft_strdup(state->buffer);
-        state->buf_index = 0;
-    }
+        handle_buffer(state);
     if (state->input[state->i] == '>' && state->input[state->i + 1] == '>')
     {
         state->redirections[state->redir_index++] = ft_strdup(">>");
@@ -59,6 +62,22 @@ void handle_redirection(t_ParserState *state)
         state->redirections[state->redir_index++] = ft_strdup("<");
     state->find_red = 1;
 }
+
+int ft_handle_dollar_herdoc(t_ParserState *state, char c)
+{
+    int i;
+
+    if (state->redir_index > 0 && c == '$')
+    {
+        if (state->redir_index <= 0)
+            return (1);
+        i = state->redir_index - 1;
+        if (state->redirections[i] != NULL && strcmp(state->redirections[i], "<<") == 0)
+            return (0);
+    }
+    return (1);
+}
+
 
 char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***redirections)
 {
@@ -87,7 +106,7 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***r
             handle_quotes(&state);
         else if ((state.input[state.i] == '>' || state.input[state.i] == '<') && state.quote == 0)
             handle_redirection(&state); 
-        else if (state.input[state.i] == '$' && (state.quote == 0 || state.quote != '\''))
+        else if (state.input[state.i] == '$' && (state.quote == 0 || state.quote != '\'') && ft_handle_dollar_herdoc(&state, state.input[state.i]) == 1)
             handle_dollar_sign(&state);
         else if ((ft_skip_space(state.input[state.i]) == 1) && state.quote == 0)
             add_buffer_to_args(&state);
@@ -100,7 +119,7 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***r
     free(state.buffer);
     return (state.args);
 }
-
+     
 int parse_line(t_data **data, char *input, t_env *env_var, t_quots *quots)
 {
     char **arguments;

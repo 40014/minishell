@@ -13,10 +13,6 @@ void    ft_check_expansion_herdoc(char *input, t_quots *quots)
 
     i = 0;
     quote = 0;
-    // if (env_var == NULL)
-    // {
-    //     return;
-    // }
     quots->herdoc_expan = 0;
     while (input[i] != '\0')
     {
