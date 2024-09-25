@@ -73,9 +73,7 @@ int ft_handle_heredoc(char *delimiter, t_env *envp, t_quots *quots)
     {
         line = get_next_line(0);
         if (line == NULL)
-        {
             break;
-        }
         if (ft_find_del(line, delimiter) == 1)
         {
             free(line);
@@ -93,7 +91,8 @@ int ft_handle_heredoc(char *delimiter, t_env *envp, t_quots *quots)
         perror(fd);
         return (-1);
     }
-    if (dup2(fd, STDIN_FILENO) == -1) {
+    if (dup2(fd, STDIN_FILENO) == -1) 
+    {
         perror("dup2");
         close(fd);
         return (-1);

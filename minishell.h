@@ -121,7 +121,7 @@ int     check_argument(char *commande);
 int     ft_strcmp2(char *s1, char *s2);
 int    exec_non_builtin(char **comande, t_env **envp, t_data **data, t_hold **hold_vars);
 char    **ft_split(char const *s, char c);
-void    exec_with_pipes(t_env **envp, t_data **data, t_hold **hold_vars);
+void exec_with_pipes(t_env **envp, t_data **data, t_hold **hold_vars, t_quots *quots);
 int exec_simple_commande(t_quots *quots, t_env **envp, t_data **data, t_hold **hold_vars);
 void	ft_putstr_fd(char const *str);
 void ft_print_in_stderr(char *s1, char *s2, char *s3);

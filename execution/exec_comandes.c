@@ -40,5 +40,5 @@ void exec_commandes(t_env **envp, t_data **data, t_hold **hold_vars, t_quots *qu
     if ((*data)->next == NULL && (*data) != NULL)
         exec_simple_commande(quots, envp, data, hold_vars);
     else if ((*data)->next != NULL)
-        exec_with_pipes(envp, data, hold_vars);
+        exec_with_pipes(envp, data, hold_vars, quots);
 }
