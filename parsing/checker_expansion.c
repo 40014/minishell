@@ -6,14 +6,18 @@ void ft_process_quote(char *input, int *i, char *quote)
     (*i)++;
 }
 
-void    ft_check_expansion_herdoc(char *input, t_env *env_var)
+void    ft_check_expansion_herdoc(char *input, t_quots *quots)
 {
     int i;
     char    quote;
 
     i = 0;
     quote = 0;
-    env_var->herdoc_expan = 0;
+    // if (env_var == NULL)
+    // {
+    //     return;
+    // }
+    quots->herdoc_expan = 0;
     while (input[i] != '\0')
     {
         if (input[i] == '\'' || input[i] == '\"')
@@ -24,7 +28,7 @@ void    ft_check_expansion_herdoc(char *input, t_env *env_var)
             while (input[i] != '\0' && input[i] != '\'' && input[i] != '\"')
                 i++;
             if (input[i] == '\'' || input[i] == '\"')
-                env_var->herdoc_expan = 1;
+                quots->herdoc_expan = 1;
             if (input[i] == '\0')
                 break;
         }

@@ -116,7 +116,7 @@ int parse_line(t_data **data, char *input, t_env *env_var, t_quots *quots)
         exit_code = 2;
         return (1);
     }
-    ft_check_expansion_herdoc(input, env_var);
+    ft_check_expansion_herdoc(input, quots);
     remaining_input = input;
     while ((token = strsplit_by_pipe(&remaining_input)) != NULL)
     {

@@ -1,25 +1,5 @@
 #include "../minishell.h"
 
-char *replace_env_variable(const char *str, int *skip)
-{
-    char var_name[BUFSIZ];
-    int var_index;
-
-    var_index = 0;
-    if (str[*skip] == '$')
-    {
-        var_name[var_index++] = str[*skip];
-        (*skip)++;
-    }
-    while (str[*skip] && ft_is_valid(str[*skip]) == 1)
-    {
-        var_name[var_index++] = str[*skip];
-        (*skip)++;
-    }
-    var_name[var_index] = '\0';
-    return (ft_strdup(var_name));
-}
-
 void append_char_to_result(char **result, char arguments_char)
 {
     char str[2];
@@ -97,54 +77,54 @@ char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots)
     return (arguments);
 }
 
-char    *ft_expand_herdoc(char  *str, t_env *env_var)
-{
-    int i;
-    long unsigned int j;
-    char    *result;
-    char    *env_result;
-    char    tmp[BUFSIZ];
-    char character[2];
+// char    *ft_expand_herdoc(char  *str, t_env *env_var)
+// {
+//     int i;
+//     long unsigned int j;
+//     char    *result;
+//     char    *env_result;
+//     char    tmp[BUFSIZ];
+//     char character[2];
 
-    i = 0;
-    result = NULL;
-    while (str[i] != '\0')
-    {
-        if (str[i] == '$' && ft_is_digits(str[i + 1]) == 1 && env_var->herdoc_expan != 1)
-        {
-            if (str[i + 1] == '0')
-            {
-                result = ft_strjoinee(result, "minishell");
-                i += 2;
-            }
-            else
-                i += 2;
-        }
-        else if (str[i] != '\0' && str[i] == '$' && str[i + 1] != '$' && env_var->herdoc_expan != 1)
-        {
-            i++;
-            j = 0;
-            while (str[i] != '\0' && str[i] != ' ' && str[i] != '$' && ft_is_valid(str[i]) == 1 && j < sizeof(tmp) - 1)
-            {
-                tmp[j] = str[i];
-                j++;
-                i++;
-            }
-            tmp[i] = '\0';
-            env_result = ft_getenv(env_var, tmp);
-            if (env_result != NULL)
-                result = ft_strjoinee(result, env_result);
-        }
-        else
-        {
-            character[0] = str[i];
-            character[1] = '\0';
-            result = ft_strjoinee(result, character);
-            i++;
-        }
-    }
-    if (result == NULL)
-        return (ft_strdup(str));
-    else
-        return (result);
-}
+//     i = 0;
+//     result = NULL;
+//     while (str[i] != '\0')
+//     {
+//         if (str[i] == '$' && ft_is_digits(str[i + 1]) == 1 && env_var->herdoc_expan != 1)
+//         {
+//             if (str[i + 1] == '0')
+//             {
+//                 result = ft_strjoinee(result, "minishell");
+//                 i += 2;
+//             }
+//             else
+//                 i += 2;
+//         }
+//         else if (str[i] != '\0' && str[i] == '$' && str[i + 1] != '$' && env_var->herdoc_expan != 1)
+//         {
+//             i++;
+//             j = 0;
+//             while (str[i] != '\0' && str[i] != ' ' && str[i] != '$' && ft_is_valid(str[i]) == 1 && j < sizeof(tmp) - 1)
+//             {
+//                 tmp[j] = str[i];
+//                 j++;
+//                 i++;
+//             }
+//             tmp[i] = '\0';
+//             env_result = ft_getenv(env_var, tmp);
+//             if (env_result != NULL)
+//                 result = ft_strjoinee(result, env_result);
+//         }
+//         else
+//         {
+//             character[0] = str[i];
+//             character[1] = '\0';
+//             result = ft_strjoinee(result, character);
+//             i++;
+//         }
+//     }
+//     if (result == NULL)
+//         return (ft_strdup(str));
+//     else
+//         return (result);
+// }

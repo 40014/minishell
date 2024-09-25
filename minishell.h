@@ -25,7 +25,6 @@ typedef struct env_var
 {
     char *var;
     char *val;
-    int herdoc_expan;
     struct env_var *next;
 
 } t_env;
@@ -34,6 +33,7 @@ typedef struct quot
 {
     int x;
     int empty;
+    int herdoc_expan;
 } t_quots;
 
 typedef struct hold
@@ -63,10 +63,10 @@ typedef struct parser
 extern int exit_code;
 
 int ft_skip_spaces_and_check_pipe(char *input, int *i);
-void    ft_check_expansion_herdoc(char *input, t_env *env_var);
+void    ft_check_expansion_herdoc(char *input, t_quots *quots);
 int ft_count_redirections(char *input);
 void ft_printf_error(int i);
-char    *ft_expand_herdoc(char  *str, t_env *env_var);
+char    *ft_expand_herdoc(char  *str, t_env *env_var, t_quots *quots);
 int	check_prompt(char *input);
 char ft_handle_quote(char current_chara, char quotee);
 char *replace_env_variable(const char *str, int *skip);

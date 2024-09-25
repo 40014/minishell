@@ -8,6 +8,7 @@ PARSING =	main.c \
 			parsing/ft_checkers.c parsing/parser_utils.c \
 			parsing/expansion.c parsing/checker_expansion.c \
 			parsing/redirection_utils.c parsing/syntax_error.c\
+			parsing/utils_expansion1.c parsing/expansion_herdoc.c \
 
 EXECUTION =	execution/exec_non_builtin_utils.c                \
 			execution/exec_echo.c execution/exec_pwd.c         \
