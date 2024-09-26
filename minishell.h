@@ -138,5 +138,7 @@ int ft_handle_heredoc(char *delimiter, t_env *envp, t_quots *quots);
 char *set_shlvl(char *var, char *shlvl);
 int ft_strcmp3(char *s1, char *s2);
 int	ft_atoi(char *str);
+void ft_print_env2(t_env *envp);
+char **convert_envp_to_arr(t_env *envp);
 
 #endif

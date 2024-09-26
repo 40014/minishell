@@ -97,7 +97,7 @@ int exec_export(char **commande, t_env **envp)
 
     exit_code = 0;
     if (commande[1] == NULL)
-        ft_print_env(*envp);
+        ft_print_env2(*envp);
     else
     {
         j = 1;
