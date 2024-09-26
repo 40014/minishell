@@ -111,7 +111,6 @@ int exec_export(char **commande, t_env **envp)
                 add_to_env(&temp, envp, ft_one_node(commande[j]));
             else
             {
-                //printf("export: `%s': not a valid identifier\n", commande[j]);
                 ft_print_in_stderr("export: '", commande[j],"': not a valid identifier\n");
                 exit_code = 1;
             }

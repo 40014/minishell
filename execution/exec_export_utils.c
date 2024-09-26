@@ -4,12 +4,12 @@ int ft_isalpha(int c, int i)
 {
     if (i == 2)
     {
-        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_')
             return (0);
     }
     else
     {
-        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_')
             return (0);
     }
     return (1);
@@ -57,7 +57,6 @@ int check_argument(char *commande)
 
     if (commande[0] == '-')
     {
-        //printf("export: %s: invalid option\n", commande);
         ft_print_in_stderr("export: ", commande,": invalid option\n");    
         return (1);
     }

@@ -30,7 +30,7 @@ int exec_simple_commande(t_quots *quots, t_env **envp, t_data **data, t_hold **h
         exit_code = exec_unset((*data)->argumment, envp);
     else if (ft_strcmp((*data)->argumment[0], "exit") == 0)
         exit_code = exec_exit((*data)->argumment, envp, data, hold_vars);
-    else
+    else 
         exit_code = exec_non_builtin((*data)->argumment, envp, data, hold_vars);
     return (exit_code);
 }

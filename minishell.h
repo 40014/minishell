@@ -135,5 +135,8 @@ int ft_handle_output(char *file_name);
 int ft_handle_append(char *file_name);
 int ft_handle_input(char *file_name);
 int ft_handle_heredoc(char *delimiter, t_env *envp, t_quots *quots);
+char *set_shlvl(char *var, char *shlvl);
+int ft_strcmp3(char *s1, char *s2);
+int	ft_atoi(char *str);
 
 #endif
