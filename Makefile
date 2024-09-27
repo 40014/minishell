@@ -7,6 +7,7 @@ PARSING =	main.c parsing/utils_expansion.c                \
 			parsing/redirection_utils.c parsing/syntax_error.c  \
 			parsing/utils.c  parsing/ft_free.c parsing/parsing.c \
 			parsing/utils_expansion1.c parsing/expansion_herdoc.c \
+			parsing/ft_arg_to_node.c parsing/str_split.c \
 			
 EXECUTION =	execution/exec_env.c execution/exec_unset.c                 \
 			execution/prompt_utils.c execution/exec_cd.c                 \

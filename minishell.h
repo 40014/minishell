@@ -21,6 +21,12 @@ typedef struct data
     struct data *next;
 } t_data;
 
+typedef struct arg_node
+{
+    char *arg;
+    struct arg_node *next;
+} t_arg_node;
+
 typedef struct env_var
 {
     char *var;
@@ -61,6 +67,13 @@ typedef struct parser
 
 extern int exit_code;
 
+char    **split_string(const char* input);
+char	**ft_splite(const char *s, char c);
+void free_arg_list(t_arg_node *head);
+t_arg_node *create_arg_node(char *arg);
+void append_arg_node(t_arg_node **head, t_arg_node *new_node);
+int count_arg_nodes(t_arg_node *head);
+char **convert_list_to_array(t_arg_node *head);
 int ft_skip_spaces_and_check_pipe(char *input, int *i);
 void    ft_check_expansion_herdoc(char *input, t_quots *quots);
 int ft_count_redirections(char *input);
@@ -70,12 +83,12 @@ int	check_prompt(char *input);
 char ft_handle_quote(char current_chara, char quotee);
 char *replace_env_variable(const char *str, int *skip);
 char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots);
-void finalize_args(t_ParserState *state);
-void add_buffer_to_args(t_ParserState *state);
-void handle_empty_argument(t_ParserState *state);
+void finalize_args(t_ParserState *state, t_arg_node **arg_list);
+void add_buffer_to_args(t_ParserState *state, t_arg_node **arg_list);
+void handle_empty_argument(t_ParserState *state, t_arg_node *arg_list);
 void init_parser_state(t_ParserState *state, char *input, t_env *env_var, t_quots *quots);
 char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots);
-void handle_dollar_sign(t_ParserState *state);
+void handle_dollar_sign(t_ParserState *state, t_arg_node **arg_list);
 void handle_quotes(t_ParserState *state);
 int handle_consecutive_quotes(t_ParserState *state);
 char	*ft_itoa(int n);

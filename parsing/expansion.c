@@ -9,16 +9,17 @@ void append_char_to_result(char **result, char arguments_char)
     *result = ft_strjoinee(*result, str);
 }
 
+
 char *handle_dollar_sign_in_arguments(char *arguments, t_env *env_var, int *i)
 {
-    char    tmp[BUFSIZ];
-    char    *env;
-    long unsigned int   j;
+    char tmp[BUFSIZ];
+    char *env;
+    long unsigned int j;
 
     j = 0;
     (*i)++;
     while (arguments[*i] != '\0' && arguments[*i] != ' ' && ft_is_valid(arguments[*i]) == 1 &&
-     arguments[*i] != '$' && j < sizeof(tmp) - 1)
+           arguments[*i] != '$' && j < sizeof(tmp) - 1)
     {
         tmp[j] = arguments[*i];
         j++;
@@ -77,22 +78,21 @@ char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots)
     return (arguments);
 }
 
-// char    *ft_expand_herdoc(char  *str, t_env *env_var)
+// char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots)
 // {
 //     int i;
-//     long unsigned int j;
-//     char    *result;
-//     char    *env_result;
-//     char    tmp[BUFSIZ];
-//     char character[2];
+//     char *result;
+//     char *env_result;
+//     char tmp[BUFSIZ];
+//     int j;
 
 //     i = 0;
 //     result = NULL;
-//     while (str[i] != '\0')
+//     while (arguments[i] != '\0')
 //     {
-//         if (str[i] == '$' && ft_is_digits(str[i + 1]) == 1 && env_var->herdoc_expan != 1)
+//         if (arguments[i] == '$' && ft_is_digits(arguments[i + 1]) == 1)
 //         {
-//             if (str[i + 1] == '0')
+//             if (arguments[i + 1] == '0')
 //             {
 //                 result = ft_strjoinee(result, "minishell");
 //                 i += 2;
@@ -100,13 +100,13 @@ char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots)
 //             else
 //                 i += 2;
 //         }
-//         else if (str[i] != '\0' && str[i] == '$' && str[i + 1] != '$' && env_var->herdoc_expan != 1)
+//         else if (arguments[i] == '$' && arguments[i + 1] != '$' && (quots->x == 0 || quots->x == 2) && arguments[i + 1] != '\0')
 //         {
 //             i++;
 //             j = 0;
-//             while (str[i] != '\0' && str[i] != ' ' && str[i] != '$' && ft_is_valid(str[i]) == 1 && j < sizeof(tmp) - 1)
+//             while (arguments[i] != '\0' && arguments[i] != ' ' && arguments[i] != '$' && ft_is_valid(arguments[i]) == 1 && j < sizeof(tmp) - 1)
 //             {
-//                 tmp[j] = str[i];
+//                 tmp[j] = arguments[i];
 //                 j++;
 //                 i++;
 //             }
@@ -117,14 +117,16 @@ char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots)
 //         }
 //         else
 //         {
-//             character[0] = str[i];
-//             character[1] = '\0';
-//             result = ft_strjoinee(result, character);
+//             append_char_to_result(&result, arguments[i]);
 //             i++;
 //         }
 //     }
 //     if (result == NULL)
-//         return (ft_strdup(str));
+//         arguments = NULL;
 //     else
-//         return (result);
+//         arguments = result;
+//     quots->x = 0;
+//     return (arguments);
+//     return (arguments);
 // }
+

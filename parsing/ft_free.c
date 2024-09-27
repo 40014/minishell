@@ -1,6 +1,19 @@
 #include "../minishell.h"
 
 
+void free_arg_list(t_arg_node *head)
+{
+    t_arg_node *temp;
+
+    while (head)
+    {
+        temp = head;
+        head = head->next;
+        free(temp->arg);
+        free(temp);
+    }
+}
+
 void ft_free_list(t_data *head)
 {
     t_data *temp;

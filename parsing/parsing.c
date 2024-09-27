@@ -22,7 +22,7 @@ void finalize_redirections(t_ParserState *state)
     state->redirections[state->redir_index] = NULL;
 }
 
-void    handle_buffer(t_ParserState *state)
+void    handle_buffer(t_ParserState *state, t_arg_node *arg_list)
 {
     state->buffer[state->buf_index] = '\0';
     if (state->find_red == 1)
@@ -31,11 +31,11 @@ void    handle_buffer(t_ParserState *state)
         state->find_red = 0;
     }
     else
-        state->args[state->j++] = ft_strdup(state->buffer);
+        append_arg_node(arg_list, create_arg_node(state->buffer));
     state->buf_index = 0;
 }
 
-void handle_redirection(t_ParserState *state)
+void handle_redirection(t_ParserState *state, t_arg_node **arg_list)
 {
     int buf_index;
     char buffer[BUFSIZ];
@@ -43,7 +43,7 @@ void handle_redirection(t_ParserState *state)
 
     buf_index = 0;
     if (state->buf_index > 0)
-        handle_buffer(state);
+        handle_buffer(state, arg_list);
     if (state->input[state->i] == '>' && state->input[state->i + 1] == '>')
     {
         state->redirections[state->redir_index++] = ft_strdup(">>");
@@ -84,10 +84,11 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***r
     char **args;
     int check;
     t_ParserState state;
+    t_arg_node *arg_list = NULL;
 
-    args = malloc(sizeof(char *) * (ft_count_args(input) + 1));
+    //args = malloc(sizeof(char *) * (ft_count_args(input) + 1));
     *redirections = malloc(sizeof(char *) * (ft_count_redirections(input) + 1));
-    if (!args || !*redirections)
+    if (!*redirections)
         return NULL;
     init_parser_state(&state, input, env_var, quots);
     state.args = args;
@@ -97,7 +98,7 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***r
     {
         if (handle_consecutive_quotes(&state) == 1)
         {
-            handle_empty_argument(&state);
+            handle_empty_argument(&state, &arg_list);
             continue;
         }
         if ((state.input[state.i] != '\'' && state.input[state.i] != '"') && state.quote == 0 && state.buf_index == 0)
@@ -105,18 +106,20 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***r
         if ((state.input[state.i] == '\'' || state.input[state.i] == '"') && (state.input[state.i] == state.quote || state.quote == 0) && check == 1)
             handle_quotes(&state);
         else if ((state.input[state.i] == '>' || state.input[state.i] == '<') && state.quote == 0)
-            handle_redirection(&state); 
+            handle_redirection(&state, &arg_list); 
         else if (state.input[state.i] == '$' && (state.quote == 0 || state.quote != '\'') && ft_handle_dollar_herdoc(&state, state.input[state.i]) == 1)
-            handle_dollar_sign(&state);
+            handle_dollar_sign(&state, &arg_list);
         else if ((ft_skip_space(state.input[state.i]) == 1) && state.quote == 0)
-            add_buffer_to_args(&state);
+            add_buffer_to_args(&state, &arg_list);
         else
             state.buffer[state.buf_index++] = state.input[state.i];
         state.i++;
     }
-    finalize_args(&state);
+    finalize_args(&state, &arg_list);
     finalize_redirections(&state);
     free(state.buffer);
+    state.args = convert_list_to_array(arg_list);
+    free_arg_list(arg_list);
     return (state.args);
 }
      

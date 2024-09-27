@@ -84,20 +84,21 @@ char *ft_strjoinee(char *s1, const char *s2)
 {
     size_t  len1;
     size_t  len2;
+    char *result;
 
     len1 = 0;
     len2 = 0;
     if (s1 != NULL)
-        len1 = strlen(s1);
+        len1 = ft_strlen(s1);
     if (s2 != NULL)
-        len2 = strlen(s2);
-    char *result = malloc(len1 + len2 + 1);
+        len2 = ft_strlen(s2);
+    result = malloc(len1 + len2 + 1);
     if (!result)
         return NULL;
     if (s1 != NULL)
-        strcpy(result, s1);
+        ft_strcpy(result, s1);
     if (s2 != NULL)
-        strcpy(result + len1, s2);
-    free(s1);
+        ft_strcpy(result + len1, s2);
+    //free(s1);
     return (result);
 }
