@@ -99,6 +99,6 @@ char *ft_strjoinee(char *s1, const char *s2)
         ft_strcpy(result, s1);
     if (s2 != NULL)
         ft_strcpy(result + len1, s2);
-    //free(s1);
+    free(s1);
     return (result);
 }

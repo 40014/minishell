@@ -27,8 +27,11 @@ void add_buffer_to_args(t_ParserState *state, t_arg_node **arg_list)
         {
             append_arg_node(arg_list, create_arg_node(state->buffer));
             state->buf_index = 0;
+            state->flag_backslash = 0;
         }
     }
+    else
+        state->flag_backslash = 1;
 }
 
 void finalize_args(t_ParserState *state, t_arg_node **arg_list)
@@ -44,12 +47,10 @@ void finalize_args(t_ParserState *state, t_arg_node **arg_list)
         else
             append_arg_node(arg_list, create_arg_node(state->buffer));
     }
-    if (state->buf_index == 0 && (*arg_list) == NULL)
+    if (state->buf_index == 0 && state->flag_backslash == 0 && (*arg_list) == NULL)
     {
         if (state->quots->empty == 1)
-        {
             state->quots->empty = 2;
-        }
         append_arg_node(arg_list, create_arg_node(""));
     }
 }
@@ -91,4 +92,5 @@ void init_parser_state(t_ParserState *state, char *input, t_env *env_var, t_quot
     state->j = 0;
     state->find_red = 0;
     state->quots->empty = 0;
+    state->flag_backslash = 0;
 }

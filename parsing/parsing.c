@@ -81,19 +81,17 @@ int ft_handle_dollar_herdoc(t_ParserState *state, char c)
 
 char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***redirections)
 {
-    char **args;
     int check;
     t_ParserState state;
-    t_arg_node *arg_list = NULL;
+    t_arg_node *arg_list;
 
-    //args = malloc(sizeof(char *) * (ft_count_args(input) + 1));
     *redirections = malloc(sizeof(char *) * (ft_count_redirections(input) + 1));
     if (!*redirections)
         return NULL;
     init_parser_state(&state, input, env_var, quots);
-    state.args = args;
     state.redirections = *redirections;
     check = ft_check(input);
+    arg_list = NULL;
     while (state.input[state.i] != '\0')
     {
         if (handle_consecutive_quotes(&state) == 1)
@@ -137,6 +135,12 @@ int parse_line(t_data **data, char *input, t_env *env_var, t_quots *quots)
         ft_printf_error(i);
         exit_code = 2;
         return (1);
+    }
+    if (check_herdoc_error(input) != 0)
+    {
+        printf("maximum here-document count exceeded\n");
+        exit_code = 2;
+        return (2);
     }
     ft_check_expansion_herdoc(input, quots);
     remaining_input = input;

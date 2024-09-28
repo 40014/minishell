@@ -36,6 +36,7 @@ int main(int arc, char **arv, char **envp)
     t_hold *hold_vars;
     t_quots quots;
     char *input;
+    int i;
     int saved_stdout;
     int saved_stdin;
     char *temp;
@@ -54,9 +55,14 @@ int main(int arc, char **arv, char **envp)
         if (check_prompt(input) != 0)
         {
             add_history(input);
-            if (parse_line(&data, input, env_var, &quots) == 0 && quots.empty != 2)
+            if (((i = parse_line(&data, input, env_var, &quots)) == 0 || i == 2)  && quots.empty != 2)
             {
-                // print_use_list(data);
+                if (i == 2)
+                {
+                    free(temp);
+                    exit(exit_code);
+                }
+                print_use_list(data);
                 hold_vars->input = input;
                 hold_vars->temp = temp;
                 quots.saved_stdin = saved_stdin;

@@ -1,13 +1,13 @@
 NAME = minishell
 
-PARSING =	main.c parsing/utils_expansion.c                \
-			parsing/handle_pip.c parsing/arg_parser.c        \
-			parsing/ft_checkers.c parsing/parser_utils.c      \
-			parsing/expansion.c parsing/checker_expansion.c    \
-			parsing/redirection_utils.c parsing/syntax_error.c  \
-			parsing/utils.c  parsing/ft_free.c parsing/parsing.c \
-			parsing/utils_expansion1.c parsing/expansion_herdoc.c \
-			parsing/ft_arg_to_node.c parsing/str_split.c \
+PARSING =	main.c parsing/utils_expansion.c                              \
+			parsing/handle_pip.c parsing/arg_parser.c                      \
+			parsing/ft_checkers.c parsing/parser_utils.c                    \
+			parsing/expansion.c parsing/checker_expansion.c                  \
+			parsing/redirection_utils.c parsing/syntax_error.c  		      \
+			parsing/utils.c  parsing/ft_free.c parsing/parsing.c 			   \
+			parsing/utils_expansion1.c parsing/expansion_herdoc.c 				\
+			parsing/ft_arg_to_node.c parsing/str_split.c parsing/herdoc_errors.c \
 			
 EXECUTION =	execution/exec_env.c execution/exec_unset.c                 \
 			execution/prompt_utils.c execution/exec_cd.c                 \

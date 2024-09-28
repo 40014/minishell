@@ -79,6 +79,8 @@ void process_env_variable(t_ParserState *state, t_arg_node **arg_list)
         }
         else if (env == NULL && state->quots->x == 0 && state->buf_index == 0 && state->input[state->i] == '\"' && state->input[state->i + 1] == ' ' && state->quote != 0)
             append_arg_node(arg_list, create_arg_node(""));
+        if (env == NULL && state->find_red == 1)
+            state->find_red = 0;
         while (state->input[state->i] != '\0' && state->input[state->i] != ' ' && state->input[state->i] != '\'' && state->input[state->i] != '"' && state->input[state->i] != '$')
             state->buffer[state->buf_index++] = state->input[state->i++];
         state->i--;

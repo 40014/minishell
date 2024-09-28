@@ -9,7 +9,7 @@ void ft_printf_error(int i)
 		else
 			printf("unexpected EOF while looking for matching `\"' \n");
 	}
-	else
+	else if (i == 1)
 		printf("minishell: syntax error near unexpected token \n");
 }
 

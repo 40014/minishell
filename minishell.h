@@ -63,12 +63,13 @@ typedef struct parser
     char **redirections;
     int j;
     int redir_index;
+    int flag_backslash;
 } t_ParserState;
 
 extern int exit_code;
 
+int check_herdoc_error(char *input);
 char    **split_string(const char* input);
-char	**ft_splite(const char *s, char c);
 void free_arg_list(t_arg_node *head);
 t_arg_node *create_arg_node(char *arg);
 void append_arg_node(t_arg_node **head, t_arg_node *new_node);
