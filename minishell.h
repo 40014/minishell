@@ -10,6 +10,7 @@
 #include <string.h>
 # include <fcntl.h>
 #include <errno.h>
+# include <signal.h>
 
 
 # define BUFFER_SIZE 1
@@ -154,5 +155,6 @@ int ft_strcmp3(char *s1, char *s2);
 int	ft_atoi(char *str);
 void ft_print_env2(t_env *envp);
 char **convert_envp_to_arr(t_env *envp);
+void handlle_sigint(int sig);
 
 #endif

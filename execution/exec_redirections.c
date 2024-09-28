@@ -56,6 +56,7 @@ int ft_find_del(char *line, char *del)
         return(1);
     return(0);
 }
+
 int ft_handle_heredoc(char *delimiter, t_env *envp, t_quots *quots) 
 {
     char *str;
@@ -69,6 +70,7 @@ int ft_handle_heredoc(char *delimiter, t_env *envp, t_quots *quots)
         perror(fd);
         return (-1);
     }
+   /// signal(SIGINT,  SIG_DFL);
     while (1)
     {
         line = get_next_line(0);

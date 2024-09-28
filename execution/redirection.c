@@ -33,7 +33,6 @@ int check_handle_redirections(t_data *data, t_quots *quots, t_env *envp)
     char *join;
 
     j = 0;
-    exit_code = 0;
     while (data->redirection[j])
     {     
         if (data->redirection[j + 1] == NULL)
