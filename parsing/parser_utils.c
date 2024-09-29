@@ -19,7 +19,7 @@ void add_buffer_to_args(t_ParserState *state, t_arg_node **arg_list,  t_redir_no
         state->buffer[state->buf_index] = '\0';
         if (state->find_red == 1)
         {
-            append_redir_node(redir_list, create_redir_node(ft_strdup(state->buffer)));
+            append_redir_node(redir_list, create_redir_node(state->buffer));
             state->buf_index = 0;
             state->find_red = 0;
         }
@@ -41,7 +41,7 @@ void finalize_args(t_ParserState *state, t_arg_node **arg_list, t_redir_node **r
         state->buffer[state->buf_index] = '\0';
         if (state->find_red == 1)
         {
-            append_redir_node(redir_list, create_redir_node(ft_strdup(state->buffer)));
+            append_redir_node(redir_list, create_redir_node(state->buffer));
             state->find_red = 0;
         }
         else

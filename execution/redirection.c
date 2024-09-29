@@ -28,20 +28,24 @@ int ft_which_redirection(char *redirection, char *file_name, t_quots *quots, t_e
 }
 int check_handle_redirections(t_data *data, t_quots *quots, t_env *envp)
 {
-    while (data->redirections)
-    {     
-        if (data->redirections->next->redirection == NULL)
+    t_redir_node *temp;
+
+    temp = data->redirections;
+    while (temp)
+    {
+      //  printf("red : %s         file : %s\n", temp->redirection, temp->next->redirection )     
+        if (temp->next->redirection == NULL)
         {
             ft_putstr_fd("ambiguous redirect\n");
             exit_code = 1;
             return(1);
         }
-        if (ft_which_redirection(data->redirections->redirection, data->redirections->next->redirection, quots, envp) == -1)
+        if (ft_which_redirection(temp->redirection, temp->next->redirection, quots, envp) == -1)
         {
             exit_code = 1;
             return (1);
         }
-        data->redirections = data->redirections->next->next;
+        temp = temp->next->next;
     }
     return(0);
 }

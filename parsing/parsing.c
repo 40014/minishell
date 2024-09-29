@@ -23,7 +23,7 @@ void    handle_buffer(t_ParserState *state, t_arg_node *arg_list, t_redir_node *
     state->buffer[state->buf_index] = '\0';
     if (state->find_red == 1)
     {
-        append_redir_node(redir_list, create_redir_node(ft_strdup(state->buffer)));
+        append_redir_node(redir_list, create_redir_node(state->buffer));
         state->find_red = 0;
     }
     else
@@ -137,7 +137,7 @@ int parse_line(t_data **data, char *input, t_env *env_var, t_quots *quots)
     while ((token = strsplit_by_pipe(&remaining_input)) != NULL)
     {
         arguments = split_line_to_args(token, env_var, quots, &redir_list);
-        if (arguments[0] != NULL || redirections[0] != NULL)
+        if (arguments[0] != NULL || redir_list->redirection[0] != NULL)
             ft_add_node(data, arguments, redir_list);
         else
             return (1);

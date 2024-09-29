@@ -26,7 +26,6 @@ typedef struct data
 {
     char            **argumment;
     t_redir_node    *redirections;
-    //char    **redirection;
     struct data     *next;
 
 } t_data;

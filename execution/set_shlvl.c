@@ -98,8 +98,8 @@ char *set_shlvl(char *var, char *shlvl)
         else
             newshlvl = ft_getshlvl(ft_atoi(shlvl) + 1);
         free(shlvl);
+        return(newshlvl);
     }
-
-    return(newshlvl);
+    return(shlvl);
 }
 

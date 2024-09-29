@@ -82,7 +82,7 @@ int main(int arc, char **arv, char **envp)
                     free(temp);
                     exit(exit_code);
                 }
-               // print_use_list(data);
+                print_use_list(data);
                 hold_vars->input = input;
                 hold_vars->temp = temp;
                 quots.saved_stdin = saved_stdin;
