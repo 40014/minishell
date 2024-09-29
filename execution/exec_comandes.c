@@ -14,8 +14,8 @@ int ft_strcmp(char *s1, char *s2)
 
 int exec_simple_commande(t_quots *quots, t_env **envp, t_data **data, t_hold **hold_vars)
 {
-    if (check_handle_redirections(*data, quots, *envp) == 1)
-        return (exit_code);
+    // if (check_handle_redirections(*data, quots, *envp) == 1)
+    //     return (exit_code);
     if (ft_strcmp((*data)->argumment[0], "echo") == 0)
         exit_code = exec_echo((*data)->argumment);
     else if (ft_strcmp((*data)->argumment[0], "pwd") == 0)

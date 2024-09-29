@@ -15,17 +15,27 @@
 
 # define BUFFER_SIZE 1
 
+typedef struct redir_node
+{
+    char *redirection;
+    struct redir_node *next;
+
+} t_redir_node;
+
 typedef struct data
 {
     char    **argumment;
-    char    **redirection;
+    t_redir_node *redirections;
+    //char    **redirection;
     struct data *next;
+
 } t_data;
 
 typedef struct arg_node
 {
     char *arg;
     struct arg_node *next;
+
 } t_arg_node;
 
 typedef struct env_var
@@ -69,6 +79,7 @@ typedef struct parser
 
 extern int exit_code;
 
+void append_redir_node(t_redir_node **redir_list, t_redir_node *new_node);
 int check_herdoc_error(char *input);
 char    **split_string(const char* input);
 void free_arg_list(t_arg_node *head);
@@ -85,12 +96,15 @@ int	check_prompt(char *input);
 char ft_handle_quote(char current_chara, char quotee);
 char *replace_env_variable(const char *str, int *skip);
 char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots);
-void finalize_args(t_ParserState *state, t_arg_node **arg_list);
-void add_buffer_to_args(t_ParserState *state, t_arg_node **arg_list);
+void finalize_args(t_ParserState *state, t_arg_node **arg_list, t_redir_node **redir_list);
+//void finalize_args(t_ParserState *state, t_arg_node **arg_list);
+void add_buffer_to_args(t_ParserState *state, t_arg_node **arg_list,  t_redir_node **redir_list);
+//void add_buffer_to_args(t_ParserState *state, t_arg_node **arg_list);
 void handle_empty_argument(t_ParserState *state, t_arg_node *arg_list);
 void init_parser_state(t_ParserState *state, char *input, t_env *env_var, t_quots *quots);
 char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots);
-void handle_dollar_sign(t_ParserState *state, t_arg_node **arg_list);
+void handle_dollar_sign(t_ParserState *state, t_arg_node **arg_list, t_redir_node **redir_list);
+//void handle_dollar_sign(t_ParserState *state, t_arg_node **arg_list);
 void handle_quotes(t_ParserState *state);
 int handle_consecutive_quotes(t_ParserState *state);
 char	*ft_itoa(int n);
@@ -104,11 +118,15 @@ int     ft_is_digits(char c);
 size_t  ft_strlen(const char *s);
 void    ft_free_list(t_data *head);
 int parse_line(t_data **data, char *input, t_env *env_var,t_quots *quots);
-char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***redirections);
+char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, t_redir_node **redir_list);
+//char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, char ***redirections);
 char    *strsplit_by_pipe(char **str);
 int     ft_count_args(char *input);
-void ft_add_node(t_data **head, char **arguments, char **redirection);
-t_data *creat_node(char **arguments, char **redirection);
+void ft_add_node(t_data **head, char **arguments, t_redir_node *redirection);
+t_data *creat_node(char **arguments, t_redir_node *redirection);
+t_redir_node *create_redir_node(char *redir);
+// void ft_add_node(t_data **head, char **arguments, char **redirection);
+//t_data *creat_node(char **arguments, char **redirection);
 void exec_commandes(t_env **envp, t_data **data, t_hold **hold_vars, t_quots *quots);
 int    exec_echo(char **commande);
 void    ft_putstr(char *str);

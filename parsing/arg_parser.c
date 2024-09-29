@@ -26,7 +26,7 @@ void process_exit_code(t_ParserState *state)
     state->i++;
 }
 
-void process_env_variable(t_ParserState *state, t_arg_node **arg_list)
+void process_env_variable(t_ParserState *state, t_arg_node **arg_list, t_redir_node **redir_list)
 {
     char *env;
     char *env_val;
@@ -45,7 +45,7 @@ void process_env_variable(t_ParserState *state, t_arg_node **arg_list)
         env = ft_environment_variables(env_val, state->env_var, state->quots);
         if (env_val != NULL)
             free(env_val);
-        if (state->quote == 0 && env != NULL)
+        if (state->quote == 0 && env != NULL && state->find_red != 1)
         {
             result = split_string(env);
             while (result[i] != NULL)
@@ -61,11 +61,13 @@ void process_env_variable(t_ParserState *state, t_arg_node **arg_list)
                     j++;
                     state->buf_index = 0;
                 }
-                while (result[j] != NULL)
+                while (result[j + 1] != NULL)
                 {
                     append_arg_node(arg_list, create_arg_node(result[j]));
                     j++;
                 }
+                ft_strcpy(state->buffer + state->buf_index, result[j]);
+                state->buf_index += ft_strlen(result[j]);
             }
             if (i > 1)
                 free(env);
@@ -80,14 +82,17 @@ void process_env_variable(t_ParserState *state, t_arg_node **arg_list)
         else if (env == NULL && state->quots->x == 0 && state->buf_index == 0 && state->input[state->i] == '\"' && state->input[state->i + 1] == ' ' && state->quote != 0)
             append_arg_node(arg_list, create_arg_node(""));
         if (env == NULL && state->find_red == 1)
+        {
+            append_redir_node(redir_list, create_redir_node(NULL));
             state->find_red = 0;
+        }
         while (state->input[state->i] != '\0' && state->input[state->i] != ' ' && state->input[state->i] != '\'' && state->input[state->i] != '"' && state->input[state->i] != '$')
             state->buffer[state->buf_index++] = state->input[state->i++];
         state->i--;
     }
 }
 
-void handle_dollar_sign(t_ParserState *state, t_arg_node **arg_list)
+void handle_dollar_sign(t_ParserState *state, t_arg_node **arg_list, t_redir_node **redir_list)
 {
     int temp_i;
     int check_dollar;
@@ -108,7 +113,7 @@ void handle_dollar_sign(t_ParserState *state, t_arg_node **arg_list)
         if (state->input[temp_i] == '\0' && check_dollar != 1)
             state->buffer[state->buf_index++] = '$';
         else
-            process_env_variable(state, arg_list);
+            process_env_variable(state, arg_list, redir_list);
     }
 }
 

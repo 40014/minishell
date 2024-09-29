@@ -14,6 +14,20 @@ void free_arg_list(t_arg_node *head)
     }
 }
 
+void ft_free_redirection_list(t_redir_node *redir_list)
+{
+    t_redir_node *temp;
+
+    while (redir_list)
+    {
+        temp = redir_list;
+        redir_list = redir_list->next;
+        if (temp->redirection)
+            free(temp->redirection);
+        free(temp);
+    }
+}
+
 void ft_free_list(t_data *head)
 {
     t_data *temp;
@@ -33,16 +47,8 @@ void ft_free_list(t_data *head)
             }
             free(temp->argumment);
         }
-        if (temp->redirection)
-        {
-            i = 0;
-            while (temp->redirection[i] != NULL)
-            {
-                free(temp->redirection[i]);
-                i++;
-            }
-            free(temp->redirection);
-        }
+        if (temp->redirections)
+            ft_free_redirection_list(temp->redirections);
         free(temp);
     }
 }

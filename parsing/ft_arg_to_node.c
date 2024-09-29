@@ -4,7 +4,7 @@ t_arg_node *create_arg_node(char *arg)
 {
     t_arg_node *new_node = malloc(sizeof(t_arg_node));
     if (!new_node)
-        return NULL;
+        return (NULL);
     new_node->arg = ft_strdup(arg);
     new_node->next = NULL;
     return (new_node);

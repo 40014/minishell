@@ -9,7 +9,6 @@ void append_char_to_result(char **result, char arguments_char)
     *result = ft_strjoinee(*result, str);
 }
 
-
 char *handle_dollar_sign_in_arguments(char *arguments, t_env *env_var, int *i)
 {
     char tmp[BUFSIZ];
@@ -77,56 +76,3 @@ char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots)
     ft_finalize_arguments(&arguments, result, quots);
     return (arguments);
 }
-
-// char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots)
-// {
-//     int i;
-//     char *result;
-//     char *env_result;
-//     char tmp[BUFSIZ];
-//     int j;
-
-//     i = 0;
-//     result = NULL;
-//     while (arguments[i] != '\0')
-//     {
-//         if (arguments[i] == '$' && ft_is_digits(arguments[i + 1]) == 1)
-//         {
-//             if (arguments[i + 1] == '0')
-//             {
-//                 result = ft_strjoinee(result, "minishell");
-//                 i += 2;
-//             }
-//             else
-//                 i += 2;
-//         }
-//         else if (arguments[i] == '$' && arguments[i + 1] != '$' && (quots->x == 0 || quots->x == 2) && arguments[i + 1] != '\0')
-//         {
-//             i++;
-//             j = 0;
-//             while (arguments[i] != '\0' && arguments[i] != ' ' && arguments[i] != '$' && ft_is_valid(arguments[i]) == 1 && j < sizeof(tmp) - 1)
-//             {
-//                 tmp[j] = arguments[i];
-//                 j++;
-//                 i++;
-//             }
-//             tmp[i] = '\0';
-//             env_result = ft_getenv(env_var, tmp);
-//             if (env_result != NULL)
-//                 result = ft_strjoinee(result, env_result);
-//         }
-//         else
-//         {
-//             append_char_to_result(&result, arguments[i]);
-//             i++;
-//         }
-//     }
-//     if (result == NULL)
-//         arguments = NULL;
-//     else
-//         arguments = result;
-//     quots->x = 0;
-//     return (arguments);
-//     return (arguments);
-// }
-
