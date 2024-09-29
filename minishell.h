@@ -17,17 +17,17 @@
 
 typedef struct redir_node
 {
-    char *redirection;
-    struct redir_node *next;
+    char                *redirection;
+    struct redir_node   *next;
 
 } t_redir_node;
 
 typedef struct data
 {
-    char    **argumment;
-    t_redir_node *redirections;
+    char            **argumment;
+    t_redir_node    *redirections;
     //char    **redirection;
-    struct data *next;
+    struct data     *next;
 
 } t_data;
 
