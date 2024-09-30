@@ -50,6 +50,7 @@ typedef struct quot
     int x;
     int empty;
     int herdoc_expan;
+    int id;
     int saved_stdin;
 } t_quots;
 
@@ -173,5 +174,6 @@ int	ft_atoi(char *str);
 void ft_print_env2(t_env *envp);
 char **convert_envp_to_arr(t_env *envp);
 void handlle_sigint(int sig);
+void ft_exec_heredocs(t_data **data_add, t_env *envp,  t_quots *quots);
 
 #endif

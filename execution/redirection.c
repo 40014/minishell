@@ -8,12 +8,6 @@ int ft_which_redirection(char *redirection, char *file_name, t_quots *quots, t_e
         if ((ft_handle_append(file_name)) == -1)
             return (-1);
     }
-    else if (redirection[0] == '<' && redirection[1] == '<')
-    {
-        dup2(quots->saved_stdin, STDIN_FILENO);
-        if ((ft_handle_heredoc(file_name, envp, quots)) == -1)
-            return (-1);
-    }
     else if (redirection[0] == '>')
     {
         if ((ft_handle_output(file_name)) == -1)
@@ -26,14 +20,15 @@ int ft_which_redirection(char *redirection, char *file_name, t_quots *quots, t_e
     }
     return (0);
 }
+
 int check_handle_redirections(t_data *data, t_quots *quots, t_env *envp)
 {
     t_redir_node *temp;
 
     temp = data->redirections;
+
     while (temp)
     {
-      //  printf("red : %s         file : %s\n", temp->redirection, temp->next->redirection )     
         if (temp->next->redirection == NULL)
         {
             ft_putstr_fd("ambiguous redirect\n");

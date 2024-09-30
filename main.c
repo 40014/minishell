@@ -33,19 +33,21 @@ void print_use_list(t_data *head) // for testing
         }
     }
 }
-// void handlle_sigint(int sig)
-// {
-//     (void)sig;
-//     printf("\n");
-//     rl_on_new_line();
-//     rl_replace_line("", 0);
-//     rl_redisplay();
-// }
-// void handlle_signals()
-// {
-//     signal(SIGINT, handlle_sigint);
-//     // signal(SIGINT, handlle_sigint);
-// }
+
+void handlle_sigint(int sig)
+{
+    (void)sig;
+    printf("\n");
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+}
+void handlle_signals()
+{
+    signal(SIGINT, handlle_sigint);
+    // signal(SIGINT, handlle_sigint);
+}
+
 int exit_code;
 
 int main(int arc, char **arv, char **envp)
@@ -66,7 +68,7 @@ int main(int arc, char **arv, char **envp)
     hold_vars = malloc(sizeof(t_hold));
     quots.x = 0;
     data = NULL;
-   // handlle_signals();
+   handlle_signals();
     while (1)
     {
         saved_stdout = dup(STDOUT_FILENO);
@@ -82,7 +84,7 @@ int main(int arc, char **arv, char **envp)
                     free(temp);
                     exit(exit_code);
                 }
-                print_use_list(data);
+                //print_use_list(data);
                 hold_vars->input = input;
                 hold_vars->temp = temp;
                 quots.saved_stdin = saved_stdin;
