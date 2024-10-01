@@ -132,8 +132,9 @@ void exec_with_pipes(t_env **envp, t_data **data, t_hold **hold_vars, t_quots *q
             close(fd[1]);
         fd_in = fd[0];
         temp = temp->next;
-        waitpid(pid, &exit_status, 0);
+        
     }
+    waitpid(pid, &exit_status, 0);
     while (wait(&status) > 0);
     exit_code = WEXITSTATUS(exit_status);
 }

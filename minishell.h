@@ -75,13 +75,14 @@ typedef struct parser
     int j;
     int redir_index;
     int flag_backslash;
+    int check_last_space;
 } t_ParserState;
 
 extern int exit_code;
 
 void append_redir_node(t_redir_node **redir_list, t_redir_node *new_node);
 int check_herdoc_error(char *input);
-char    **split_string(const char* input);
+char **split_string(const char *input, t_ParserState *state);
 void free_arg_list(t_arg_node *head);
 t_arg_node *create_arg_node(char *arg);
 void append_arg_node(t_arg_node **head, t_arg_node *new_node);
@@ -100,7 +101,7 @@ void finalize_args(t_ParserState *state, t_arg_node **arg_list, t_redir_node **r
 //void finalize_args(t_ParserState *state, t_arg_node **arg_list);
 void add_buffer_to_args(t_ParserState *state, t_arg_node **arg_list,  t_redir_node **redir_list);
 //void add_buffer_to_args(t_ParserState *state, t_arg_node **arg_list);
-void handle_empty_argument(t_ParserState *state, t_arg_node *arg_list);
+void handle_empty_argument(t_ParserState *state, t_arg_node *arg_list, t_redir_node **redir_list);
 void init_parser_state(t_ParserState *state, char *input, t_env *env_var, t_quots *quots);
 char *ft_environment_variables(char *arguments, t_env *env_var, t_quots *quots);
 void handle_dollar_sign(t_ParserState *state, t_arg_node **arg_list, t_redir_node **redir_list);

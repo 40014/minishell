@@ -1,5 +1,11 @@
 #include "../minishell.h"
 
+// int ft_skip_space(char c)
+// {
+// 	if (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r' || c == ' ')
+// 		return (1);
+// 	return (0);
+// }
 void free_split_string_on_error(char **result, int idx)
 {
     int j;
@@ -31,7 +37,7 @@ char *ft_strncpy(char *dest, const char *src, size_t n)
     return (dest);
 }
 
-char **split_string(const char *input)
+char **split_string(const char *input, t_ParserState *state)
 {
     const char *ptr;
     const char *start;
@@ -82,13 +88,24 @@ char **split_string(const char *input)
                 return (NULL);
             }
             ft_strncpy(result[idx], start, len);
-            result[idx][len] = '\0';
+            if (*ptr && ft_skip_space(*ptr))
+            {
+                while (ft_skip_space(*ptr))
+                    ptr++;
+                if (*ptr == '\0')
+                {
+                    state->check_last_space = 1;
+                    result[idx][len] = '\0';
+                }
+                else
+                    result[idx][len] = '\0';
+            }
+            else
+                result[idx][len] = '\0';
             idx++;
         }
     }
     result[idx] = NULL;
     return (result);
 }
-
-
 

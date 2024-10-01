@@ -33,9 +33,11 @@ void process_env_variable(t_ParserState *state, t_arg_node **arg_list, t_redir_n
     char **result;
     int i;
     int j;
+    int check;
 
     i = 0;
     j = 0;
+    check = 0;
     if (state->input[state->i + 1] == '?')
         process_exit_code(state);
     else
@@ -45,16 +47,24 @@ void process_env_variable(t_ParserState *state, t_arg_node **arg_list, t_redir_n
         env = ft_environment_variables(env_val, state->env_var, state->quots);
         if (env_val != NULL)
             free(env_val);
+        //printf("state i = %c\n", state->input[state->i]);
+        // && state->input[state->i] != '$'
         if (state->quote == 0 && env != NULL && state->find_red != 1)
         {
-            result = split_string(env);
+            result = split_string(env, state);
             while (result[i] != NULL)
                 i++;
-            if (i > 1)
+            //printf("last argument = '%s', state = %d\n", result[i - 1], state->check_last_space);
+            if (state->input[state->i] == '$' && (state->input[state->i + 1] == '\0' || (ft_skip_space(state->input[state->i + 1]) == 1)) )
+                check = 1;
+            //printf("check = %d\n", check);
+            if (i > 1 && check != 1)
             {
+                // printf("buf indix = %d\n", state->buf_index);
+                // if (state->input[state->i] != '$')
+                //     check = 1;
                 if (state->buf_index > 0)
                 {
-
                     ft_strcpy(state->buffer + state->buf_index, result[j]);
                     state->buf_index += ft_strlen(env);
                     append_arg_node(arg_list, create_arg_node(state->buffer));
@@ -63,17 +73,25 @@ void process_env_variable(t_ParserState *state, t_arg_node **arg_list, t_redir_n
                 }
                 while (result[j + 1] != NULL)
                 {
+                    //printf("add to argument\n");
                     append_arg_node(arg_list, create_arg_node(result[j]));
                     j++;
                 }
                 ft_strcpy(state->buffer + state->buf_index, result[j]);
-                state->buf_index += ft_strlen(result[j]);
+                //printf("buffer = %s\n", state->buffer);
+                if (state->check_last_space == 1)
+                {
+                    append_arg_node(arg_list, create_arg_node(state->buffer));
+                    state->buf_index = 0;
+                }
+                else
+                    state->buf_index += ft_strlen(result[j]);
             }
-            if (i > 1)
+            if (i > 1 && check != 1)
                 free(env);
             free_split_string(result);
         }
-        if (env != NULL && !(i > 1))
+        if (env != NULL && !(i > 1) || check == 1)
         {
             ft_strcpy(state->buffer + state->buf_index, env);
             state->buf_index += ft_strlen(env);
@@ -86,7 +104,7 @@ void process_env_variable(t_ParserState *state, t_arg_node **arg_list, t_redir_n
             append_redir_node(redir_list, create_redir_node(NULL));
             state->find_red = 0;
         }
-        while (state->input[state->i] != '\0' && state->input[state->i] != ' ' && state->input[state->i] != '\'' && state->input[state->i] != '"' && state->input[state->i] != '$')
+        while (state->input[state->i] != '\0' && ft_skip_space(state->input[state->i]) != 1 && state->input[state->i] != '\'' && state->input[state->i] != '"' && state->input[state->i] != '$')
             state->buffer[state->buf_index++] = state->input[state->i++];
         state->i--;
     }

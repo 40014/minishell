@@ -86,8 +86,8 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, t_redir_n
     {
         if (handle_consecutive_quotes(&state) == 1)
         {
-            handle_empty_argument(&state, &arg_list);
-            continue;
+            handle_empty_argument(&state, &arg_list, redir_list);
+            //continue;
         }
         if ((state.input[state.i] != '\'' && state.input[state.i] != '"') && state.quote == 0 && state.buf_index == 0)
             state.quots->x = 2;
@@ -109,7 +109,7 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, t_redir_n
     free_arg_list(arg_list);
     return (state.args);
 }
-     
+ 
 int parse_line(t_data **data, char *input, t_env *env_var, t_quots *quots)
 {
     char **arguments;

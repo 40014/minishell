@@ -1,15 +1,16 @@
 #include "../minishell.h"
 
-void handle_empty_argument(t_ParserState *state, t_arg_node *arg_list)
+void handle_empty_argument(t_ParserState *state, t_arg_node *arg_list, t_redir_node **redir_list)
 {
     if (state->find_red == 1)
     {
-        state->redirections[state->redir_index++] = ft_strdup("");
+        append_redir_node(redir_list, create_redir_node(""));
         state->find_red = 0;
     }
     else
         append_arg_node(arg_list, create_arg_node(""));
-    state->i += 2;
+    //state->i += 2;
+    state->i++;
 }
 
 void add_buffer_to_args(t_ParserState *state, t_arg_node **arg_list,  t_redir_node **redir_list)
@@ -69,4 +70,5 @@ void init_parser_state(t_ParserState *state, char *input, t_env *env_var, t_quot
     state->find_red = 0;
     state->quots->empty = 0;
     state->flag_backslash = 0;
+    state->check_last_space = 0;
 }

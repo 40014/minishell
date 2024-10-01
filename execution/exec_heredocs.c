@@ -1,7 +1,7 @@
 #include "../minishell.h"
 
 
-int ft_handle_heredoc2(t_redir_node *red, t_data **data, t_env *envp, t_quots *quots) 
+int ft_handle_heredoc2(t_redir_node *red, t_env *envp, t_quots *quots) 
 {
     char *str;
     char *temp;
@@ -84,7 +84,7 @@ void ft_exec_heredocs(t_data **data_add , t_env *envp, t_quots *quots)
         {
             if (red->redirection[0] == '<' && red->redirection[1] == '<' && red->redirection[2] == '\0')
             {
-                ft_handle_heredoc2(red, envp, data_add, quots);
+                ft_handle_heredoc2(red, envp, quots);
                  quots->id++;
             }
             red = red->next->next;

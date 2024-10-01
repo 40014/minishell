@@ -1,10 +1,12 @@
 #include "../minishell.h"
 
+
+
 int check_herdoc_error(char *input)
 {
     int i;
     int count;
-    int quote;
+    char quote;
 
     i = 0;
     count = 0;
@@ -13,6 +15,7 @@ int check_herdoc_error(char *input)
     {
         if (input[i] == '\'' || input[i] == '"')
         {
+            //ft_handle_quote(input[i], &quote);
             if (quote == 0)
                 quote = input[i];
             else if (quote == input[i])
