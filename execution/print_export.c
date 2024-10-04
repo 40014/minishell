@@ -12,6 +12,7 @@ int count_nodes2(t_env *envp)
     }
     return (count);
 }
+
 char **convert_envp_to_arr2(t_env *envp)
 {
     int count;
@@ -56,6 +57,7 @@ int count_args(char **args)
         count++;
     return(count);
 }
+
 void print_export_env(char **arr)
 {
     int i;
@@ -68,7 +70,8 @@ void print_export_env(char **arr)
         i++;
     }
 }
-void ft_print_env2(t_env *envp)
+
+int ft_print_env2(t_env *envp)
 {
     char **env_arr;
     int count;
@@ -93,6 +96,5 @@ void ft_print_env2(t_env *envp)
     }
     print_export_env(env_arr);
     ft_free_arr(env_arr);
+    return(0);
 }
-
-

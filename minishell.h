@@ -1,19 +1,21 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <string.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <limits.h>
+# include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <string.h>
 # include <fcntl.h>
-#include <errno.h>
+# include <errno.h>
+# include <sys/stat.h>
 # include <signal.h>
 
 
 # define BUFFER_SIZE 1
+#define PATH_MAX 4096
 
 typedef struct redir_node
 {
@@ -131,13 +133,13 @@ t_redir_node *create_redir_node(char *redir);
 void exec_commandes(t_env **envp, t_data **data, t_hold **hold_vars, t_quots *quots);
 int    exec_echo(char **commande);
 void    ft_putstr(char *str);
-int    exec_cd(char **commande, t_env *envp);
+int exec_cd(char **commande, t_env *envp, t_env **all_env_list);
 int    exec_pwd(char **commande);
 char    *print_prompt(t_env *envp, char *hold, char *temp);
 char    *ft_getenv(t_env *envp, char *var);
 char    *ft_strjoin(char const *s1, char const *s2, int flag, int size);
 int     ft_strcmp(char *s1, char *s2);
-t_env   *env_to_list(char **envp);
+t_env   *env_to_list(char **envp, char *first_arg);
 t_env   *ft_one_node(char *envp);
 char    *grep_env_value(char *envp, int i);
 void    ft_free_list2(t_env *head);
@@ -172,9 +174,12 @@ int ft_handle_heredoc(char *delimiter, t_env *envp, t_quots *quots);
 char *set_shlvl(char *var, char *shlvl);
 int ft_strcmp3(char *s1, char *s2);
 int	ft_atoi(char *str);
-void ft_print_env2(t_env *envp);
+int ft_print_env2(t_env *envp);
 char **convert_envp_to_arr(t_env *envp);
 void handlle_sigint(int sig);
-void ft_exec_heredocs(t_data **data_add, t_env *envp,  t_quots *quots);
+int ft_exec_heredocs(t_data **data_add, t_env *envp,  t_quots *quots);
+void add_update_last_commande(t_env **env, char *var_val);
+void add_missing_vars(t_env **env, int t1, int t2, int t3);
+void free_after_exit(t_hold **hold_vars, t_env **envp, t_data **data);
 
 #endif

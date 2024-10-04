@@ -95,27 +95,24 @@ int exec_export(char **commande, t_env **envp)
     int j;
     int i;
 
+    j = 1;
     exit_code = 0;
     if (commande[1] == NULL)
-        ft_print_env2(*envp);
-    else
+        return(ft_print_env2(*envp));
+    while (commande[j])
     {
-        j = 1;
-        while (commande[j])
+        i = 0;
+        temp = *envp;
+        if (check_argument(commande[j]) == 0 || check_argument(commande[j]) == 3)
+            ft_add_update_env(commande[j], envp, &temp);
+        else if (check_argument(commande[j]) == 2)
+            add_to_env(&temp, envp, ft_one_node(commande[j]));
+        else
         {
-            i = 0;
-            temp = *envp;
-            if (check_argument(commande[j]) == 0 || check_argument(commande[j]) == 3)
-                ft_add_update_env(commande[j], envp, &temp);
-            else if (check_argument(commande[j]) == 2)
-                add_to_env(&temp, envp, ft_one_node(commande[j]));
-            else
-            {
-                ft_print_in_stderr("export: '", commande[j],"': not a valid identifier\n");
-                exit_code = 1;
-            }
-            j++;
+            ft_print_in_stderr("export: '", commande[j], "': not a valid identifier\n");
+            exit_code = 1;
         }
+        j++;
     }
-    return(exit_code);
+    return (exit_code);
 }

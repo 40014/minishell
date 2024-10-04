@@ -11,6 +11,8 @@ int	check_prompt(char *input)
 	int	i;
 
 	i = 0;
+	if (input == NULL)
+		return(3);
 	while (input[i] != '\0')
 	{
 		while ((input[i] == '\t' || input[i] == '\n' || input[i] == '\v' || input[i] == '\f' || input[i] == '\r' || input[i] == ' ') && (input[i] != '\0'))

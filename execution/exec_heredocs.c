@@ -1,7 +1,6 @@
 #include "../minishell.h"
 
-
-int ft_handle_heredoc2(t_redir_node *red, t_env *envp, t_quots *quots) 
+int ft_handle_heredoc2(t_redir_node *red, t_env *envp, t_quots *quots)
 {
     char *str;
     char *temp;
@@ -9,37 +8,58 @@ int ft_handle_heredoc2(t_redir_node *red, t_env *envp, t_quots *quots)
     int fd;
     char *file_name;
     char *id;
+    int status;
 
     id = ft_itoa(quots->id);
-    printf("num id %s\n", id);
     file_name = ft_strjoin("/tmp/heredoc_tmp", id, 1, 1);
     free(id);
     fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0600);
     if (fd == -1)
     {
-        perror(fd);
+        perror(file_name);
         return (-1);
     }
-    while (1)
+    int pid = fork();
+    if (pid == 0)
     {
-        line = get_next_line(0);
-        if (line == NULL)
-            break;
-        if (ft_find_del(line, red->next->redirection) == 1)
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_IGN);
+        while (1)
         {
+            line = get_next_line(0);
+            if (line == NULL)
+                break;
+            if (ft_find_del(line, red->next->redirection) == 1)
+            {
+                free(line);
+                break;
+            }
+            temp = ft_expand_herdoc(line, envp, quots);
+            write(fd, temp, ft_strlen(temp));
+            free(temp);
             free(line);
-            break;
         }
-        temp = ft_expand_herdoc(line, envp, quots);
-        write(fd, temp, ft_strlen(temp));
-        free(temp);
-        free(line);
+        exit(0);
     }
-    close(fd);
-    free(red->redirection);
-    red->redirection = ft_strdup("<");
-    free(red->next->redirection);
-    red->next->redirection = file_name;
+    else
+    {
+        signal(SIGINT, SIG_IGN);
+        signal(SIGQUIT, SIG_IGN);
+        waitpid(pid, &status, 0);
+        signal(SIGINT, handlle_sigint);
+        signal(SIGQUIT, SIG_DFL);
+        if (WIFSIGNALED(status) != 0)
+        {
+            exit_code = WTERMSIG(status) + 128;
+            free(file_name);
+            printf("\n");
+            return (-1);
+        }
+        free(red->redirection);
+        red->redirection = ft_strdup("<");
+        free(red->next->redirection);
+        red->next->redirection = file_name;
+    }
     return (0);
 }
 
@@ -53,7 +73,7 @@ void delete_heredoc_files()
     while (i < 16)
     {
         id = ft_itoa(i);
-        file_name = ft_strjoin("/tmp/heredoc_tmp",id , 1, 1);
+        file_name = ft_strjoin("/tmp/heredoc_tmp", id, 1, 1);
         if (access(file_name, F_OK) == 0)
             unlink(file_name);
         else
@@ -66,9 +86,8 @@ void delete_heredoc_files()
         free(id);
         i++;
     }
-
 }
-void ft_exec_heredocs(t_data **data_add , t_env *envp, t_quots *quots)
+int  ft_exec_heredocs(t_data **data_add, t_env *envp, t_quots *quots)
 {
     int i;
     t_data *temp;
@@ -80,15 +99,17 @@ void ft_exec_heredocs(t_data **data_add , t_env *envp, t_quots *quots)
     while (temp)
     {
         red = temp->redirections;
-        while(red)
+        while (red)
         {
             if (red->redirection[0] == '<' && red->redirection[1] == '<' && red->redirection[2] == '\0')
             {
-                ft_handle_heredoc2(red, envp, quots);
-                 quots->id++;
+                if (ft_handle_heredoc2(red, envp, quots) == -1)
+                    return (-1);
+                quots->id++;
             }
             red = red->next->next;
         }
         temp = temp->next;
     }
+    return(0);
 }

@@ -75,6 +75,19 @@
 //     while (wait(&status) > 0);
 // }
 
+int count_commandes(t_data *data)
+{
+    int count;
+
+    count = 0;
+    while(data)
+    {
+        count++;
+        data = data->next;
+    }
+    return(count);
+}
+
 int create_pipes(t_data *temp, t_env **env, t_quots *quots, t_hold **hold_vars, int fd_in, int fd_out)
 {
     int pid;
@@ -86,6 +99,7 @@ int create_pipes(t_data *temp, t_env **env, t_quots *quots, t_hold **hold_vars, 
     }
     if (pid == 0)
     {
+        signal(SIGINT, SIG_DFL);
         if (fd_in != 0)
         {
             dup2(fd_in, 0);
@@ -108,6 +122,7 @@ void exec_with_pipes(t_env **envp, t_data **data, t_hold **hold_vars, t_quots *q
     int fd_in;
     int status;
     int pid;
+    int count;
     int exit_status;
 
     temp = *data;
@@ -132,9 +147,15 @@ void exec_with_pipes(t_env **envp, t_data **data, t_hold **hold_vars, t_quots *q
             close(fd[1]);
         fd_in = fd[0];
         temp = temp->next;
-        
     }
+    signal(SIGINT, SIG_IGN);
+    signal(SIGQUIT, SIG_IGN);
     waitpid(pid, &exit_status, 0);
     while (wait(&status) > 0);
-    exit_code = WEXITSTATUS(exit_status);
+    if (WIFEXITED(exit_status) != 0)
+        exit_code = WEXITSTATUS(exit_status);
+    else if (WIFSIGNALED(status) != 0)
+        exit_code = WTERMSIG(status);
+    signal(SIGINT, handlle_sigint);
+    signal(SIGQUIT, SIG_DFL);
 }

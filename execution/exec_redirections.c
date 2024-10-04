@@ -55,62 +55,63 @@ int ft_find_del(char *line, char *del)
         return(1);
     return(0);
 }
-void handlle_sigint_heredoc(int sig)
-{
-    (void)sig;
-    exit_code = -1;
-    printf("\n");
-     rl_on_new_line();
-    rl_redisplay();
-    rl_replace_line("", 0);
-}
-int ft_handle_heredoc(char *delimiter, t_env *envp, t_quots *quots) 
-{
-    char *str;
-    char *temp;
-    char *line;
-    int fd;
-    int save_exit_code;
+// void handlle_sigint_heredoc(int sig)
+// {
+//     (void)sig;
+//     exit_code = -1;
+//     printf("\n");
+//      rl_on_new_line();
+//     rl_redisplay();
+//     rl_replace_line("", 0);
+// }
+// int ft_handle_heredoc(char *delimiter, t_env *envp, t_quots *quots) 
+// {
+//     char *str;
+//     char *temp;
+//     char *line;
+//     int fd;
+//     int save_exit_code;
     
  
-    save_exit_code = exit_code;
-    exit_code = 0;
-    fd = open("/tmp/heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0600);
-    if (fd == -1)
-    {
-        perror(fd);
-        return (-1);
-    }
-     //signal(SIGINT,  handlle_sigint_heredoc);
-    while (1)
-    {
-        line = get_next_line(0);
-        if (line == NULL)
-            break;
-        if (ft_find_del(line, delimiter) == 1)
-        {
-            free(line);
-            break;
-        }
-        temp = ft_expand_herdoc(line, envp, quots);
-        write(fd, temp, ft_strlen(temp));
-        free(temp);
-        free(line);
-    }
-    exit_code = save_exit_code;
-    close(fd);
-    fd = open("/tmp/heredoc_tmp", O_RDONLY);
-    if (fd == -1)
-    {
-        perror(fd);
-        return (-1);
-    }
-    if (dup2(fd, STDIN_FILENO) == -1) 
-    {
-        perror("dup2");
-        close(fd);
-        return (-1);
-    }
-    close(fd);
-    return (0);
-}
+//     save_exit_code = exit_code;
+//     exit_code = 0;
+//     fd = open("/tmp/heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0600);
+//     if (fd == -1)
+//     {
+//         perror(fd);
+//         return (-1);
+//     }
+//      //signal(SIGINT,  handlle_sigint_heredoc);
+//     while (1)
+//     {
+//         line = get_next_line(0);
+//         if (line == NULL)
+//             break;
+//         if (ft_find_del(line, delimiter) == 1)
+//         {
+//             free(line);
+//             break;
+//         }
+//         temp = ft_expand_herdoc(line, envp, quots);
+//         write(fd, temp, ft_strlen(temp));
+//         free(temp);
+//         free(line);
+//     }
+//     exit_code = save_exit_code;
+//     close(fd);
+//     fd = open("/tmp/heredoc_tmp", O_RDONLY);
+//     if (fd == -1)
+//     {
+//         perror(fd);
+//         return (-1);
+//     }
+//     if (dup2(fd, STDIN_FILENO) == -1) 
+//     {
+//         perror("dup2");
+//         close(fd);
+//         return (-1);
+//     }
+//     close(fd);
+//     return (0);
+// }
+

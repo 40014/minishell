@@ -16,10 +16,7 @@ t_env *ft_one_node(char *envp)
     temp = malloc(i + 2);
     i = 0;
     while(envp[i] != '=' && envp[i] != '\0')
-    {
-        temp[i] = envp[i];
-        i++;
-    }
+        temp[i++] = envp[i];
     temp[i] = '=';
     temp[i + 1] = '\0';
     node->var = ft_strdup(temp);
@@ -29,6 +26,7 @@ t_env *ft_one_node(char *envp)
     free(temp);
     return(node);
 }
+
 t_env *ft_one_node2(char *envp)
 {
     t_env *node;
@@ -57,9 +55,7 @@ void ft_create_nodes(t_data **head, char *envp)
     else
         new_node = ft_one_node2(envp);
     if (temp == NULL)
-    {
         *head = new_node;
-    }
     else
     {
         while(temp->next != NULL)
@@ -67,7 +63,35 @@ void ft_create_nodes(t_data **head, char *envp)
         temp->next = new_node; 
     }
 }
-t_env   *env_to_list(char **envp)
+
+void check_missing_vars(t_env **env, char *first_arg, int t1, int t2)
+{
+    t_env   *temp;
+    char    *hold;
+    int     t3;
+    int     t4;
+
+    temp = *env;
+    t4 = 0;
+    t3 = 0;
+    while (temp)
+    {
+        if (ft_strcmp3(temp->var, "PWD") == 0)
+            t1 = 1;
+        else if (ft_strcmp3(temp->var, "SHLVL") == 0)
+            t2 = 1;
+        else if (ft_strcmp3(temp->var, "OLDPWD") == 0)
+            t3 = 1;
+        else if (ft_strcmp3(temp->var, "_") == 0)
+            t4 = 1;
+        temp = temp->next;
+    }
+    add_missing_vars(env, t1, t2, t3);
+    if (t4 == 0)
+        add_update_last_commande(env, first_arg);
+}
+
+t_env   *env_to_list(char **envp, char *first_arg)
 {
     t_env   *env_var;
     int i;
@@ -79,5 +103,6 @@ t_env   *env_to_list(char **envp)
         ft_create_nodes(&env_var, envp[i]);
         i++;
     }
+    check_missing_vars(&env_var, first_arg, 0, 0);
     return(env_var);
 }

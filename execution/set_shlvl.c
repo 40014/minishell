@@ -5,13 +5,20 @@ int ft_isdigit(char *number)
     int i;
 
     i = 0;
+    while(number[i] == ' ')
+        i++;
+    if (number[i] == '-' || number[i] == '+')
+        i++;
+    if (number[i] == '\0')
+        return (1);
     while(number[i])
     {
-        if (number[0] == '-')
+        while (number[i] >= '0' && number[i] <= '9')
             i++;
-        if (!(number[i] >= '0' && number[i] <= '9'))
+        while(number[i] == ' ')
+            i++;
+        if (number[i] != '\0')
             return(1);
-        i++;
     }
     return(0);
 }

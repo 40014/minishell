@@ -41,13 +41,8 @@ void handlle_sigint(int sig)
     rl_on_new_line();
     rl_replace_line("", 0);
     rl_redisplay();
+    exit_code = 130;
 }
-void handlle_signals()
-{
-    signal(SIGINT, handlle_sigint);
-    // signal(SIGINT, handlle_sigint);
-}
-
 int exit_code;
 
 int main(int arc, char **arv, char **envp)
@@ -64,17 +59,17 @@ int main(int arc, char **arv, char **envp)
 
     if (arc > 1)
         return (1);
-    env_var = env_to_list(envp);
+    env_var = env_to_list(envp, arv[0]);
     hold_vars = malloc(sizeof(t_hold));
     quots.x = 0;
     data = NULL;
-   handlle_signals();
+    signal(SIGINT, handlle_sigint);
     while (1)
     {
         saved_stdout = dup(STDOUT_FILENO);
         saved_stdin = dup(STDIN_FILENO);
         input = readline(temp = print_prompt(env_var, NULL, NULL));
-        if (check_prompt(input) != 0)
+        if (check_prompt(input) == 1)
         {
             add_history(input);
             if (((i = parse_line(&data, input, env_var, &quots)) == 0 || i == 2) && quots.empty != 2)
@@ -94,6 +89,12 @@ int main(int arc, char **arv, char **envp)
                 close(saved_stdout);
                 close(saved_stdin);
             }
+        }
+        if (check_prompt(input) == 3)
+        {
+            hold_vars->input = input;
+            hold_vars->temp = temp;
+            exec_exit((char *[]){"exit", NULL}, &env_var, &data, &hold_vars);
         }
         ft_free_list(data);
         data = NULL;

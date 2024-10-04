@@ -26,7 +26,6 @@ int check_handle_redirections(t_data *data, t_quots *quots, t_env *envp)
     t_redir_node *temp;
 
     temp = data->redirections;
-
     while (temp)
     {
         if (temp->next->redirection == NULL)

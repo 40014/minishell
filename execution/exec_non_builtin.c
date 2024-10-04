@@ -12,6 +12,19 @@ void ft_free_arr(char **paths)
     }
     free(paths);
 }
+int if_contain_directory(char *commande)
+{
+    int i;
+
+    i = 0;
+    while(commande[i])
+    {
+        if(commande[i] == '/')
+            return(1);
+        i++;
+    }  
+    return(0);
+}
 
 int test_paths(char **commande, char **paths, char **envp)
 {
@@ -19,6 +32,12 @@ int test_paths(char **commande, char **paths, char **envp)
     char *join;
     char *temp;
 
+    struct stat path_stat;
+    if ((if_contain_directory(commande[0]) == 1) && stat(commande[0], &path_stat) != 0)    
+    {
+        perror(commande [0]);
+        exit(127);
+    }
     if (execve(commande[0], commande, envp) == -1)
     {
         j = 0;
@@ -47,6 +66,7 @@ int count_nodes(t_env *envp)
     }
     return (count);
 }
+
 char **convert_envp_to_arr(t_env *envp)
 {
     int count;
@@ -69,6 +89,36 @@ char **convert_envp_to_arr(t_env *envp)
     return (envp_arr);
 }
 
+void check_if_directory(char *path)
+{
+    struct stat path_stat;
+
+    if (stat(path, &path_stat) == 0)    
+    {
+        if (S_ISDIR(path_stat.st_mode) != 0)
+        {
+            ft_print_in_stderr(path, ": Is a directory", "\n");
+            exit(126);
+        }
+        if (access(path, X_OK) != 0)
+        {
+           perror(path);
+            exit(126);
+        }
+    }
+}
+
+void check_if_path(char *commande)
+{
+    int i;
+    int check;
+
+    check = 0;  
+    check = if_contain_directory(commande);
+    if (check == 1)
+        check_if_directory(commande);
+}
+
 int exec_non_builtin(char **commande, t_env **envp, t_data **data, t_hold **hold_vars)
 {
     int pid;
@@ -81,10 +131,13 @@ int exec_non_builtin(char **commande, t_env **envp, t_data **data, t_hold **hold
     pid = fork();
     if (pid == 0)
     {
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
         paths = ft_split(ft_getenv(*envp, "PATH"), ':');
         envp_arr = convert_envp_to_arr(*envp);
         if (test_paths(commande, paths, envp_arr) == 1)
         {
+            check_if_path(commande[0]);
             if (commande[0][0] == '\0')
                 ft_print_in_stderr("commande '", commande[0],"': not a valid identifier\n");
             else
@@ -95,8 +148,18 @@ int exec_non_builtin(char **commande, t_env **envp, t_data **data, t_hold **hold
         ft_free_arr(envp_arr);
         exit(0);
     }
+    signal(SIGINT, SIG_IGN);
+    signal(SIGQUIT, SIG_IGN);
     waitpid(pid, &status, 0);
-    exit_code = WEXITSTATUS(status);
+    signal(SIGINT, handlle_sigint);
+    signal(SIGQUIT, SIG_DFL);
+    if (WIFEXITED(status) != 0)
+        exit_code = WEXITSTATUS(status);
+    if (WIFSIGNALED(status) != 0)
+    {
+        exit_code = WTERMSIG(status) + 128;
+        printf("\n");
+    }
     return(exit_code);
 }
 

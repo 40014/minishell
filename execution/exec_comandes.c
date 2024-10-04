@@ -21,7 +21,7 @@ int exec_simple_commande(t_quots *quots, t_env **envp, t_data **data, t_hold **h
     else if (ft_strcmp((*data)->argumment[0], "pwd") == 0)
         exit_code = exec_pwd((*data)->argumment);
     else if (ft_strcmp((*data)->argumment[0], "cd") == 0)
-        exit_code = exec_cd((*data)->argumment, *envp);
+        exit_code = exec_cd((*data)->argumment, *envp, envp);
     else if (ft_strcmp((*data)->argumment[0], "export") == 0)
         exit_code = exec_export((*data)->argumment, envp);
     else if (ft_strcmp((*data)->argumment[0], "env") == 0)
@@ -38,7 +38,10 @@ int exec_simple_commande(t_quots *quots, t_env **envp, t_data **data, t_hold **h
 void exec_commandes(t_env **envp, t_data **data, t_hold **hold_vars, t_quots *quots)
 {
     if ((*data) != NULL)
-        ft_exec_heredocs(data, *envp, quots);
+    {
+        if (ft_exec_heredocs(data, *envp, quots) == -1)
+                return;
+    }
     if ((*data)->next == NULL && (*data) != NULL)
         exec_simple_commande(quots, envp, data, hold_vars);
     if ((*data)->next != NULL)
