@@ -75,18 +75,6 @@
 //     while (wait(&status) > 0);
 // }
 
-int count_commandes(t_data *data)
-{
-    int count;
-
-    count = 0;
-    while(data)
-    {
-        count++;
-        data = data->next;
-    }
-    return(count);
-}
 
 int create_pipes(t_data *temp, t_env **env, t_quots *quots, t_hold **hold_vars, int fd_in, int fd_out)
 {

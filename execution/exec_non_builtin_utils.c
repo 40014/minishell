@@ -1,96 +1,60 @@
 #include "../minishell.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+void ft_free_arr(char **paths)
 {
-	size_t	i;
-	size_t	j;
+    int i;
 
-	j = 0;
-	i = 0;
-	if (dstsize != 0)
-	{
-		while (src[i] && i < dstsize - 1)
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
-	}
-	while (src[j])
-		j++;
-	return (j);
+    i = 0;
+    while (paths[i] != NULL)
+    {
+        free(paths[i]);
+        i++;
+    }
+    free(paths);
 }
 
-static size_t	ft_strs(const char *s, char c)
+int if_contain_directory(char *commande)
 {
-	int		i;
-	size_t	strl;
+    int i;
 
-	i = 0;
-	strl = 0;
-	while (s != NULL && *s != '\0')
-	{
-		if (*s != c && i == 0)
-		{
-			i = 1;
-			strl++;
-		}
-		else if (*s == c)
-			i = 0;
-		s++;
-	}
-	return (strl);
+    i = 0;
+    while(commande[i])
+    {
+        if(commande[i] == '/')
+            return(1);
+        i++;
+    }  
+    return(0);
 }
 
-static size_t	ft_chrs(const char *s, char c)
+int count_nodes(t_env *envp)
 {
-	size_t	chrl;
+    int count;
 
-	chrl = 0;
-	while (*s && *s != c)
-	{
-		chrl++;
-		s++;
-	}
-	return (chrl);
+    count = 0;
+    while (envp)
+    {
+        count++;
+        envp = envp->next;
+    }
+    return (count);
 }
 
-static int	ft_free(char **arr, size_t n)
+void check_if_directory(char *path)
 {
-	if (!arr[n])
-	{
-		while (n--)
-			free(arr[n]);
-		free (arr);
-		return (1);
-	}
-	return (2);
-}
+    struct stat path_stat;
 
-char	**ft_split(char const *s, char c)
-{
-	char	**arr;
-	size_t	chrl;
-	size_t	strl;
-	size_t	n;
-
-	strl = ft_strs(s, c);
-	arr = (char **)malloc(sizeof(char *) * (strl + 1));
-	if (arr == NULL)
-		return (NULL);
-	n = 0;
-	while (s != NULL && n < strl)
-	{
-		while (*s == c)
-			s++;
-		chrl = ft_chrs(s, c);
-		arr[n] = (char *)malloc(chrl + 1);
-		if (ft_free (arr, n) == 1)
-			return (NULL);
-		ft_strlcpy(arr[n], s, chrl + 1);
-		s = s + chrl;
-		n++;
-	}
-	arr[strl] = NULL;
-	return (arr);
+    if (stat(path, &path_stat) == 0)    
+    {
+        if (S_ISDIR(path_stat.st_mode) != 0)
+        {
+            ft_print_in_stderr(path, ": Is a directory", "\n");
+            exit(126);
+        }
+        if (access(path, X_OK) != 0)
+        {
+           perror(path);
+            exit(126);
+        }
+    }
 }

@@ -10,13 +10,13 @@ PARSING	=	parsing/redirection_list.c                                   \
 			parsing/utils_expansion1.c parsing/expansion_herdoc.c 				\
 			parsing/ft_arg_to_node.c parsing/str_split.c parsing/herdoc_errors.c \
 			
-EXECUTION =	execution/exec_comandes.c execution/exec_exit.c                        \
-			execution/env_to_list.c execution/exec_export.c                         \
-			execution/exec_redirections.c  execution/redirection.c                   \
-			execution/exec_non_builtin_utils.c execution/set_shlvl.c                  \
-			execution/exec_non_builtin.c execution/exec_with_pipes.c                   \
-			execution/get_next_line_utils.c execution/get_next_line.c                   \
-			execution/exec_export_utils.c execution/printin_stderror.c                   \
+EXECUTION =	execution/env_to_list.c execution/exec_export.c                        \
+			execution/exec_redirections.c  execution/redirection.c                  \
+			execution/exec_non_builtin_utils.c execution/set_shlvl.c                 \
+			execution/exec_non_builtin.c execution/exec_with_pipes.c                  \
+			execution/get_next_line_utils.c execution/get_next_line.c                  \
+			execution/exec_export_utils.c execution/printin_stderror.c                  \
+			execution/exec_comandes.c execution/exec_exit.c execution/split.c            \
 			execution/exec_echo.c execution/exec_pwd.c  execution/print_export.c          \
 			execution/exec_env.c execution/exec_unset.c execution/exec_heredocs.c          \
 			execution/prompt_utils.c execution/exec_cd.c execution/env_to_list_utils.c      \

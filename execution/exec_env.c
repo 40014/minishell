@@ -15,9 +15,7 @@ void ft_print_env(t_env *envp)
 int exec_env(char **commande, t_env *envp)
 {
     if (commande[1] == NULL)
-    {
         ft_print_env(envp);
-    }
     else
     {
         ft_print_in_stderr("env: '", commande[1], "': No such file or directory\n");

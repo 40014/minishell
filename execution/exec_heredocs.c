@@ -1,13 +1,57 @@
 #include "../minishell.h"
 
+void exec_heredoc_in_child(t_env *envp, t_quots *quots, int fd, char *del)
+{
+    char *line;
+    char *temp;
+
+    signal(SIGINT, SIG_DFL);
+    signal(SIGQUIT, SIG_IGN);
+    while (1)
+    {
+        line = get_next_line(0);
+        if (line == NULL)
+            break;
+        if (ft_find_del(line, del) == 1)
+        {
+            free(line);
+            break;
+        }
+        temp = ft_expand_herdoc(line, envp, quots);
+        write(fd, temp, ft_strlen(temp));
+        free(temp);
+        free(line);
+    }
+    exit(0);
+}
+int get_child_exit_code(int pid, char *file_name, t_redir_node *red)
+{
+    int status;
+
+    signal(SIGINT, SIG_IGN);
+    signal(SIGQUIT, SIG_IGN);
+    waitpid(pid, &status, 0);
+    signal(SIGINT, handlle_sigint);
+    signal(SIGQUIT, SIG_DFL);
+    if (WIFSIGNALED(status) != 0)
+    {
+        exit_code = WTERMSIG(status) + 128;
+        free(file_name);
+        printf("\n");
+        return (-1);
+    }
+    free(red->redirection);
+    red->redirection = ft_strdup("<");
+    free(red->next->redirection);
+    red->next->redirection = file_name;
+    return (0);
+}
 int ft_handle_heredoc2(t_redir_node *red, t_env *envp, t_quots *quots)
 {
-    char *str;
-    char *temp;
-    char *line;
     int fd;
     char *file_name;
     char *id;
+    int pid;
     int status;
 
     id = ft_itoa(quots->id);
@@ -19,47 +63,11 @@ int ft_handle_heredoc2(t_redir_node *red, t_env *envp, t_quots *quots)
         perror(file_name);
         return (-1);
     }
-    int pid = fork();
+    pid = fork();
     if (pid == 0)
-    {
-        signal(SIGINT, SIG_DFL);
-        signal(SIGQUIT, SIG_IGN);
-        while (1)
-        {
-            line = get_next_line(0);
-            if (line == NULL)
-                break;
-            if (ft_find_del(line, red->next->redirection) == 1)
-            {
-                free(line);
-                break;
-            }
-            temp = ft_expand_herdoc(line, envp, quots);
-            write(fd, temp, ft_strlen(temp));
-            free(temp);
-            free(line);
-        }
-        exit(0);
-    }
-    else
-    {
-        signal(SIGINT, SIG_IGN);
-        signal(SIGQUIT, SIG_IGN);
-        waitpid(pid, &status, 0);
-        signal(SIGINT, handlle_sigint);
-        signal(SIGQUIT, SIG_DFL);
-        if (WIFSIGNALED(status) != 0)
-        {
-            exit_code = WTERMSIG(status) + 128;
-            free(file_name);
-            printf("\n");
-            return (-1);
-        }
-        free(red->redirection);
-        red->redirection = ft_strdup("<");
-        free(red->next->redirection);
-        red->next->redirection = file_name;
-    }
+        exec_heredoc_in_child(envp, quots, fd, red->next->redirection);
+    if (get_child_exit_code(pid, file_name, red) == -1)
+        return(-1);
     return (0);
 }
 
@@ -87,7 +95,7 @@ void delete_heredoc_files()
         i++;
     }
 }
-int  ft_exec_heredocs(t_data **data_add, t_env *envp, t_quots *quots)
+int ft_exec_heredocs(t_data **data_add, t_env *envp, t_quots *quots)
 {
     int i;
     t_data *temp;
@@ -111,5 +119,5 @@ int  ft_exec_heredocs(t_data **data_add, t_env *envp, t_quots *quots)
         }
         temp = temp->next;
     }
-    return(0);
+    return (0);
 }
