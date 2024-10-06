@@ -1,105 +1,110 @@
 #include "minishell.h"
 
-void print_redir_list(t_redir_node *redir_list)
+// void	print_redir_list(t_redir_node *redir_list)
+// {
+// 	t_redir_node	*temp;
+// 	int				i;
+
+// 	temp = redir_list;
+// 	i = 0;
+// 	while (temp)
+// 	{
+// 		printf("Redirection %d: %s\n", i, temp->redirection);
+// 		temp = temp->next;
+// 		i++;
+// 	}
+// }
+
+// void	print_use_list(t_data *head) // for testing
+// {
+// 	t_data *temp = head;
+// 	int i = 0;
+// 	while (temp)
+// 	{
+// 		print_redir_list(temp->redirections);
+// 		printf("--------------------------\n");
+// 		i = 0;
+// 		while (temp->argumment[i] != NULL)
+// 		{
+// 			printf("Arg %d:%s\n", i, temp->argumment[i]);
+// 			i++;
+// 		}
+// 		i = 0;
+// 		temp = temp->next;
+// 		if (temp)
+// 		{
+// 			printf("---- Next node ----\n");
+// 		}
+// 	}
+// }
+
+void	handlle_sigint(int sig)
 {
-    t_redir_node *temp = redir_list;
-    int i = 0;
-    while (temp)
-    {
-        printf("Redirection %d: %s\n", i, temp->redirection);
-        temp = temp->next;
-        i++;
-    }
-}
-void print_use_list(t_data *head) // for testing
-{
-    t_data *temp = head;
-    int i = 0;
-    while (temp)
-    {
-        print_redir_list(temp->redirections);
-        printf("--------------------------\n");
-        i = 0;
-        while (temp->argumment[i] != NULL)
-        {
-            printf("Arg %d:%s\n", i, temp->argumment[i]);
-            i++;
-        }
-        i = 0;
-        temp = temp->next;
-        if (temp)
-        {
-            printf("---- Next node ----\n");
-        }
-    }
+	(void)sig;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	exit_code = 130;
 }
 
-void handlle_sigint(int sig)
+int		exit_code;
+
+void	return_to_std(int saved_stdin, int saved_stdout)
 {
-    (void)sig;
-    printf("\n");
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
-    exit_code = 130;
+	dup2(saved_stdout, STDOUT_FILENO);
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdout);
+	close(saved_stdin);
 }
-int exit_code;
 
-int main(int arc, char **arv, char **envp)
+void	ft_free_data_list_and_input(t_data **data, t_quots *quots, char *temp,
+		char *input)
 {
-    t_data *data;
-    t_env *env_var;
-    t_hold *hold_vars;
-    t_quots quots;
-    char *input;
-    int i;
-    int saved_stdout;
-    int saved_stdin;
-    char *temp;
+	ft_free_list(*data);
+	*data = NULL;
+	quots->x = 0;
+	free(temp);
+	free(input);
+}
 
-    if (arc > 1)
-        return (1);
-    env_var = env_to_list(envp, arv[0]);
-    hold_vars = malloc(sizeof(t_hold));
-    quots.x = 0;
-    data = NULL;
-    signal(SIGINT, handlle_sigint);
-    while (1)
-    {
-        saved_stdout = dup(STDOUT_FILENO);
-        saved_stdin = dup(STDIN_FILENO);
-        input = readline(temp = print_prompt(env_var));
-        if (check_prompt(input) == 1)
-        {
-            add_history(input);
-            if (((i = parse_line(&data, input, env_var, &quots)) == 0 || i == 2) && quots.empty != 2)
-            {
-                if (i == 2)
-                {
-                    free(temp);
-                    exit(exit_code);
-                }
-                //print_use_list(data);
-                hold_vars->input = input;
-                hold_vars->temp = temp;
-                quots.saved_stdin = saved_stdin;
-                exec_commandes(&env_var, &data, &hold_vars, &quots);
-                dup2(saved_stdout, STDOUT_FILENO);
-                dup2(saved_stdin, STDIN_FILENO);
-                close(saved_stdout);
-                close(saved_stdin);
-            }
-        }
-        if (check_prompt(input) == 3)
-        {
-            hold_vars->input = input;
-            hold_vars->temp = temp;
-            exec_exit((char *[]){"exit", NULL}, &env_var, &data, &hold_vars);
-        }
-        ft_free_list(data);
-        data = NULL;
-        quots.x = 0;
-        free(temp);
-        free(input);
-    }
+int	main(int arc, char **arv, char **envp)
+{
+	t_hold_main	main_vars;
+
+	if (arc > 1)
+		return (1);
+	main_vars.env_var = env_to_list(envp, arv[0]);
+	main_vars.hold_vars = malloc(sizeof(t_hold));
+	main_vars.quots.x = 0;
+	main_vars.data = NULL;
+	signal(SIGINT, handlle_sigint);
+	while (1)
+	{
+		main_vars.saved_stdout = dup(STDOUT_FILENO);
+		main_vars.saved_stdin = dup(STDIN_FILENO);
+		main_vars.input = readline((main_vars.temp = print_prompt(main_vars.env_var)));
+		main_vars.hold_vars->input = main_vars.input;
+		main_vars.hold_vars->temp = main_vars.temp;
+		if (check_prompt(main_vars.input) == 1)
+		{
+			add_history(main_vars.input);
+			if (((main_vars.i = parse_line(&main_vars.data, main_vars.input, main_vars.env_var, &main_vars.quots)) == 0 || main_vars.i == 2) && main_vars.quots.empty != 2)
+			{
+				if (main_vars.i == 2)
+				{
+					free(main_vars.temp);
+					exit(exit_code);
+				}
+				exec_commandes(&main_vars.env_var, &main_vars.data,
+					&main_vars.hold_vars, &main_vars.quots);
+				return_to_std(main_vars.saved_stdin, main_vars.saved_stdout);
+			}
+		}
+		if (check_prompt(main_vars.input) == 3)
+			exec_exit((char *[]){"exit", NULL}, &main_vars.env_var,
+				&main_vars.data, &main_vars.hold_vars);
+		ft_free_data_list_and_input(&main_vars.data, &main_vars.quots,
+			main_vars.temp, main_vars.input);
+	}
 }

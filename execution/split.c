@@ -61,7 +61,7 @@ static int	ft_free(char **arr, size_t n)
 	{
 		while (n--)
 			free(arr[n]);
-		free (arr);
+		free(arr);
 		return (1);
 	}
 	return (2);
@@ -85,7 +85,7 @@ char	**ft_split(char const *s, char c)
 			s++;
 		chrl = ft_chrs(s, c);
 		arr[n] = (char *)malloc(chrl + 1);
-		if (ft_free (arr, n) == 1)
+		if (ft_free(arr, n) == 1)
 			return (NULL);
 		ft_strlcpy(arr[n], s, chrl + 1);
 		s = s + chrl;

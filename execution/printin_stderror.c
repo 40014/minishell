@@ -1,9 +1,8 @@
 #include "../minishell.h"
 
-
-void ft_putchar_fd(char c)
+void	ft_putchar_fd(char c)
 {
-    write(2, &c, 1);
+	write(2, &c, 1);
 }
 
 void	ft_putstr_fd(char const *str)
@@ -12,10 +11,10 @@ void	ft_putstr_fd(char const *str)
 		ft_putchar_fd(*str++);
 }
 
-void ft_print_in_stderr(char *s1, char *s2, char *s3)
+void	ft_print_in_stderr(char *s1, char *s2, char *s3)
 {
-	char *temp;
-	char *join;
+	char	*temp;
+	char	*join;
 
 	temp = ft_strjoin(s1, s2, 1, 1);
 	join = ft_strjoin(temp, s3, 1, 1);

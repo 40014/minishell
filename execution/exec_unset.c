@@ -1,11 +1,10 @@
 #include "../minishell.h"
 
-int ft_strcmp3(char *s1, char *s2)
+int	ft_strcmp3(char *s1, char *s2)
 {
-	int i;
+	int	i;
 
 	i = 0;
-
 	while (s1[i] && s2[i] && s1[i] != '=' && s1[i] == s2[i])
 		i++;
 	if (s1[i] == '=' && s2[i] == '\0')
@@ -15,10 +14,10 @@ int ft_strcmp3(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-void ft_unset_env(t_env **envp, char *var)
+void	ft_unset_env(t_env **envp, char *var)
 {
-	t_env *remove;
-	t_env *current;
+	t_env	*remove;
+	t_env	*current;
 
 	current = *envp;
 	while (current && current->next)
@@ -43,9 +42,9 @@ void ft_unset_env(t_env **envp, char *var)
 	}
 }
 
-int exec_unset(char **commande, t_env **envp)
+int	exec_unset(char **commande, t_env **envp)
 {
-	int i;
+	int	i;
 
 	exit_code = 0;
 	i = 1;
@@ -54,5 +53,5 @@ int exec_unset(char **commande, t_env **envp)
 		ft_unset_env(envp, commande[i]);
 		i++;
 	}
-	return(exit_code);
+	return (exit_code);
 }
