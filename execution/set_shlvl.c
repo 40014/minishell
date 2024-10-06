@@ -10,9 +10,7 @@ int ft_atoi2(char *str)
 	symbol = 1;
 	outcome = 0;
 	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-	{
 		i++;
-	}
 	while (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
@@ -34,7 +32,7 @@ int ft_isdigit(char *number)
     int i;
 
     i = 0;
-    while(number[i] == ' ')
+    while (number[i] == ' ' || (number[i] >= 9 && number[i] <= 13))
         i++;
     if (number[i] == '-' || number[i] == '+')
         i++;
@@ -44,7 +42,7 @@ int ft_isdigit(char *number)
     {
         while (number[i] >= '0' && number[i] <= '9')
             i++;
-        while(number[i] == ' ')
+        while (number[i] == ' ' || (number[i] >= 9 && number[i] <= 13))
             i++;
         if (number[i] != '\0')
             return(1);

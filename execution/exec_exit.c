@@ -10,9 +10,7 @@ int	ft_atoi(char *str)
 	symbol = 1;
 	outcome = 0;
 	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-	{
 		i++;
-	}
 	while (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
@@ -33,7 +31,7 @@ int ft_isalnum(char *str)
     int count;
 
     i = 0;
-    while(str[i] == ' ')
+    while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
         i++;
     if (str[i] == '+' || str[i] == '-')
         i++;
@@ -44,7 +42,7 @@ int ft_isalnum(char *str)
     {
         while (str[i] >= '0' && str[i++] <= '9')
             count++;
-        while(str[i] == ' ')
+       	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
             i++;
         if (str[i] != '\0')
             return(1);

@@ -68,7 +68,7 @@ int main(int arc, char **arv, char **envp)
     {
         saved_stdout = dup(STDOUT_FILENO);
         saved_stdin = dup(STDIN_FILENO);
-        input = readline(temp = print_prompt(env_var, NULL, NULL));
+        input = readline(temp = print_prompt(env_var));
         if (check_prompt(input) == 1)
         {
             add_history(input);

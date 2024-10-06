@@ -37,14 +37,24 @@ int exec_simple_commande(t_quots *quots, t_env **envp, t_data **data, t_hold **h
 
 void exec_commandes(t_env **envp, t_data **data, t_hold **hold_vars, t_quots *quots)
 {
+    int i;
+
     if ((*data) != NULL)
     {
         if (ft_exec_heredocs(data, *envp, quots) == -1)
                 return;
     }
     if ((*data)->next == NULL && (*data) != NULL)
+    {
+        i = 0;
+        while((*data)->argumment[i])
+            i++;
         exec_simple_commande(quots, envp, data, hold_vars);
+        if ((*data)->argumment[0])
+            add_update_last_commande(envp ,(*data)->argumment[i - 1], 0);
+    }
     if ((*data)->next != NULL)
         exec_with_pipes(envp, data, hold_vars, quots);
     delete_heredoc_files();
 }
+

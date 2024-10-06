@@ -27,8 +27,24 @@ char	*ft_strjoin(char const *s1, char const *s2, int flag, int size)
 	join[i + 3] = '\0';
 	return (join);
 }
+char *put_right_color(char *prompt)
+{
+	char *temp;
+	char *hold;
 
-char *print_prompt(t_env *envp, char *hold, char *temp)
+	if (prompt == NULL)
+		return(NULL);
+	temp = ft_strjoin(prompt, "\x1b[0m", 1, 1);
+	free(prompt);
+	if (exit_code == 0)
+		hold = ft_strjoin("\x1b[1;32m\x1b[1mminishell:\x1b[0m", temp, 1, 1);
+	else
+		hold = ft_strjoin("\x1b[1;31m\x1b[1mminishell:\x1b[0m", temp, 1, 1);
+	free(temp);
+	return(hold);
+}
+
+char *print_prompt(t_env *envp)
 {
     char *home;
     char path[PATH_MAX];
@@ -37,6 +53,7 @@ char *print_prompt(t_env *envp, char *hold, char *temp)
 
     getcwd(path, PATH_MAX);
 	home = ft_getenv(envp, "HOME");
+	prompt = NULL;
 	if (ft_strcmp(path, home) == 0)
 		prompt = ft_strjoin("\x1b[1;37m\x1b[1m", "~", 0, 4);
 	else
@@ -44,19 +61,11 @@ char *print_prompt(t_env *envp, char *hold, char *temp)
 		i = 0;
 		while(home && home[i] && path[i] && home[i] == path[i])
 			i++;
-		if (home && home[i] == '\0')
+		if (home && path && home[i] == '\0')
 			prompt = ft_strjoin("\x1b[1;37m\x1b[1m~", &path[i], 0, 4);
 		else if (path != NULL)
 			prompt = ft_strjoin("\x1b[1;37m\x1b[1m", path, 0, 4);
 	}
-	temp = prompt;
-	prompt = ft_strjoin(prompt, "\x1b[0m", 1, 1);
-	free(temp);
-	if (exit_code == 0)
-		hold = ft_strjoin("\x1b[1;32m\x1b[1mminishell:\x1b[0m", prompt, 1, 1);
-	else
-		hold = ft_strjoin("\x1b[1;31m\x1b[1mminishell:\x1b[0m", prompt, 1, 1);
-	free(prompt);
-	return(hold);
+	return(put_right_color(prompt));
 }
 

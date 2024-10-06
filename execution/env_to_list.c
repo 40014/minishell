@@ -88,7 +88,7 @@ void check_missing_vars(t_env **env, char *first_arg, int t1, int t2)
     }
     add_missing_vars(env, t1, t2, t3);
     if (t4 == 0)
-        add_update_last_commande(env, first_arg);
+        add_update_last_commande(env, first_arg, 1);
 }
 
 t_env   *env_to_list(char **envp, char *first_arg)

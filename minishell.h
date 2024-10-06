@@ -53,6 +53,8 @@ typedef struct quot
     int empty;
     int herdoc_expan;
     int id;
+    int fdin;
+    int fdout;
     int saved_stdin;
 } t_quots;
 
@@ -135,7 +137,7 @@ int             exec_echo(char **commande);
 void            ft_putstr(char *str);
 int             exec_cd(char **commande, t_env *envp, t_env **all_env_list);
 int             exec_pwd(char **commande);
-char            *print_prompt(t_env *envp, char *hold, char *temp);
+char            *print_prompt(t_env *envp);
 char            *ft_getenv(t_env *envp, char *var);
 char            *ft_strjoin(char const *s1, char const *s2, int flag, int size);
 int             ft_strcmp(char *s1, char *s2);
@@ -178,10 +180,11 @@ int             ft_print_export(t_env *envp);
 char            **convert_envp_to_arr(t_env *envp);
 void            handlle_sigint(int sig);
 int             ft_exec_heredocs(t_data **data_add, t_env *envp,  t_quots *quots);
-void            add_update_last_commande(t_env **env, char *var_val);
+void            add_update_last_commande(t_env **env, char *var_val, int i);
 void            add_missing_vars(t_env **env, int t1, int t2, int t3);
 void            free_after_exit(t_hold **hold_vars, t_env **envp, t_data **data);
 int             if_contain_directory(char *commande);
 int             count_nodes(t_env *envp);
+void            ft_create_nodes(t_data **head, char *envp);
 
 # endif

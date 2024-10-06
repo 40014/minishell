@@ -57,8 +57,11 @@ void print_export_env(char **arr)
     i = 0;
     while (arr[i] != NULL)
     {
-        printf("declare -x ");
-        printf("%s\n", arr[i]);
+        if  (!(arr[i][0] == '_' && arr[i][1] == '='))
+        {
+            printf("declare -x ");
+            printf("%s\n", arr[i]);
+        }
         i++;
     }
 }

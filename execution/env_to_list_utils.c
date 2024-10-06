@@ -39,11 +39,18 @@ void add_missing_vars(t_env **env, int t1, int t2, int t3)
         ft_create_nodes(env, "OLDPWD");
 }
 
-void add_update_last_commande(t_env **env, char *var_val)
+void add_update_last_commande(t_env **env, char *var_val, int i)
 {
-    var_val = ft_strjoin("_=", var_val, 1, 1);
-    ft_create_nodes(env, var_val);
-    free(var_val);
+    char *temp;
+
+    if (i == 1)
+    {
+        temp = ft_strjoin("_=", var_val, 1, 1);
+        ft_create_nodes(env, temp);
+        free(temp);
+    }
+    else
+        ft_update_val(env, "_=", var_val);
 }
 
 char *ft_getenv(t_env *envp, char *var)
