@@ -65,11 +65,13 @@ void ft_free_list2(t_env *head)
         free(temp);
     }
 }
-void free_after_exit(t_hold **hold_vars, t_env **envp, t_data **data)
+void free_before_exit(t_hold **hold_vars, t_env **envp, t_data **data, int i)
 {
-        free((*hold_vars)->input);
-        free((*hold_vars)->temp);
-        free(*hold_vars);
-        ft_free_list(*data);
-        ft_free_list2(*envp);
+    free((*hold_vars)->input);
+    free((*hold_vars)->temp);
+    free(*hold_vars);
+    ft_free_list(*data);
+    ft_free_list2(*envp);
+    if (i == 1)
+        exit(exit_code);
 }

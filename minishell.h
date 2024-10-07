@@ -83,17 +83,16 @@ typedef struct parser
 
 typedef struct hold_main
 {
-	t_data              *data;
-    t_env               *env_var;
-    t_hold              *hold_vars;
-    t_quots             quots;
-    char                *input;
-    int                 i;
-    int                 saved_stdout;
-    int                 saved_stdin;
-    char                *temp;
+	t_data				*data;
+	t_env				*env_var;
+	t_hold				*hold_vars;
+	t_quots				quots;
+	char				*input;
+	int					i;
+	int					saved_stdout;
+	int					saved_stdin;
+	char				*temp;
 }						t_hold_main;
-
 
 extern int				exit_code;
 
@@ -150,7 +149,7 @@ int						parse_line(t_data **data, char *input, t_env *env_var,
 char					**split_line_to_args(char *input, t_env *env_var,
 							t_quots *quots, t_redir_node **redir_list);
 // char **split_line_to_args(char *input, t_env *env_var, t_quots *quots,
-	//char ***redirections);
+// char ***redirections);
 char					*strsplit_by_pipe(char **str);
 int						ft_count_args(char *input);
 void					ft_add_node(t_data **head, char **arguments,
@@ -221,8 +220,8 @@ int						ft_exec_heredocs(t_data **data_add, t_env *envp,
 void					add_update_last_commande(t_env **env, char *var_val,
 							int i);
 void					add_missing_vars(t_env **env, int t1, int t2, int t3);
-void					free_after_exit(t_hold **hold_vars, t_env **envp,
-							t_data **data);
+void					free_before_exit(t_hold **hold_vars, t_env **envp,
+							t_data **data, int i);
 int						if_contain_directory(char *commande);
 int						count_nodes(t_env *envp);
 void					ft_create_nodes(t_env **head, char *envp);

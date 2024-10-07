@@ -60,7 +60,7 @@ int	exec_exit(char **commande, t_env **envp, t_data **data, t_hold **hold_vars)
 	{
 		ft_print_in_stderr("exit: ", commande[1],
 			": numeric argument required\n");
-		free_after_exit(hold_vars, envp, data);
+		free_before_exit(hold_vars, envp, data, 0);
 		exit(2);
 	}
 	else if (commande[1] != NULL && commande[2] != NULL)
@@ -71,12 +71,12 @@ int	exec_exit(char **commande, t_env **envp, t_data **data, t_hold **hold_vars)
 	else if (commande[1] != NULL)
 	{
 		i = ft_atoi(commande[1]);
-		free_after_exit(hold_vars, envp, data);
+		free_before_exit(hold_vars, envp, data, 0);
 		exit(i);
 	}
 	else
 	{
-		free_after_exit(hold_vars, envp, data);
+		free_before_exit(hold_vars, envp, data, 0);
 		exit(exit_code);
 	}
 }
