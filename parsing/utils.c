@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/08 18:52:45 by medo              #+#    #+#             */
+/*   Updated: 2024/10/08 18:52:48 by medo             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-void ft_printf_error(int i)
+void	ft_printf_error(int i)
 {
 	if (i == 2 || i == 3)
 	{
@@ -13,38 +25,41 @@ void ft_printf_error(int i)
 		printf("minishell: syntax error near unexpected token \n");
 }
 
-t_data *creat_node(char **arguments, t_redir_node *redirection)
+t_data	*creat_node(char **arguments, t_redir_node *redirection)
 {
-    t_data *new_node = malloc(sizeof(t_data));
-    if (!new_node)
-        return NULL;
-    new_node->argumment = arguments;
-    new_node->redirections = redirection;
-    new_node->next = NULL;
-    return new_node;
+	t_data	*new_node;
+
+	new_node = malloc(sizeof(t_data));
+	if (!new_node)
+		return (NULL);
+	new_node->argumment = arguments;
+	new_node->redirections = redirection;
+	new_node->next = NULL;
+	return (new_node);
 }
 
-void ft_add_node(t_data **head, char **arguments, t_redir_node *redirection)
+void	ft_add_node(t_data **head, char **arguments, t_redir_node *redirection)
 {
-    t_data *new_node;
-    t_data *tmp = *head;
+	t_data	*new_node;
+	t_data	*tmp;
 
-    new_node = creat_node(arguments, redirection);
-    if (!new_node)
-        return;
-    if (*head == NULL)
-    {
-        *head = new_node;
-        return;
-    }
-    while (tmp->next)
-        tmp = tmp->next;
-    tmp->next = new_node;
+	tmp = *head;
+	new_node = creat_node(arguments, redirection);
+	if (!new_node)
+		return ;
+	if (*head == NULL)
+	{
+		*head = new_node;
+		return ;
+	}
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new_node;
 }
 
-size_t ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (s[i] != '\0')
@@ -54,10 +69,10 @@ size_t ft_strlen(const char *s)
 	return (i);
 }
 
-char *ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1)
 {
-	int j;
-	char *dup;
+	int		j;
+	char	*dup;
 
 	dup = malloc((ft_strlen(s1) + 1) * sizeof(char));
 	if (dup == NULL)

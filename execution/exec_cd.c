@@ -88,7 +88,7 @@ int	exec_cd(char **commande, t_env *envp, t_env **all_env_list)
 		check = 1;
 	}
 	else if (commande[1] == NULL || (commande[1][0] == '-'
-		&& commande[1][1] == '-' && commande[1][2] == '\0'))
+			&& commande[1][1] == '-' && commande[1][2] == '\0'))
 		check = go_home(envp);
 	else if (commande[1][0] == '~')
 		check = go_from_home(envp, commande[1]);

@@ -104,6 +104,8 @@ typedef struct ParserContext
 
 extern int				exit_code;
 
+int	handle_errors(char *input);
+int ft_check(char *input);
 int handle_allocation_error(char **result, int idx);
 int allocate_and_store_word(char **result, int idx, const char *start, int len);
 int count_results(char **result);
@@ -168,7 +170,6 @@ char					**split_line_to_args(char *input, t_env *env_var,
 // char **split_line_to_args(char *input, t_env *env_var, t_quots *quots,
 // char ***redirections);
 char					*strsplit_by_pipe(char **str);
-int						ft_count_args(char *input);
 void					ft_add_node(t_data **head, char **arguments,
 							t_redir_node *redirection);
 t_data					*creat_node(char **arguments,
