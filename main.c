@@ -66,6 +66,8 @@ void	ft_free_data_list_and_input(t_data **data, t_quots *quots, char *temp,
 
 int	checks_before_parse(t_hold_main *main_vars)
 {
+	signal(SIGINT, handlle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 	main_vars->quots.x = 0;
 	main_vars->data = NULL;
 	main_vars->saved_stdout = dup(STDOUT_FILENO);
@@ -93,7 +95,6 @@ int	main(int arc, char **arv, char **envp)
 		return (1);
 	main_vars.env_var = env_to_list(envp, arv[0]);
 	main_vars.hold_vars = malloc(sizeof(t_hold));
-	signal(SIGINT, handlle_sigint);
 	while (1)
 	{
 		if (checks_before_parse(&main_vars) == 1)

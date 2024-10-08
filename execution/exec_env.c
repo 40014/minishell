@@ -7,12 +7,7 @@ void	ft_print_env(t_env *envp)
 		if (envp->val)
 			printf("%s", envp->var);
 		if (envp->val)
-		{
-			if (envp->var[0] == '_' && envp->var[1] == '=')
-				printf("env\n");
-			else
-				printf("%s\n", envp->val);
-		}
+			printf("%s\n", envp->val);
 		envp = envp->next;
 	}
 }

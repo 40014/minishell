@@ -101,7 +101,6 @@ int	exec_non_builtin(char **commande, t_env **envp, t_data **data,
 	signal(SIGQUIT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	signal(SIGINT, handlle_sigint);
-	signal(SIGQUIT, SIG_DFL);
 	if (WIFEXITED(status) != 0)
 		exit_code = WEXITSTATUS(status);
 	if (WIFSIGNALED(status) != 0)

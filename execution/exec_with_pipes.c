@@ -46,7 +46,6 @@ void	get_last_child_exit_code(int pid)
 		printf("\n");
 	}
 	signal(SIGINT, handlle_sigint);
-	signal(SIGQUIT, SIG_DFL);
 }
 
 void	close_fds(t_quots *quots)

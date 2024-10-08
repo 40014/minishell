@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int	ft_atoi2(char *str)
+static int	ft_atoi2(char *str)
 {
 	int	i;
 	int	symbol;
@@ -113,7 +113,7 @@ char	*set_shlvl(char *var, char *shlvl, char *newshlvl)
 		else if (ft_atoi2(shlvl) >= 999)
 		{
 			printf("warning: shell level (%d) too high, resetting to 1 \n",
-				ft_atoi(shlvl) + 1);
+				ft_atoi2(shlvl) + 1);
 			newshlvl[0] = '1';
 		}
 		else if (ft_atoi2(shlvl) < 0)

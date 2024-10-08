@@ -235,8 +235,7 @@ char					**convert_envp_to_arr(t_env *envp);
 void					handlle_sigint(int sig);
 int						ft_exec_heredocs(t_data **data_add, t_env *envp,
 							t_quots *quots);
-void					add_update_last_commande(t_env **env, char *var_val,
-							int i);
+void					add_update_last_commande(t_env **env, char *var_val);
 void					add_missing_vars(t_env **env, int t1, int t2, int t3);
 void					free_before_exit(t_hold **hold_vars, t_env **envp,
 							t_data **data, int i);

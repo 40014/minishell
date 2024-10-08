@@ -54,9 +54,11 @@ void	exec_commandes(t_env **envp, t_data **data, t_hold **hold_vars,
 		i = 0;
 		while ((*data)->argumment[i])
 			i++;
+		if ((*data)->argumment[0])
+			add_update_last_commande(envp, (*data)->argumment[i - 1]);
 		exec_simple_commande(quots, envp, data, hold_vars);
 		if ((*data)->argumment[0])
-			add_update_last_commande(envp, (*data)->argumment[i - 1], 0);
+			add_update_last_commande(envp, (*data)->argumment[i - 1]);
 	}
 	if ((*data)->next != NULL)
 		exec_with_pipes(envp, data, hold_vars, quots);

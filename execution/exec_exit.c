@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int	ft_atoi(char *str)
+int	ft_atoi3(char *str)
 {
 	int	i;
 	int	symbol;
@@ -25,7 +25,35 @@ int	ft_atoi(char *str)
 	return (outcome * symbol);
 }
 
-int	ft_isalnum(char *str)
+static long	ft_atoi4(char *str, t_env **envp, t_data **data, t_hold **hold_vars)
+{
+	int				i;
+	int				s;
+	unsigned long	r;
+
+	i = 0;
+	s = 1;
+	r = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-')
+		s = s * -1;
+	i++;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		r = r * 10 + (str[i] - 48);
+		i++;
+	}
+	if ((r > LONG_MAX && s == 1) || (s == -1 && r > (unsigned long)LONG_MIN))
+	{
+		ft_print_in_stderr("exit: ", str, ": numeric argument required\n");
+		free_before_exit(hold_vars, envp, data, 0);
+		exit(2);
+	}
+	return (r * s);
+}
+
+int	ft_isalnum(char *str, t_env **envp, t_data **data, t_hold **hold_vars)
 {
 	int	i;
 	int	count;
@@ -47,8 +75,7 @@ int	ft_isalnum(char *str)
 		if (str[i] != '\0')
 			return (1);
 	}
-	if (count >= 19)
-		return (1);
+	ft_atoi4(str, envp, data, hold_vars);
 	return (0);
 }
 
@@ -56,7 +83,8 @@ int	exec_exit(char **commande, t_env **envp, t_data **data, t_hold **hold_vars)
 {
 	int	i;
 
-	if (commande[1] != NULL && ft_isalnum(commande[1]) == 1)
+	if (commande[1] != NULL && ft_isalnum(commande[1], envp, data,
+			hold_vars) == 1)
 	{
 		ft_print_in_stderr("exit: ", commande[1],
 			": numeric argument required\n");
@@ -70,13 +98,11 @@ int	exec_exit(char **commande, t_env **envp, t_data **data, t_hold **hold_vars)
 	}
 	else if (commande[1] != NULL)
 	{
-		i = ft_atoi(commande[1]);
+		i = ft_atoi3(commande[1]);
 		free_before_exit(hold_vars, envp, data, 0);
 		exit(i);
 	}
 	else
-	{
 		free_before_exit(hold_vars, envp, data, 0);
-		exit(exit_code);
-	}
+	exit(exit_code);
 }
