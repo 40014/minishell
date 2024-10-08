@@ -9,8 +9,7 @@ void handle_empty_argument(t_ParserState *state, t_arg_node *arg_list, t_redir_n
     }
     else
         append_arg_node(arg_list, create_arg_node(""));
-    //state->i += 2;
-    state->i++;
+    state->i += 2;
 }
 
 void add_buffer_to_args(t_ParserState *state, t_arg_node **arg_list,  t_redir_node **redir_list)
@@ -71,4 +70,15 @@ void init_parser_state(t_ParserState *state, char *input, t_env *env_var, t_quot
     state->quots->empty = 0;
     state->flag_backslash = 0;
     state->check_last_space = 0;
+    state->check_first_space = 0;
+}
+
+t_ParserContext initialize_parser_context(t_ParserState *state, t_arg_node **arg_list, t_redir_node **redir_list)
+{
+    t_ParserContext context;
+    
+    context.state = state;
+    context.arg_list = arg_list;
+    context.redir_list = redir_list;
+    return (context);
 }

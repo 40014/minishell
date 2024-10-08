@@ -65,6 +65,7 @@ void ft_free_list2(t_env *head)
         free(temp);
     }
 }
+
 void free_before_exit(t_hold **hold_vars, t_env **envp, t_data **data, int i)
 {
     free((*hold_vars)->input);

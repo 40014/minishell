@@ -19,7 +19,6 @@
 typedef struct redir_node
 {
 	char				*redirection;
-	int					flag;
 	struct redir_node	*next;
 
 }						t_redir_node;
@@ -79,6 +78,7 @@ typedef struct parser
 	int					redir_index;
 	int					flag_backslash;
 	int					check_last_space;
+	int 				check_first_space;
 }						t_ParserState;
 
 typedef struct hold_main
@@ -94,8 +94,25 @@ typedef struct hold_main
 	char				*temp;
 }						t_hold_main;
 
+typedef struct ParserContext
+{
+    t_ParserState *state;
+    t_arg_node **arg_list;
+    t_redir_node **redir_list;
+
+} t_ParserContext;
+
 extern int				exit_code;
 
+int handle_allocation_error(char **result, int idx);
+int allocate_and_store_word(char **result, int idx, const char *start, int len);
+int count_results(char **result);
+t_ParserContext initialize_parser_context(t_ParserState *state, t_arg_node **arg_list, t_redir_node **redir_list);
+void handle_null_env_or_redir(t_ParserContext *context, char *env, int check, int i);
+void free_env_result(char **env, char **result, int i, int check);
+void free_split_string(char **words);
+char *handle_env_variable(t_ParserState *state);
+int handle_split_env_result(t_ParserState *state, t_arg_node **arg_list, char **result, int *check);
 void					append_redir_node(t_redir_node **redir_list,
 							t_redir_node *new_node);
 int						check_herdoc_error(char *input);

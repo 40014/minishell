@@ -9,6 +9,7 @@ PARSING	=	parsing/redirection_list.c                                   \
 			parsing/utils.c  parsing/ft_free.c parsing/parsing.c 			   \
 			parsing/utils_expansion1.c parsing/expansion_herdoc.c 				\
 			parsing/ft_arg_to_node.c parsing/str_split.c parsing/herdoc_errors.c \
+			parsing/expansion2.c  parsing/expansion3.c parsing/str_split_utils.c  \
 			
 EXECUTION =	execution/env_to_list.c execution/exec_export.c                        \
 			execution/exec_redirections.c  execution/redirection.c                  \

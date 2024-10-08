@@ -1,55 +1,30 @@
 #include "../minishell.h"
 
-// int ft_skip_space(char c)
-// {
-// 	if (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r' || c == ' ')
-// 		return (1);
-// 	return (0);
-// }
-void free_split_string_on_error(char **result, int idx)
+void check_first_space(const char *input, t_ParserState *state)
 {
-    int j;
-
-    j = 0;
-    while (j < idx)
-    {
-        free(result[j]);
-        j++;
-    }
-    free(result);
+    if (ft_skip_space(input[0]) == 1)
+        state->check_first_space = 1;
+    else
+        state->check_first_space = 0;
 }
 
-char *ft_strncpy(char *dest, const char *src, size_t n)
+void check_last_space(const char *input, t_ParserState *state, int len)
 {
-    size_t  i;
-
-    i = 0;
-    while (i < n && src[i] != '\0')
-    {
-        dest[i] = src[i];
-        i++;
-    }
-    while (i < n)
-    {
-        dest[i] = '\0';
-        i++;
-    }
-    return (dest);
+    if (ft_skip_space(input[len - 1]) == 1)
+        state->check_last_space = 1;
+    else
+        state->check_last_space = 0;
 }
 
-char **split_string(const char *input, t_ParserState *state)
+int count_words(const char *input)
 {
-    const char *ptr;
-    const char *start;
-    int count;
+    const char  *ptr;
     int in_word;
-    char **result;
-    int len;
-    int idx;
+    int count;
 
+    ptr = input;
     in_word = 0;
     count = 0;
-    ptr = input;
     while (*ptr)
     {
         if (!ft_skip_space(*ptr))
@@ -64,48 +39,174 @@ char **split_string(const char *input, t_ParserState *state)
             in_word = 0;
         ptr++;
     }
-    result = malloc((count + 1) * sizeof(char*));
-    if (result == NULL)
-        return (NULL);
-    idx = 0;
+    return (count);
+}
+
+int fill_result_array(const char *input, char **result, t_ParserState *state)
+{
+    const char  *ptr;
+    const char  *start;
+    int idx;
+    int len;
+
     ptr = input;
+    idx = 0;
     while (*ptr)
     {
         while (ft_skip_space(*ptr))
-        {
             ptr++;
-        }
         if (*ptr)
         {
             start = ptr;
             while (*ptr && !ft_skip_space(*ptr))
                 ptr++;
             len = ptr - start;
-            result[idx] = malloc((len + 1) * sizeof(char));
-            if (result[idx] == NULL)
-            {
-                free_split_string_on_error(result, idx);
-                return (NULL);
-            }
-            ft_strncpy(result[idx], start, len);
-            if (*ptr && ft_skip_space(*ptr))
-            {
-                while (ft_skip_space(*ptr))
-                    ptr++;
-                if (*ptr == '\0')
-                {
-                    state->check_last_space = 1;
-                    result[idx][len] = '\0';
-                }
-                else
-                    result[idx][len] = '\0';
-            }
-            else
-                result[idx][len] = '\0';
+            if (allocate_and_store_word(result, idx, start, len) == -1)
+                return (handle_allocation_error(result, idx));
             idx++;
         }
     }
     result[idx] = NULL;
-    return (result);
+    return (idx);
 }
 
+char **split_string(const char *input, t_ParserState *state)
+{
+    int count;
+    char **result;
+
+    if (input == NULL)
+        return (NULL);
+    check_first_space(input, state);
+    count = count_words(input);
+    result = malloc((count + 1) * sizeof(char*));
+    if (result == NULL)
+        return (NULL);
+    if (fill_result_array(input, result, state) == -1)
+        return (NULL);
+    check_last_space(input, state, ft_strlen(input));
+    return (result);
+}
+    // idx = 0;
+    // ptr = input;
+    // while (*ptr)
+    // {
+    //     while (ft_skip_space(*ptr))
+    //         ptr++;
+    //     if (*ptr)
+    //     {
+    //         start = ptr;
+    //         while (*ptr && !ft_skip_space(*ptr))
+    //             ptr++;
+    //         len = ptr - start;
+    //         result[idx] = malloc((len + 1) * sizeof(char));
+    //         if (result[idx] == NULL)
+    //         {
+    //             free_split_string_on_error(result, idx);
+    //             return (NULL);
+    //         }
+    //         ft_strncpy(result[idx], start, len);
+    //         if (*ptr && ft_skip_space(*ptr))
+    //         {
+    //             while (ft_skip_space(*ptr))
+    //                 ptr++;
+    //             if (*ptr == '\0')
+    //             {
+    //                 state->check_last_space = 1;
+    //                 result[idx][len] = '\0';
+    //             }
+    //             else
+    //             {
+    //                 state->check_last_space = 0;
+    //                 result[idx][len] = '\0';
+    //             }
+    //         }
+    //         else
+    //             result[idx][len] = '\0';
+    //         idx++;
+    //     }
+    // }
+    //result[idx] = NULL;
+    // return (result);
+//}
+
+// char **split_string(const char *input, t_ParserState *state)
+// {
+//     const char *ptr;
+//     const char *start;
+//     int count;
+//     int in_word;
+//     char **result;
+//     int len;
+//     int idx;
+
+//     in_word = 0;
+//     count = 0;
+//     ptr = input;
+//     if (input == NULL)
+//         return (NULL);
+//     if (input[0] == ' ')
+//         state->check_first_space = 1;
+//     else
+//         state->check_first_space = 0;
+//     while (*ptr)
+//     {
+//         if (!ft_skip_space(*ptr))
+//         {
+//             if (!in_word)
+//             {
+//                 in_word = 1;
+//                 count++;
+//             }
+//         }
+//         else
+//             in_word = 0;
+//         ptr++;
+//     }
+//     result = malloc((count + 1) * sizeof(char*));
+//     if (result == NULL)
+//         return (NULL);
+//     idx = 0;
+//     ptr = input;
+//     while (*ptr)
+//     {
+//         while (ft_skip_space(*ptr))
+//         {
+//             ptr++;
+//         }
+//         if (*ptr)
+//         {
+//             start = ptr;
+//             while (*ptr && !ft_skip_space(*ptr))
+//                 ptr++;
+//             len = ptr - start;
+//             result[idx] = malloc((len + 1) * sizeof(char));
+//             if (result[idx] == NULL)
+//             {
+//                 free_split_string_on_error(result, idx);
+//                 return (NULL);
+//             }
+//             ft_strncpy(result[idx], start, len);
+//             if (*ptr && ft_skip_space(*ptr))
+//             {
+//                 while (ft_skip_space(*ptr))
+//                     ptr++;
+//                 if (*ptr == '\0')
+//                 {
+//                     state->check_last_space = 1;
+//                     result[idx][len] = '\0';
+//                 }
+//                 else
+//                 {
+//                     state->check_last_space = 0;
+//                     result[idx][len] = '\0';
+//                 }
+//             }
+//             else
+//                 result[idx][len] = '\0';
+//             idx++;
+//         }
+//     }
+//     result[idx] = NULL;
+//     return (result);
+// }

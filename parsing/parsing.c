@@ -71,6 +71,28 @@ int ft_handle_dollar_herdoc(t_ParserState *state, char c, t_redir_node **redir_l
     }
     return (1);
 }
+void handle_input_cases(t_ParserState *state, t_arg_node **arg_list, t_redir_node **redir_list, int check)
+{
+    if ((state->input[state->i] != '\'' && state->input[state->i] != '"') && state->quote == 0 && state->buf_index == 0)
+        state->quots->x = 2;
+    if ((state->input[state->i] == '\'' || state->input[state->i] == '"') &&
+        (state->input[state->i] == state->quote || state->quote == 0) && check == 1)
+    {
+        handle_quotes(state);
+    }
+    else if ((state->input[state->i] == '>' || state->input[state->i] == '<') && state->quote == 0)
+        handle_redirection(state, arg_list, redir_list);
+    else if (state->input[state->i] == '$' && (state->quote == 0 || state->quote != '\'') &&
+             ft_handle_dollar_herdoc(state, state->input[state->i], redir_list) == 1)
+    {
+        handle_dollar_sign(state, arg_list, redir_list);
+    }
+    else if (ft_skip_space(state->input[state->i]) == 1 && state->quote == 0)
+        add_buffer_to_args(state, arg_list, redir_list);
+    else
+        state->buffer[state->buf_index++] = state->input[state->i];
+}
+
 
 char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, t_redir_node **redir_list)
 {
@@ -87,20 +109,9 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, t_redir_n
         if (handle_consecutive_quotes(&state) == 1)
         {
             handle_empty_argument(&state, &arg_list, redir_list);
-            //continue;
+            continue;
         }
-        if ((state.input[state.i] != '\'' && state.input[state.i] != '"') && state.quote == 0 && state.buf_index == 0)
-            state.quots->x = 2;
-        if ((state.input[state.i] == '\'' || state.input[state.i] == '"') && (state.input[state.i] == state.quote || state.quote == 0) && check == 1)
-            handle_quotes(&state);
-        else if ((state.input[state.i] == '>' || state.input[state.i] == '<') && state.quote == 0)
-            handle_redirection(&state, &arg_list, redir_list); 
-        else if (state.input[state.i] == '$' && (state.quote == 0 || state.quote != '\'') && ft_handle_dollar_herdoc(&state, state.input[state.i], redir_list) == 1)
-            handle_dollar_sign(&state, &arg_list, redir_list);
-        else if ((ft_skip_space(state.input[state.i]) == 1) && state.quote == 0)
-            add_buffer_to_args(&state, &arg_list, redir_list);
-        else
-            state.buffer[state.buf_index++] = state.input[state.i];
+        handle_input_cases(&state, &arg_list, redir_list, check);
         state.i++;
     }
     finalize_args(&state, &arg_list, redir_list);
@@ -109,7 +120,7 @@ char **split_line_to_args(char *input, t_env *env_var, t_quots *quots, t_redir_n
     free_arg_list(arg_list);
     return (state.args);
 }
- 
+
 int parse_line(t_data **data, char *input, t_env *env_var, t_quots *quots)
 {
     char **arguments;
