@@ -10,7 +10,7 @@ int	go_home(t_env *envp)
 		ft_putstr_fd("cd : HOME not set\n");
 		return (1);
 	}
-	if (chdir(home) != 0)
+	if (chdir(home) != 0 && home[0] != '\0')
 	{
 		ft_print_in_stderr("cd: ", home, ": No such file or directory\n");
 		return (1);
