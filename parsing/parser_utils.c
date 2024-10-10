@@ -6,7 +6,7 @@
 /*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:45:24 by medo              #+#    #+#             */
-/*   Updated: 2024/10/08 18:45:25 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/09 23:28:43 by medo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,16 @@ void	finalize_args(t_ParserState *state, t_arg_node **arg_list,
 	}
 	if (state->buf_index == 0 && state->flag_backslash == 0
 		&& (*arg_list) == NULL)
+		handle_empty_argument_backslash(state, arg_list);
+	else if (state->buf_index == 0 && state->flag_backslash == 1
+		&& state->quots->empty == 1 && (*arg_list) == NULL)
 	{
-		if (state->quots->empty == 1)
-			state->quots->empty = 2;
+		state->quots->empty = 2;
 		append_arg_node(arg_list, create_arg_node(""));
 	}
+	else if (state->quots->empty == 0 && state->flag_backslash == 1
+		&& (*arg_list) == NULL)
+		append_arg_node(arg_list, create_arg_node(""));
 }
 
 void	init_parser_state(t_ParserState *state, char *input, t_env *env_var,
@@ -98,5 +103,7 @@ t_ParserContext	initialize_parser_context(t_ParserState *state,
 	context.state = state;
 	context.arg_list = arg_list;
 	context.redir_list = redir_list;
+	context.j = 0;
+	context.check = 0;
 	return (context);
 }

@@ -6,7 +6,7 @@
 /*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:46:27 by medo              #+#    #+#             */
-/*   Updated: 2024/10/08 22:31:30 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/09 13:03:01 by medo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,7 @@ void	process_env_variable(t_ParserState *state, t_arg_node **arg_list,
 			free_env_result(&env, result, i, check);
 		}
 		handle_null_env_or_redir(&context, env, check, i);
-		while (state->input[state->i] != '\0'
-			&& ft_skip_space(state->input[state->i]) != 1
-			&& state->input[state->i] != '\'' && state->input[state->i] != '"'
-			&& state->input[state->i] != '$')
-			state->buffer[state->buf_index++] = state->input[state->i++];
+		process_buffer_until_special_char(state);
 		state->i--;
 	}
 }
@@ -77,8 +73,7 @@ void	handle_dollar_sign(t_ParserState *state, t_arg_node **arg_list,
 			check_dollar = 1;
 		}
 		temp_i = state->i + 1;
-		while (ft_skip_space(state->input[temp_i]) == 1
-			|| state->input[temp_i] == '\"' || state->input[temp_i] == '\'')
+		while (is_special_char(state->input[temp_i]))
 			temp_i++;
 		if (state->input[temp_i] == '\0' && check_dollar != 1)
 			state->buffer[state->buf_index++] = '$';
@@ -105,18 +100,16 @@ void	handle_quotes(t_ParserState *state)
 int	handle_consecutive_quotes(t_ParserState *state)
 {
 	if ((state->input[state->i] == '\"' && state->input[state->i + 1] == '\"')
-		&& (state->input[state->i + 2] != '\"' || state->input[state->i
-			+ 2] == '\0') && (ft_skip_space(state->input[state->i + 2]) == 1
-			|| state->input[state->i + 2] == '\0') && state->quote == 0
+		&& is_next_char_not_dquote_or_null(state, state->i + 2)
+		&& is_next_char_space_or_null(state, state->i + 2) && state->quote == 0
 		&& state->buf_index == 0)
 	{
 		return (1);
 	}
 	if ((state->input[state->i] == '\'' && state->input[state->i + 1] == '\'')
-		&& (state->input[state->i + 2] != '\'' || state->input[state->i
-			+ 2] == '\0') && (ft_skip_space(state->input[state->i + 2]) == 1
-			|| state->input[state->i + 2] == '\0') && state->quote == 0
-			&& state->buf_index == 0)
+		&& is_next_char_not_squote_or_null(state, state->i + 2)
+		&& is_next_char_space_or_null(state, state->i + 2) && state->quote == 0
+		&& state->buf_index == 0)
 	{
 		return (1);
 	}
