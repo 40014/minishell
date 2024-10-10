@@ -1,10 +1,10 @@
 #include "../minishell.h"
 
-int	ft_atoi3(char *str)
+int ft_atoi3(char *str)
 {
-	int	i;
-	int	symbol;
-	int	outcome;
+	int i;
+	int symbol;
+	int outcome;
 
 	i = 0;
 	symbol = 1;
@@ -25,7 +25,7 @@ int	ft_atoi3(char *str)
 	return (outcome * symbol);
 }
 
-static long	ft_atoi4(char *str, t_env **envp, t_data **data, t_hold **hold_vars)
+static long ft_atoi4(char *str, t_env **envp, t_data **data, t_hold **hold_vars)
 {
 	int				i;
 	int				s;
@@ -37,26 +37,28 @@ static long	ft_atoi4(char *str, t_env **envp, t_data **data, t_hold **hold_vars)
 	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (str[i] == '-')
+	{
 		s = s * -1;
-	i++;
+		i++;
+	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		r = r * 10 + (str[i] - 48);
+		if ((r > LONG_MAX && s == 1) || (s == -1 && r > (unsigned long)LONG_MIN))
+		{
+			ft_print_in_stderr("exit: ", str, ": numeric argument required\n");
+			free_before_exit(hold_vars, envp, data, 0);
+			exit(2);
+		}
 		i++;
-	}
-	if ((r > LONG_MAX && s == 1) || (s == -1 && r > (unsigned long)LONG_MIN))
-	{
-		ft_print_in_stderr("exit: ", str, ": numeric argument required\n");
-		free_before_exit(hold_vars, envp, data, 0);
-		exit(2);
 	}
 	return (r * s);
 }
 
-int	ft_isalnum(char *str, t_env **envp, t_data **data, t_hold **hold_vars)
+int ft_isalnum(char *str, t_env **envp, t_data **data, t_hold **hold_vars)
 {
-	int	i;
-	int	count;
+	int i;
+	int count;
 
 	i = 0;
 	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
@@ -79,15 +81,15 @@ int	ft_isalnum(char *str, t_env **envp, t_data **data, t_hold **hold_vars)
 	return (0);
 }
 
-int	exec_exit(char **commande, t_env **envp, t_data **data, t_hold **hold_vars)
+int exec_exit(char **commande, t_env **envp, t_data **data, t_hold **hold_vars)
 {
-	int	i;
+	int i;
 
 	if (commande[1] != NULL && ft_isalnum(commande[1], envp, data,
-			hold_vars) == 1)
+										  hold_vars) == 1)
 	{
 		ft_print_in_stderr("exit: ", commande[1],
-			": numeric argument required\n");
+						   ": numeric argument required\n");
 		free_before_exit(hold_vars, envp, data, 0);
 		exit(2);
 	}
