@@ -6,7 +6,7 @@
 /*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:45:24 by medo              #+#    #+#             */
-/*   Updated: 2024/10/11 01:08:25 by momazouz         ###   ########.fr       */
+/*   Updated: 2024/10/11 21:00:07 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void	finalize_args(t_ParserState *state, t_arg_node **arg_list,
 		&& (*arg_list) == NULL)
 		handle_empty_argument_backslash(state, arg_list, redir_list);
 	else if (state->buf_index == 0 && state->flag_backslash == 1
-		&& state->quots->empty == 1 && (*arg_list) == NULL)
+		&& state->quots->empty == 1 && (*arg_list) == NULL
+		&& (*redir_list) == NULL)
 	{
 		state->quots->empty = 2;
 		append_arg_node(arg_list, create_arg_node(""));

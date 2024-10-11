@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arg_parser_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 13:07:14 by medo              #+#    #+#             */
-/*   Updated: 2024/10/09 13:07:38 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/11 21:01:33 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	process_buffer_until_special_char(t_ParserState *state)
 {
 	while (state->input[state->i] != '\0'
 		&& ft_skip_space(state->input[state->i]) != 1
+		&& state->input[state->i] != '>' && state->input[state->i] != '<'
 		&& state->input[state->i] != '\'' && state->input[state->i] != '"'
 		&& state->input[state->i] != '$')
 	{
