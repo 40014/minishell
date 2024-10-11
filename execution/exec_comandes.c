@@ -22,7 +22,7 @@ int	exec_simple_commande(t_quots *quots, t_env **envp, t_data **data,
 	else if (ft_strcmp((*data)->argumment[0], "pwd") == 0)
 		exit_code = exec_pwd((*data)->argumment);
 	else if (ft_strcmp((*data)->argumment[0], "cd") == 0)
-		exit_code = exec_cd((*data)->argumment, *envp, envp);
+		exit_code = exec_cd((*data)->argumment, *envp, envp, 0, 0);
 	else if (ft_strcmp((*data)->argumment[0], "export") == 0)
 	{
 		exit_code = 0;

@@ -52,7 +52,12 @@ char	*print_prompt(t_env *envp)
 	char	*prompt;
 	int		i;
 
-	getcwd(path, PATH_MAX);
+	
+	if ((getcwd(path, PATH_MAX)) == NULL)
+	{
+		prompt = ft_strjoin("\x1b[1;37m\x1b[1m", ft_getenv(envp, "PWD"), 0, 4);
+		return(put_right_color(prompt));
+	}
 	home = ft_getenv(envp, "HOME");
 	prompt = NULL;
 	if (ft_strcmp(path, home) == 0)

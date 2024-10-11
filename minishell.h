@@ -203,8 +203,8 @@ void					exec_commandes(t_env **envp, t_data **data,
 							t_hold **hold_vars, t_quots *quots);
 int						exec_echo(char **commande);
 void					ft_putstr(char *str);
-int						exec_cd(char **commande, t_env *envp,
-							t_env **all_env_list);
+int						exec_cd(char **commande, t_env *envp, t_env **all_env_list,
+							int check, int wd_err);
 int						exec_pwd(char **commande);
 char					*print_prompt(t_env *envp);
 char					*ft_getenv(t_env *envp, char *var);
@@ -264,5 +264,6 @@ void					free_before_exit(t_hold **hold_vars, t_env **envp,
 int						if_contain_directory(char *commande);
 int						count_nodes(t_env *envp);
 void					ft_create_nodes(t_env **head, char *envp);
+void					check_if_directory(char *path);
 
 #endif

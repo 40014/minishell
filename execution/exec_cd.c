@@ -38,7 +38,7 @@ int	go_from_home(t_env *envp, char *path)
 			join = ft_strdup(path);
 		if (chdir(join) != 0)
 		{
-			ft_print_in_stderr("cd: ", join, ": No such file or directory\n");
+			perror(join);
 			free(join);
 			return (1);
 		}
@@ -61,7 +61,7 @@ int	go_to_specific_path(t_env *envp, char *path)
 		}
 		if (chdir(oldpwd) != 0)
 		{
-			ft_print_in_stderr("cd: ", oldpwd, ": No such file or directory\n");
+			perror(oldpwd);
 			return (1);
 		}
 		printf("%s\n", oldpwd);
@@ -69,19 +69,19 @@ int	go_to_specific_path(t_env *envp, char *path)
 	}
 	if (chdir(path) != 0)
 	{
-		ft_print_in_stderr("cd: ", path, ": No such file or directory\n");
+		perror(path);
 		return (1);
 	}
 	return (0);
 }
 
-int	exec_cd(char **commande, t_env *envp, t_env **all_env_list)
+int	exec_cd(char **commande, t_env *envp, t_env **all_env_list, int check, int wd_err)
 {
-	int		check;
 	char	cur_path[PATH_MAX];
 	char	old_path[PATH_MAX];
 
-	getcwd(old_path, PATH_MAX);
+	if (getcwd(old_path, PATH_MAX) == NULL)
+		wd_err = 1;
 	if (commande[1] != NULL && commande[2] != NULL)
 	{
 		ft_putstr_fd("too many arguments\n");
@@ -94,11 +94,11 @@ int	exec_cd(char **commande, t_env *envp, t_env **all_env_list)
 		check = go_from_home(envp, commande[1]);
 	else
 		check = go_to_specific_path(envp, commande[1]);
-	if (check == 0)
+	if (check == 0 )
 	{
-		getcwd(cur_path, PATH_MAX);
-		ft_update_val(all_env_list, "PWD=", cur_path);
-		if (commande[1] != NULL)
+		if (getcwd(cur_path, PATH_MAX) != NULL)
+			ft_update_val(all_env_list, "PWD=", cur_path);
+		if (commande[1] != NULL && wd_err == 0)
 			ft_update_val(all_env_list, "OLDPWD=", old_path);
 	}
 	return (check);
