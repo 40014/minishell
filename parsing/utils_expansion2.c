@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_expansion2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 23:02:34 by medo              #+#    #+#             */
-/*   Updated: 2024/10/10 00:09:32 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/11 02:43:06 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	process_redirection_without_quotes(t_ParserContext *context,
 		handle_redirection_condition_1(context, state);
 	else if (state->quote == 0 && state->buf_index > 0
 		&& state->check_first_space == 1 && env != NULL)
-		handle_redirection_condition_2(context, state, env);
+		handle_redirection_condition_2(context, state);
 	else if (state->buf_index > 0 && state->check_first_space == 0
 		&& state->quote == 0 && env != NULL)
 		handle_redirection_last_space(context, state, result[0]);
@@ -73,7 +73,7 @@ void	process_redirection_without_quotes(t_ParserContext *context,
 }
 
 void	process_redirection_with_quotes(t_ParserContext *context,
-		t_ParserState *state, char **result, char *env)
+		t_ParserState *state, char *env)
 {
 	if (state->quote != 0 && state->input[state->i] == '"'
 		&& state->find_red == 1 && state->buf_index == 0 && env == NULL)
@@ -94,7 +94,7 @@ void	process_redirection(t_ParserContext *context, t_ParserState *state,
 		process_redirection_without_quotes(context, state, result, env);
 	}
 	else
-		process_redirection_with_quotes(context, state, result, env);
+		process_redirection_with_quotes(context, state, env);
 	free_env_if_needed(env);
 }
 

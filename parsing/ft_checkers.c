@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_checkers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:49:47 by medo              #+#    #+#             */
-/*   Updated: 2024/10/08 22:21:31 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/11 00:56:54 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,7 @@ int	handle_errors(char *input)
 	return (0);
 }
 
-int	ft_handle_dollar_herdoc(t_ParserState *state, char c,
-		t_redir_node **redir_list)
+int	ft_handle_dollar_herdoc(char c, t_redir_node **redir_list)
 {
 	t_redir_node	*current;
 

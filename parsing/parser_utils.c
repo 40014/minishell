@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:45:24 by medo              #+#    #+#             */
-/*   Updated: 2024/10/09 23:28:43 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/11 01:08:25 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	handle_empty_argument(t_ParserState *state, t_arg_node *arg_list,
+void	handle_empty_argument(t_ParserState *state, t_arg_node **arg_list,
 		t_redir_node **redir_list)
 {
 	if (state->find_red == 1)
@@ -64,7 +64,7 @@ void	finalize_args(t_ParserState *state, t_arg_node **arg_list,
 	}
 	if (state->buf_index == 0 && state->flag_backslash == 0
 		&& (*arg_list) == NULL)
-		handle_empty_argument_backslash(state, arg_list);
+		handle_empty_argument_backslash(state, arg_list, redir_list);
 	else if (state->buf_index == 0 && state->flag_backslash == 1
 		&& state->quots->empty == 1 && (*arg_list) == NULL)
 	{
@@ -72,7 +72,7 @@ void	finalize_args(t_ParserState *state, t_arg_node **arg_list,
 		append_arg_node(arg_list, create_arg_node(""));
 	}
 	else if (state->quots->empty == 0 && state->flag_backslash == 1
-		&& (*arg_list) == NULL)
+		&& (*arg_list) == NULL && (*redir_list) == NULL)
 		append_arg_node(arg_list, create_arg_node(""));
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:52:27 by medo              #+#    #+#             */
-/*   Updated: 2024/10/08 21:50:08 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/11 02:52:09 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ char	*ft_strcpy(char *dest, const char *src)
 	size_t	i;
 
 	i = 0;
+	if (src == NULL || dest == NULL)
+		return (NULL);
 	while (src[i] != '\0')
 	{
 		dest[i] = src[i];

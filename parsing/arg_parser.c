@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arg_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:46:27 by medo              #+#    #+#             */
-/*   Updated: 2024/10/09 13:03:01 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/10 07:25:51 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	handle_dollar_sign(t_ParserState *state, t_arg_node **arg_list,
 	int	check_dollar;
 
 	check_dollar = 0;
+	state->quots->empty = 0;
 	if (state->quote == 0 && state->quots->x == 1)
 		state->quots->x = 0;
 	if (state->input[state->i] == '$' && (state->quote == 0

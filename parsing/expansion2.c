@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 20:30:19 by medo              #+#    #+#             */
-/*   Updated: 2024/10/10 01:12:59 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/10 05:59:02 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ void	handle_null_env_or_redir(t_ParserContext *context, char *env, int check,
 		process_arg_node(context, state, result, env);
 	}
 	else if (env == NULL && state->quots->x == 0 && state->buf_index == 0
-		&& ft_skip_space(state->input[state->i + 1]) == 1
 		&& state->input[state->i] == '\"' && state->quote != 0
+		&& ft_skip_space(state->input[state->i + 1]) == 1
 		&& state->find_red != 1)
 		append_arg_node(context->arg_list, create_arg_node(""));
 	if (env == NULL || state->find_red == 1)

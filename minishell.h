@@ -106,6 +106,7 @@ typedef struct ParserContext
 
 extern int				exit_code;
 
+int	ft_handle_dollar_herdoc(char c, t_redir_node **redir_list);
 void free_env_if_needed(char *env);
 void handle_redirection_buffer_or_condition(t_ParserContext *context, t_ParserState *state, char **result);
 void handle_redirection_input_condition(t_ParserContext *context, t_ParserState *state, char **result);
@@ -113,13 +114,13 @@ void handle_redirection_last_space(t_ParserContext *context, t_ParserState *stat
 void copy_to_buffer(t_ParserState *state, char *source);
 void handle_empty_redirection(t_ParserContext *context, t_ParserState *state);
 void handle_redirection_condition_3(t_ParserContext *context, t_ParserState *state, char **result);
-void handle_redirection_condition_2(t_ParserContext *context, t_ParserState *state, char *env);
+void handle_redirection_condition_2(t_ParserContext *context, t_ParserState *state);
 void handle_redirection_condition_1(t_ParserContext *context, t_ParserState *state);
 void process_redirection(t_ParserContext *context, t_ParserState *state, char **result, char *env);
 void process_arg_node(t_ParserContext *context, t_ParserState *state, char **result, char *env);
 int	ft_handle_pipe(char *input, int *i);
 int	ft_handle_redirection(char *input, int *i);
-void	handle_empty_argument_backslash(t_ParserState *state, t_arg_node **arg_list);
+void	handle_empty_argument_backslash(t_ParserState *state, t_arg_node **arg_list, t_redir_node **redir_list);
 int is_next_char_not_squote_or_null(t_ParserState *state, int index);
 int is_next_char_not_dquote_or_null(t_ParserState *state, int index);
 int is_next_char_space_or_null(t_ParserState *state, int index);
@@ -164,7 +165,7 @@ void					add_buffer_to_args(t_ParserState *state,
 							t_arg_node **arg_list, t_redir_node **redir_list);
 // void add_buffer_to_args(t_ParserState *state, t_arg_node **arg_list);
 void					handle_empty_argument(t_ParserState *state,
-							t_arg_node *arg_list, t_redir_node **redir_list);
+							t_arg_node **arg_list, t_redir_node **redir_list);
 void					init_parser_state(t_ParserState *state, char *input,
 							t_env *env_var, t_quots *quots);
 char					*ft_environment_variables(char *arguments,

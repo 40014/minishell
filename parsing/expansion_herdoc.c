@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_herdoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:47:57 by medo              #+#    #+#             */
-/*   Updated: 2024/10/08 21:21:09 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/11 01:18:56 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ char	*ft_expand_herdoc(char *str, t_env *env_var, t_quots *quots)
 {
 	int		i;
 	char	*result;
-	char	character[2];
 
 	i = 0;
 	result = NULL;

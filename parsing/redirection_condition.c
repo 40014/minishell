@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_condition.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 00:14:09 by medo              #+#    #+#             */
-/*   Updated: 2024/10/10 00:14:12 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/11 01:25:28 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	handle_redirection_condition_1(t_ParserContext *context,
 }
 
 void	handle_redirection_condition_2(t_ParserContext *context,
-		t_ParserState *state, char *env)
+		t_ParserState *state)
 {
 	append_redir_node(context->redir_list, create_redir_node(NULL));
 	state->find_red = 0;

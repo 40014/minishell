@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:51:17 by medo              #+#    #+#             */
-/*   Updated: 2024/10/10 00:15:17 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/11 02:05:58 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	handle_buffer(t_ParserState *state, t_arg_node *arg_list,
+void	handle_buffer(t_ParserState *state, t_arg_node **arg_list,
 		t_redir_node **redir_list)
 {
 	state->buffer[state->buf_index] = '\0';
@@ -29,11 +29,6 @@ void	handle_buffer(t_ParserState *state, t_arg_node *arg_list,
 void	handle_redirection(t_ParserState *state, t_arg_node **arg_list,
 		t_redir_node **redir_list)
 {
-	int		buf_index;
-	char	buffer[BUFSIZ];
-	char	file_quote;
-
-	buf_index = 0;
 	if (state->buf_index > 0)
 		handle_buffer(state, arg_list, redir_list);
 	if (state->input[state->i] == '>' && state->input[state->i + 1] == '>')
@@ -69,8 +64,8 @@ void	handle_input_cases(t_ParserState *state, t_arg_node **arg_list,
 		&& state->quote == 0)
 		handle_redirection(state, arg_list, redir_list);
 	else if (state->input[state->i] == '$' && (state->quote == 0
-			|| state->quote != '\'') && ft_handle_dollar_herdoc(state,
-			state->input[state->i], redir_list) == 1)
+			|| state->quote != '\'')
+		&& ft_handle_dollar_herdoc(state->input[state->i], redir_list) == 1)
 	{
 		handle_dollar_sign(state, arg_list, redir_list);
 	}
@@ -116,6 +111,7 @@ int	parse_line(t_data **data, char *input, t_env *env_var, t_quots *quots)
 	char			*remaining_input;
 	int				error_result;
 
+	redir_list = NULL;
 	error_result = handle_errors(input);
 	if (error_result != 0)
 		return (error_result);
@@ -125,7 +121,8 @@ int	parse_line(t_data **data, char *input, t_env *env_var, t_quots *quots)
 	while (token != NULL)
 	{
 		arguments = split_line_to_args(token, env_var, quots, &redir_list);
-		if (arguments[0] != NULL || redir_list->redirection[0] != NULL)
+		if (arguments[0] != NULL || (redir_list != NULL
+				&& redir_list->redirection != NULL))
 			ft_add_node(data, arguments, redir_list);
 		else
 			return (1);

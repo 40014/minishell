@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:51:59 by medo              #+#    #+#             */
-/*   Updated: 2024/10/08 20:33:18 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/11 09:53:19 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	check_first_space(const char *input, t_ParserState *state)
 
 void	check_last_space(const char *input, t_ParserState *state, int len)
 {
-	if (ft_skip_space(input[len - 1]) == 1)
+	if (len != 0 && ft_skip_space(input[len - 1]) == 1)
 		state->check_last_space = 1;
 	else
 		state->check_last_space = 0;
@@ -54,7 +54,7 @@ int	count_words(const char *input)
 	return (count);
 }
 
-int	fill_result_array(const char *input, char **result, t_ParserState *state)
+int	fill_result_array(const char *input, char **result)
 {
 	const char	*ptr;
 	const char	*start;
@@ -94,7 +94,7 @@ char	**split_string(const char *input, t_ParserState *state)
 	result = malloc((count + 1) * sizeof(char *));
 	if (result == NULL)
 		return (NULL);
-	if (fill_result_array(input, result, state) == -1)
+	if (fill_result_array(input, result) == -1)
 		return (NULL);
 	check_last_space(input, state, ft_strlen(input));
 	return (result);
