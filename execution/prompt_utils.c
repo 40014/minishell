@@ -37,7 +37,7 @@ char	*put_right_color(char *prompt)
 		return (NULL);
 	temp = ft_strjoin(prompt, "\x1b[0m", 1, 1);
 	free(prompt);
-	if (exit_code == 0)
+	if (g_exit_code == 0)
 		hold = ft_strjoin("\x1b[1;32m\x1b[1mminishell:\x1b[0m", temp, 1, 1);
 	else
 		hold = ft_strjoin("\x1b[1;31m\x1b[1mminishell:\x1b[0m", temp, 1, 1);

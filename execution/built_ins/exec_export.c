@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../../minishell.h"
 
 int	ft_update_val(t_env **envp, char *var, char *val)
 {
@@ -114,9 +114,9 @@ int	exec_export(char **commande, t_env **envp)
 		{
 			ft_print_in_stderr("export: '", commande[j],
 				"': not a valid identifier\n");
-			exit_code = 1;
+			g_exit_code = 1;
 		}
 		j++;
 	}
-	return (exit_code);
+	return (g_exit_code);
 }

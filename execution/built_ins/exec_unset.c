@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../../minishell.h"
 
 int	ft_strcmp3(char *s1, char *s2)
 {
@@ -46,12 +46,12 @@ int	exec_unset(char **commande, t_env **envp)
 {
 	int	i;
 
-	exit_code = 0;
+	g_exit_code = 0;
 	i = 1;
 	while (commande[i])
 	{
 		ft_unset_env(envp, commande[i]);
 		i++;
 	}
-	return (exit_code);
+	return (g_exit_code);
 }

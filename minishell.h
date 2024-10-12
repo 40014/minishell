@@ -105,7 +105,7 @@ typedef struct ParserContext
 
 }						t_ParserContext;
 
-extern int				exit_code;
+extern int				g_exit_code;
 
 int						ft_handle_dollar_herdoc(char c,
 							t_redir_node **redir_list);
@@ -219,71 +219,90 @@ t_data					*creat_node(char **arguments,
 t_redir_node			*create_redir_node(char *redir);
 // void ft_add_node(t_data **head, char **arguments, char **redirection);
 // t_data *creat_node(char **arguments, char **redirection);
-void					exec_commandes(t_env **envp, t_data **data,
-							t_hold **hold_vars, t_quots *quots);
-int						exec_echo(char **commande);
-void					ft_putstr(char *str);
-int						exec_cd(char **commande, t_env **envp, int check,
-							int wd_err);
-int						exec_pwd(char **commande, t_env *envp);
+
+// execution functions
+void					handlle_sigint(int sig);
 char					*print_prompt(t_env *envp);
 char					*ft_getenv(t_env *envp, char *var);
+int						ft_strcmp(char *s1, char *s2);
 char					*ft_strjoin(char const *s1, char const *s2, int flag,
 							int size);
-int						ft_strcmp(char *s1, char *s2);
+void					exec_commandes(t_env **envp, t_data **data,
+							t_hold **hold_vars, t_quots *quots);
+void					add_update_last_commande(t_env **env, char *var_val);
+int						exec_simple_commande(t_env **envp, t_data **data,
+							t_hold **hold_vars);
+char					*set_shlvl(char *var, char *shlvl, char *newshlvl);
+
+//envp_to_list_functions
 t_env					*env_to_list(char **envp, char *first_arg);
+void					ft_create_nodes(t_env **head, char *envp);
 t_env					*ft_one_node(char *envp);
+t_env					*ft_one_node2(char *envp);
 char					*grep_env_value(char *envp, int i);
-void					ft_free_list2(t_env *head);
+void					add_missing_vars(t_env **env, int t1, int t2, int t3);
+
+//redirection_functions
+int						check_handle_redirections(t_data *data);
+int						ft_handle_append(char *file_name);
+int						ft_handle_output(char *file_name);
+int						ft_handle_input(char *file_name);
+
+//heredoc_function
+int						ft_exec_heredocs(t_data **data_add, t_env *envp,
+							t_quots *quots);
+
+//heredoc_utils_functions
+char					*get_next_line(int fd);
+void					*ft_calloc(size_t count, size_t size);
+int						ft_strchr(const char *s, int c);
+void					ft_bzero(void *s, size_t n);
+int						ft_find_del(char *line, char *del);
+void					delete_heredoc_files(void);
+
+// built_ins_functions
+int						exec_echo(char **commande);
+int						exec_pwd(char **commande, t_env *envp);
+int						exec_cd(char **commande, t_env **envp, int check,
+							int wd_err);
 int						exec_export(char **commande, t_env **envp);
 int						exec_env(char **commande, t_env *envp);
-void					ft_print_env(t_env *envp);
-t_env					*ft_one_node2(char *envp);
-int						ft_update_val(t_env **envp, char *var, char *val);
 int						exec_unset(char **commande, t_env **envp);
 int						exec_exit(char **commande, t_env **envp, t_data **data,
 							t_hold **hold_vars);
-int						ft_isalpha(int c, int i);
-char					*remove_plus(char *var);
-int						ft_contain_plus(char *commande);
-int						check_argument(char *commande);
-int						ft_strcmp2(char *s1, char *s2);
-int						exec_non_builtin(char **comande, t_env **envp);
-char					**ft_split(char const *s, char c);
-void					exec_with_pipes(t_env **envp, t_data **data,
-							t_hold **hold_vars, t_quots *quots);
-int						exec_simple_commande(t_env **envp, t_data **data,
-							t_hold **hold_vars);
+
+// built_ins_utils_functions 
 void					ft_putstr_fd(char const *str);
-void					ft_print_in_stderr(char *s1, char *s2, char *s3);
-void					ft_free_arr(char **paths);
-void					ft_bzero(void *s, size_t n);
-int						ft_strchr(const char *s, int c);
-void					*ft_calloc(size_t count, size_t size);
-char					*get_next_line(int fd);
-int						check_handle_redirections(t_data *data);
-int						ft_handle_output(char *file_name);
-int						ft_handle_append(char *file_name);
-int						ft_handle_input(char *file_name);
-int						ft_handle_heredoc(char *delimiter, t_env *envp,
-							t_quots *quots);
-char					*set_shlvl(char *var, char *shlvl, char *newshlvl);
-int						ft_strcmp3(char *s1, char *s2);
-int						ft_atoi(char *str);
+void					ft_putstr(char *str);
+int						ft_update_val(t_env **envp, char *var, char *val);
 int						ft_print_export(t_env *envp);
-char					**convert_envp_to_arr(t_env *envp);
-void					handlle_sigint(int sig);
-int						ft_exec_heredocs(t_data **data_add, t_env *envp,
-							t_quots *quots);
-void					add_update_last_commande(t_env **env, char *var_val);
-void					add_missing_vars(t_env **env, int t1, int t2, int t3);
+int						check_argument(char *commande);
+void					ft_print_in_stderr(char *s1, char *s2, char *s3);
+int						ft_contain_plus(char *commande);
+char					*remove_plus(char *var);
+int						ft_strcmp2(char *s1, char *s2);
+int						ft_strcmp3(char *s1, char *s2);
 void					free_before_exit(t_hold **hold_vars, t_env **envp,
 							t_data **data, int i);
-int						if_contain_directory(char *commande);
+int						ft_isalpha(int c, int i);
+void					ft_print_env(t_env *envp);
+
+// non_built_in_functions
+int						exec_non_builtin(char **comande, t_env **envp);
+
+// non_built_in_utils_functions
+char					**ft_split(char const *s, char c);
+char					**convert_envp_to_arr(t_env *envp);
 int						count_nodes(t_env *envp);
-void					ft_create_nodes(t_env **head, char *envp);
+int						if_contain_directory(char *commande);
 void					check_if_directory(char *path);
-int						ft_find_del(char *line, char *del);
-void					delete_heredoc_files(void);
+
+// exec_in_pipes_functions
+void					exec_with_pipes(t_env **envp, t_data **data,
+							t_hold **hold_vars, t_quots *quots);
+
+//free_functions
+void					ft_free_list2(t_env *head);
+void					ft_free_arr(char **paths);
 
 #endif

@@ -16,7 +16,7 @@ void	process_exit_code(t_ParserState *state)
 {
 	char	*env_val;
 
-	env_val = ft_itoa(exit_code);
+	env_val = ft_itoa(g_exit_code);
 	ft_strcpy(state->buffer + state->buf_index, env_val);
 	state->buf_index += ft_strlen(env_val);
 	free(env_val);

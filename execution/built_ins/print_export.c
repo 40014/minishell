@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../../minishell.h"
 
 char	*get_val_in_quotes(char *var, char *val)
 {

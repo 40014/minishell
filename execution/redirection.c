@@ -30,13 +30,13 @@ int	check_handle_redirections(t_data *data)
 		if (temp->next->redirection == NULL)
 		{
 			ft_putstr_fd("ambiguous redirect\n");
-			exit_code = 1;
+			g_exit_code = 1;
 			return (1);
 		}
 		if (ft_which_redirection(temp->redirection, temp->next->redirection)
 			== -1)
 		{
-			exit_code = 1;
+			g_exit_code = 1;
 			return (1);
 		}
 		temp = temp->next->next;

@@ -36,7 +36,7 @@ int	get_child_exit_code(int pid, char *file_name, t_redir_node *red)
 	signal(SIGQUIT, SIG_DFL);
 	if (WIFSIGNALED(status) != 0)
 	{
-		exit_code = WTERMSIG(status) + 128;
+		g_exit_code = WTERMSIG(status) + 128;
 		free(file_name);
 		printf("\n");
 		return (-1);
@@ -48,7 +48,7 @@ int	get_child_exit_code(int pid, char *file_name, t_redir_node *red)
 	return (0);
 }
 
-int	ft_handle_heredoc2(t_redir_node *red, t_env *envp, t_quots *quots)
+int	ft_handle_heredoc(t_redir_node *red, t_env *envp, t_quots *quots)
 {
 	int		fd;
 	char	*file_name;
@@ -112,7 +112,7 @@ int	ft_exec_heredocs(t_data **data_add, t_env *envp, t_quots *quots)
 			if (red->redirection[0] == '<' && red->redirection[1] == '<'
 				&& red->redirection[2] == '\0')
 			{
-				if (ft_handle_heredoc2(red, envp, quots) == -1)
+				if (ft_handle_heredoc(red, envp, quots) == -1)
 					return (-1);
 				quots->id++;
 			}

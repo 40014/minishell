@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "../../minishell.h"
 
 int	ft_atoi3(char *str)
 {
@@ -33,7 +33,7 @@ void	print_error_exit(char *str, t_env **envp, t_data **data,
 	exit(2);
 }
 
-static long	ft_atoi4(char *str, t_env **envp, t_data **data, t_hold **hold_vars)
+long	ft_atoi4(char *str, t_env **envp, t_data **data, t_hold **hold_vars)
 {
 	int				i;
 	int				s;
@@ -104,5 +104,5 @@ int	exec_exit(char **commande, t_env **envp, t_data **data, t_hold **hold_vars)
 	}
 	else
 		free_before_exit(hold_vars, envp, data, 0);
-	exit(exit_code);
+	exit(g_exit_code);
 }

@@ -39,10 +39,10 @@ void	get_last_child_exit_code(int pid)
 	while (wait(&status) > 0)
 		;
 	if (WIFEXITED(exit_status) != 0)
-		exit_code = WEXITSTATUS(exit_status);
+		g_exit_code = WEXITSTATUS(exit_status);
 	else if (WIFSIGNALED(status) != 0)
 	{
-		exit_code = WTERMSIG(status) + 128;
+		g_exit_code = WTERMSIG(status) + 128;
 		printf("\n");
 	}
 	signal(SIGINT, handlle_sigint);

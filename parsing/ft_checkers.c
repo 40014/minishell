@@ -68,13 +68,13 @@ int	handle_errors(char *input)
 	if (i != 0)
 	{
 		ft_printf_error(i);
-		exit_code = 2;
+		g_exit_code = 2;
 		return (1);
 	}
 	if (check_herdoc_error(input) != 0)
 	{
 		printf("maximum here-document count exceeded\n");
-		exit_code = 2;
+		g_exit_code = 2;
 		return (2);
 	}
 	return (0);

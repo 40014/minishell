@@ -45,7 +45,7 @@ void	handlle_sigint(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	exit_code = 130;
+	g_exit_code = 130;
 }
 
 void	return_to_std(int saved_stdin, int saved_stdout)
@@ -84,7 +84,7 @@ int	checks_before_parse(t_hold_main *main_vars)
 	return (0);
 }
 
-int		exit_code;
+int		g_exit_code;
 
 int	main(int arc, char **arv, char **envp)
 {

@@ -86,5 +86,5 @@ void	free_before_exit(t_hold **hold_vars, t_env **envp, t_data **data, int i)
 	ft_free_list(*data);
 	ft_free_list2(*envp);
 	if (i == 1)
-		exit(exit_code);
+		exit(g_exit_code);
 }

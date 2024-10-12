@@ -1,22 +1,18 @@
 #include "../minishell.h"
 
-void	check_if_path(char *commande)
-{
-	int	check;
-
-	check = 0;
-	check = if_contain_directory(commande);
-	if (check == 1)
-		check_if_directory(commande);
-}
-
 int	test_paths(char **commande, char **paths, char **envp)
 {
-	int		j;
-	char	*join;
-	char	*temp;
+	int			j;
+	char		*join;
+	char		*temp;
+	struct stat	path_stat;
 
-	check_if_path(commande[0]);
+	if ((if_contain_directory(commande[0]) == 1) && stat(commande[0],
+			&path_stat) != 0)
+	{
+		perror(commande[0]);
+		exit(127);
+	}
 	if (execve(commande[0], commande, envp) == -1)
 	{
 		j = 0;
@@ -55,6 +51,16 @@ char	**convert_envp_to_arr(t_env *envp)
 	return (envp_arr);
 }
 
+void	check_if_path(char *commande)
+{
+	int	check;
+
+	check = 0;
+	check = if_contain_directory(commande);
+	if (check == 1)
+		check_if_directory(commande);
+}
+
 void	exec_non_builtin_in_child(t_env *envp, char **commande)
 {
 	char	**paths;
@@ -66,6 +72,7 @@ void	exec_non_builtin_in_child(t_env *envp, char **commande)
 	envp_arr = convert_envp_to_arr(envp);
 	if (test_paths(commande, paths, envp_arr) == 1)
 	{
+		check_if_path(commande[0]);
 		if (commande[0][0] == '\0')
 			ft_print_in_stderr("commande '", commande[0],
 				"': not a valid identifier\n");
@@ -93,11 +100,11 @@ int	exec_non_builtin(char **commande, t_env **envp)
 	waitpid(pid, &status, 0);
 	signal(SIGINT, handlle_sigint);
 	if (WIFEXITED(status) != 0)
-		exit_code = WEXITSTATUS(status);
+		g_exit_code = WEXITSTATUS(status);
 	if (WIFSIGNALED(status) != 0)
 	{
-		exit_code = WTERMSIG(status) + 128;
+		g_exit_code = WTERMSIG(status) + 128;
 		printf("\n");
 	}
-	return (exit_code);
+	return (g_exit_code);
 }
