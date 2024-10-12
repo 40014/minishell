@@ -107,12 +107,14 @@ typedef struct ParserContext
 
 extern int				g_exit_code;
 
+int						is_dollar_followed_by_quote(t_ParserState *state);
+int						check_parsing(t_hold_main *main_vars);
 int						ft_handle_dollar_herdoc(char c,
 							t_redir_node **redir_list);
 void					free_env_if_needed(char *env);
-void					handle_redirection_buffer_or_condition(t_ParserContext *context,
+void					handle_redi_buf_or_condit(t_ParserContext *context,
 							t_ParserState *state, char **result);
-void					handle_redirection_input_condition(t_ParserContext *context,
+void					handle_redi_input_condit(t_ParserContext *context,
 							t_ParserState *state, char **result);
 void					handle_redirection_last_space(t_ParserContext *context,
 							t_ParserState *state, char *result);

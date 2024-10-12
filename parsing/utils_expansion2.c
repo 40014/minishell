@@ -6,7 +6,7 @@
 /*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 23:02:34 by medo              #+#    #+#             */
-/*   Updated: 2024/10/11 02:43:06 by momazouz         ###   ########.fr       */
+/*   Updated: 2024/10/12 19:22:41 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ void	process_redirection_without_quotes(t_ParserContext *context,
 		handle_redirection_last_space(context, state, result[0]);
 	else if (state->quote == 0 && state->check_last_space == 1
 		&& state->find_red == 1 && state->input[state->i] != ' ')
-		handle_redirection_input_condition(context, state, result);
+		handle_redi_input_condit(context, state, result);
 	else if (state->quote == 0 && state->buf_index == 0 && state->find_red == 1
 		&& env != NULL)
-		handle_redirection_buffer_or_condition(context, state, result);
+		handle_redi_buf_or_condit(context, state, result);
 	else if (env == NULL && state->find_red == 1
 		&& (state->input[state->i] == '\0'
 			|| ft_skip_space(state->input[state->i]) == 1))

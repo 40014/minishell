@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_condition1.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 22:42:56 by medo              #+#    #+#             */
-/*   Updated: 2024/10/09 23:02:47 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/12 19:22:45 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	handle_redirection_last_space(t_ParserContext *context,
 		copy_to_buffer(state, result);
 }
 
-void	handle_redirection_input_condition(t_ParserContext *context,
+void	handle_redi_input_condit(t_ParserContext *context,
 		t_ParserState *state, char **result)
 {
 	if (state->input[state->i] == '\0'
@@ -43,7 +43,7 @@ void	handle_redirection_input_condition(t_ParserContext *context,
 		handle_redirection_condition_1(context, state);
 }
 
-void	handle_redirection_buffer_or_condition(t_ParserContext *context,
+void	handle_redi_buf_or_condit(t_ParserContext *context,
 		t_ParserState *state, char **result)
 {
 	if (state->check_last_space != 1 && state->input[state->i] != '\0'

@@ -99,7 +99,7 @@ int	main(int arc, char **arv, char **envp)
 		if (checks_before_parse(&main_vars) == 1)
 		{
 			add_history(main_vars.input);
-			if (((main_vars.i = parse_line(&main_vars.data, main_vars.input, main_vars.env_var, &main_vars.quots)) == 0 || main_vars.i == 2) && main_vars.quots.empty != 2)
+			if (check_parsing(&main_vars))
 			{
 				if (main_vars.i == 2)
 					free_before_exit(&main_vars.hold_vars, &main_vars.env_var,

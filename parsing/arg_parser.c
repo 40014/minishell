@@ -6,7 +6,7 @@
 /*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:46:27 by medo              #+#    #+#             */
-/*   Updated: 2024/10/10 07:25:51 by momazouz         ###   ########.fr       */
+/*   Updated: 2024/10/12 19:23:37 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ void	handle_dollar_sign(t_ParserState *state, t_arg_node **arg_list,
 	{
 		if (state->quote == 0)
 			state->quots->empty = 1;
-		if (state->input[state->i] == '$' && (state->input[state->i + 1] == '\"'
-				|| state->input[state->i + 1] == '\'') && state->quote == 0)
+		if (is_dollar_followed_by_quote(state))
 		{
 			state->i++;
 			check_dollar = 1;
