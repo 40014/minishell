@@ -45,6 +45,24 @@ char	*put_right_color(char *prompt)
 	return (hold);
 }
 
+char	*check_if_pwd_error(t_env *envp)
+{
+	char	path[PATH_MAX];
+	char	*prompt;
+
+	prompt = NULL;
+	if (getcwd(path, PATH_MAX) == NULL)
+	{
+		if (ft_getenv(envp, "PWD") == NULL)
+			prompt = ft_strjoin("\x1b[1;37m\x1b[1m", ".", 0, 4);
+		else
+			prompt = ft_strjoin("\x1b[1;37m\x1b[1m",
+					ft_getenv(envp, "PWD"), 0, 4);
+		return (put_right_color(prompt));
+	}
+	return (NULL);
+}
+
 char	*print_prompt(t_env *envp)
 {
 	char	*home;
@@ -52,13 +70,11 @@ char	*print_prompt(t_env *envp)
 	char	*prompt;
 	int		i;
 
-	if ((getcwd(path, PATH_MAX)) == NULL)
-	{
-		prompt = ft_strjoin("\x1b[1;37m\x1b[1m", ft_getenv(envp, "PWD"), 0, 4);
-		return (put_right_color(prompt));
-	}
+	prompt = check_if_pwd_error(envp);
+	if (prompt != NULL)
+		return (prompt);
+	getcwd(path, PATH_MAX);
 	home = ft_getenv(envp, "HOME");
-	prompt = NULL;
 	if (ft_strcmp(path, home) == 0)
 		prompt = ft_strjoin("\x1b[1;37m\x1b[1m", "~", 0, 4);
 	else

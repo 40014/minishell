@@ -13,7 +13,16 @@ int	exec_pwd(char **commande, t_env *envp)
 		}
 	}
 	if (getcwd(path, PATH_MAX) == NULL)
-		printf("%s\n", ft_getenv(envp, "PWD"));
+	{
+		if (ft_getenv(envp, "PWD") == NULL)
+		{
+			ft_putstr_fd("pwd: error retrieving current directory: ");
+			ft_putstr_fd("getcwd: cannot access parent directories: ");
+			ft_putstr_fd("No such file or directory\n");
+		}
+		else
+			printf("%s\n", ft_getenv(envp, "PWD"));
+	}
 	else
 		printf("%s\n", path);
 	return (0);
