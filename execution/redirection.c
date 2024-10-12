@@ -1,7 +1,6 @@
 #include "../minishell.h"
 
-int	ft_which_redirection(char *redirection, char *file_name, t_quots *quots,
-		t_env *envp)
+int	ft_which_redirection(char *redirection, char *file_name)
 {
 	if (redirection[0] == '>' && redirection[1] == '>')
 	{
@@ -21,7 +20,7 @@ int	ft_which_redirection(char *redirection, char *file_name, t_quots *quots,
 	return (0);
 }
 
-int	check_handle_redirections(t_data *data, t_quots *quots, t_env *envp)
+int	check_handle_redirections(t_data *data)
 {
 	t_redir_node	*temp;
 
@@ -34,8 +33,8 @@ int	check_handle_redirections(t_data *data, t_quots *quots, t_env *envp)
 			exit_code = 1;
 			return (1);
 		}
-		if (ft_which_redirection(temp->redirection, temp->next->redirection,
-				quots, envp) == -1)
+		if (ft_which_redirection(temp->redirection, temp->next->redirection)
+			== -1)
 		{
 			exit_code = 1;
 			return (1);

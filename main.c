@@ -56,8 +56,7 @@ void	return_to_std(int saved_stdin, int saved_stdout)
 	close(saved_stdin);
 }
 
-void	ft_free_data_list_and_input(t_data **data, t_quots *quots, char *temp,
-		char *input)
+void	ft_free_data_list_and_input(t_data **data, char *temp, char *input)
 {
 	ft_free_list(*data);
 	free(temp);
@@ -110,7 +109,6 @@ int	main(int arc, char **arv, char **envp)
 				return_to_std(main_vars.saved_stdin, main_vars.saved_stdout);
 			}
 		}
-		ft_free_data_list_and_input(&main_vars.data, &main_vars.quots,
-			main_vars.temp, main_vars.input);
+		ft_free_data_list_and_input(&main_vars.data, main_vars.temp, main_vars.input);
 	}
 }

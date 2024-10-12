@@ -27,7 +27,7 @@ char	**convert_envp_to_arr2(t_env *envp)
 	{
 		if (envp->val != NULL)
 		{
-			if (envp->val[0] == '/0')
+			if (envp->val[0] == '\0')
 				envp_arr[j] = ft_strjoin(envp->var, "\"\"", 1, 1);
 			else
 				envp_arr[j] = get_val_in_quotes(envp->var, envp->val);

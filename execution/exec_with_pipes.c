@@ -23,7 +23,7 @@ int	create_pipes(t_data *temp, t_env **env, t_quots *quots, t_hold **hold_vars)
 			dup2(quots->fdout, 1);
 			close(quots->fdout);
 		}
-		exit(exec_simple_commande(quots, env, &temp, hold_vars));
+		exit(exec_simple_commande(env, &temp, hold_vars));
 	}
 	return (pid);
 }

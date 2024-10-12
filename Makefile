@@ -26,7 +26,7 @@ EXECUTION =	execution/env_to_list.c execution/exec_export.c                     
 			execution/prompt_utils.c execution/exec_cd.c execution/env_to_list_utils.c       \
 
 			
-CFLAGS	=	-Wall -Wextra -Werror -w -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror  -fsanitize=address
 
 all: $(NAME)
 

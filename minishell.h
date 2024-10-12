@@ -11,6 +11,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
 # include <unistd.h>
 
 # define BUFFER_SIZE 1
@@ -78,7 +79,7 @@ typedef struct parser
 	int					redir_index;
 	int					flag_backslash;
 	int					check_last_space;
-	int 				check_first_space;
+	int					check_first_space;
 }						t_ParserState;
 
 typedef struct hold_main
@@ -96,47 +97,66 @@ typedef struct hold_main
 
 typedef struct ParserContext
 {
-    t_ParserState *state;
-    t_arg_node **arg_list;
-    t_redir_node **redir_list;
-	int check;
-	int j;
+	t_ParserState		*state;
+	t_arg_node			**arg_list;
+	t_redir_node		**redir_list;
+	int					check;
+	int					j;
 
-} t_ParserContext;
+}						t_ParserContext;
 
 extern int				exit_code;
 
-int	ft_handle_dollar_herdoc(char c, t_redir_node **redir_list);
-void free_env_if_needed(char *env);
-void handle_redirection_buffer_or_condition(t_ParserContext *context, t_ParserState *state, char **result);
-void handle_redirection_input_condition(t_ParserContext *context, t_ParserState *state, char **result);
-void handle_redirection_last_space(t_ParserContext *context, t_ParserState *state, char *result);
-void copy_to_buffer(t_ParserState *state, char *source);
-void handle_empty_redirection(t_ParserContext *context, t_ParserState *state);
-void handle_redirection_condition_3(t_ParserContext *context, t_ParserState *state, char **result);
-void handle_redirection_condition_2(t_ParserContext *context, t_ParserState *state);
-void handle_redirection_condition_1(t_ParserContext *context, t_ParserState *state);
-void process_redirection(t_ParserContext *context, t_ParserState *state, char **result, char *env);
-void process_arg_node(t_ParserContext *context, t_ParserState *state, char **result, char *env);
-int	ft_handle_pipe(char *input, int *i);
-int	ft_handle_redirection(char *input, int *i);
-void	handle_empty_argument_backslash(t_ParserState *state, t_arg_node **arg_list, t_redir_node **redir_list);
-int is_next_char_not_squote_or_null(t_ParserState *state, int index);
-int is_next_char_not_dquote_or_null(t_ParserState *state, int index);
-int is_next_char_space_or_null(t_ParserState *state, int index);
-int is_special_char(char c);
-void process_buffer_until_special_char(t_ParserState *state);
-int	handle_errors(char *input);
-int ft_check(char *input);
-int handle_allocation_error(char **result, int idx);
-int allocate_and_store_word(char **result, int idx, const char *start, int len);
-int count_results(char **result);
-t_ParserContext initialize_parser_context(t_ParserState *state, t_arg_node **arg_list, t_redir_node **redir_list);
-void handle_null_env_or_redir(t_ParserContext *context, char *env, int check, int i);
-void free_env_result(char **env, char **result, int i, int check);
-void free_split_string(char **words);
-char *handle_env_variable(t_ParserState *state);
-int handle_split_env_result(t_ParserState *state, t_arg_node **arg_list, char **result, int *check);
+int						ft_handle_dollar_herdoc(char c,
+							t_redir_node **redir_list);
+void					free_env_if_needed(char *env);
+void					handle_redirection_buffer_or_condition(t_ParserContext *context,
+							t_ParserState *state, char **result);
+void					handle_redirection_input_condition(t_ParserContext *context,
+							t_ParserState *state, char **result);
+void					handle_redirection_last_space(t_ParserContext *context,
+							t_ParserState *state, char *result);
+void					copy_to_buffer(t_ParserState *state, char *source);
+void					handle_empty_redirection(t_ParserContext *context,
+							t_ParserState *state);
+void					handle_redirection_condition_3(t_ParserContext *context,
+							t_ParserState *state, char **result);
+void					handle_redirection_condition_2(t_ParserContext *context,
+							t_ParserState *state);
+void					handle_redirection_condition_1(t_ParserContext *context,
+							t_ParserState *state);
+void					process_redirection(t_ParserContext *context,
+							t_ParserState *state, char **result, char *env);
+void					process_arg_node(t_ParserContext *context,
+							t_ParserState *state, char **result, char *env);
+int						ft_handle_pipe(char *input, int *i);
+int						ft_handle_redirection(char *input, int *i);
+void					handle_empty_argument_backslash(t_ParserState *state,
+							t_arg_node **arg_list, t_redir_node **redir_list);
+int						is_next_char_not_squote_or_null(t_ParserState *state,
+							int index);
+int						is_next_char_not_dquote_or_null(t_ParserState *state,
+							int index);
+int						is_next_char_space_or_null(t_ParserState *state,
+							int index);
+int						is_special_char(char c);
+void					process_buffer_until_special_char(t_ParserState *state);
+int						handle_errors(char *input);
+int						ft_check(char *input);
+int						handle_allocation_error(char **result, int idx);
+int						allocate_and_store_word(char **result, int idx,
+							const char *start, int len);
+int						count_results(char **result);
+t_ParserContext			initialize_parser_context(t_ParserState *state,
+							t_arg_node **arg_list, t_redir_node **redir_list);
+void					handle_null_env_or_redir(t_ParserContext *context,
+							char *env, int check, int i);
+void					free_env_result(char **env, char **result, int i,
+							int check);
+void					free_split_string(char **words);
+char					*handle_env_variable(t_ParserState *state);
+int						handle_split_env_result(t_ParserState *state,
+							t_arg_node **arg_list, char **result, int *check);
 void					append_redir_node(t_redir_node **redir_list,
 							t_redir_node *new_node);
 int						check_herdoc_error(char *input);
@@ -203,9 +223,9 @@ void					exec_commandes(t_env **envp, t_data **data,
 							t_hold **hold_vars, t_quots *quots);
 int						exec_echo(char **commande);
 void					ft_putstr(char *str);
-int						exec_cd(char **commande, t_env *envp, t_env **all_env_list,
-							int check, int wd_err);
-int						exec_pwd(char **commande);
+int						exec_cd(char **commande, t_env **envp, int check,
+							int wd_err);
+int						exec_pwd(char **commande, t_env *envp);
 char					*print_prompt(t_env *envp);
 char					*ft_getenv(t_env *envp, char *var);
 char					*ft_strjoin(char const *s1, char const *s2, int flag,
@@ -228,13 +248,12 @@ char					*remove_plus(char *var);
 int						ft_contain_plus(char *commande);
 int						check_argument(char *commande);
 int						ft_strcmp2(char *s1, char *s2);
-int						exec_non_builtin(char **comande, t_env **envp,
-							t_data **data, t_hold **hold_vars);
+int						exec_non_builtin(char **comande, t_env **envp);
 char					**ft_split(char const *s, char c);
 void					exec_with_pipes(t_env **envp, t_data **data,
 							t_hold **hold_vars, t_quots *quots);
-int						exec_simple_commande(t_quots *quots, t_env **envp,
-							t_data **data, t_hold **hold_vars);
+int						exec_simple_commande(t_env **envp, t_data **data,
+							t_hold **hold_vars);
 void					ft_putstr_fd(char const *str);
 void					ft_print_in_stderr(char *s1, char *s2, char *s3);
 void					ft_free_arr(char **paths);
@@ -242,8 +261,7 @@ void					ft_bzero(void *s, size_t n);
 int						ft_strchr(const char *s, int c);
 void					*ft_calloc(size_t count, size_t size);
 char					*get_next_line(int fd);
-int						check_handle_redirections(t_data *data, t_quots *quots,
-							t_env *envp);
+int						check_handle_redirections(t_data *data);
 int						ft_handle_output(char *file_name);
 int						ft_handle_append(char *file_name);
 int						ft_handle_input(char *file_name);
@@ -265,5 +283,7 @@ int						if_contain_directory(char *commande);
 int						count_nodes(t_env *envp);
 void					ft_create_nodes(t_env **head, char *envp);
 void					check_if_directory(char *path);
+int						ft_find_del(char *line, char *del);
+void					delete_heredoc_files(void);
 
 #endif

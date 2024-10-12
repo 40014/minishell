@@ -32,7 +32,6 @@ int	ft_handle_input(char *file_name)
 
 int	ft_handle_append(char *file_name)
 {
-	int	j;
 	int	append_fd;
 
 	append_fd = open(file_name, O_CREAT | O_RDWR | O_APPEND, 0644);

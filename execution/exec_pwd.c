@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int	exec_pwd(char **commande)
+int	exec_pwd(char **commande, t_env *envp)
 {
 	char	path[PATH_MAX];
 
@@ -13,9 +13,7 @@ int	exec_pwd(char **commande)
 		}
 	}
 	if (getcwd(path, PATH_MAX) == NULL)
-	{
-		ft_putstr_fd("pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n");
-	}
+		printf("%s\n", ft_getenv(envp, "PWD"));
 	else
 		printf("%s\n", path);
 	return (0);

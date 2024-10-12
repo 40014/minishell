@@ -5,7 +5,6 @@ t_env	*ft_one_node(char *envp)
 	t_env	*node;
 	char	*temp;
 	int		i;
-	int		j;
 
 	node = malloc(sizeof(t_env));
 	if (!node)
@@ -16,7 +15,10 @@ t_env	*ft_one_node(char *envp)
 	temp = malloc(i + 2);
 	i = 0;
 	while (envp[i] != '=' && envp[i] != '\0')
-		temp[i++] = envp[i];
+	{
+		temp[i] = envp[i];
+		i++;
+	}
 	temp[i] = '=';
 	temp[i + 1] = '\0';
 	node->var = ft_strdup(temp);
@@ -67,7 +69,6 @@ void	ft_create_nodes(t_env **head, char *envp)
 void	check_missing_vars(t_env **env, char *first_arg, int t1, int t2)
 {
 	t_env	*temp;
-	char	*hold;
 	int		t3;
 	int		t4;
 

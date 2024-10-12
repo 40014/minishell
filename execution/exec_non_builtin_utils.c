@@ -57,4 +57,9 @@ void	check_if_directory(char *path)
 			exit(126);
 		}
 	}
+	else
+	{
+		perror(path);
+		exit(127);
+	}
 }
