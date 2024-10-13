@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdrahm <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 10:14:32 by hdrahm            #+#    #+#             */
-/*   Updated: 2024/10/13 10:14:34 by hdrahm           ###   ########.fr       */
+/*   Updated: 2024/10/13 15:56:48 by medo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,12 @@ typedef struct hold_main
 	char				*temp;
 }						t_hold_main;
 
+typedef struct ErrorState
+{
+	int					i;
+	int					quote;
+}						t_ErrorState;
+
 typedef struct ParserContext
 {
 	t_ParserState		*state;
@@ -119,6 +125,7 @@ typedef struct ParserContext
 
 extern int				g_exit_code;
 
+void					init_error_state(t_ErrorState *state);
 int						is_dollar_followed_by_quote(t_ParserState *state);
 int						check_parsing(t_hold_main *main_vars);
 int						ft_handle_dollar_herdoc(char c,
@@ -194,10 +201,8 @@ char					*ft_environment_variables(char *arguments,
 							t_env *env_var, t_quots *quots);
 void					finalize_args(t_ParserState *state,
 							t_arg_node **arg_list, t_redir_node **redir_list);
-// void finalize_args(t_ParserState *state, t_arg_node **arg_list);
 void					add_buffer_to_args(t_ParserState *state,
 							t_arg_node **arg_list, t_redir_node **redir_list);
-// void add_buffer_to_args(t_ParserState *state, t_arg_node **arg_list);
 void					handle_empty_argument(t_ParserState *state,
 							t_arg_node **arg_list, t_redir_node **redir_list);
 void					init_parser_state(t_ParserState *state, char *input,
@@ -206,7 +211,6 @@ char					*ft_environment_variables(char *arguments,
 							t_env *env_var, t_quots *quots);
 void					handle_dollar_sign(t_ParserState *state,
 							t_arg_node **arg_list, t_redir_node **redir_list);
-// void handle_dollar_sign(t_ParserState *state, t_arg_node **arg_list);
 void					handle_quotes(t_ParserState *state);
 int						handle_consecutive_quotes(t_ParserState *state);
 char					*ft_itoa(int n);
@@ -223,16 +227,12 @@ int						parse_line(t_data **data, char *input, t_env *env_var,
 							t_quots *quots);
 char					**split_line_to_args(char *input, t_env *env_var,
 							t_quots *quots, t_redir_node **redir_list);
-// char **split_line_to_args(char *input, t_env *env_var, t_quots *quots,
-// char ***redirections);
 char					*strsplit_by_pipe(char **str);
 void					ft_add_node(t_data **head, char **arguments,
 							t_redir_node *redirection);
 t_data					*creat_node(char **arguments,
 							t_redir_node *redirection);
 t_redir_node			*create_redir_node(char *redir);
-// void ft_add_node(t_data **head, char **arguments, char **redirection);
-// t_data *creat_node(char **arguments, char **redirection);
 
 // exec_in_pipes_functions
 void					handlle_sigint(int sig);
@@ -252,7 +252,7 @@ int						exec_simple_commande(t_env **envp, t_data **data,
 							t_hold **hold_vars);
 char					*set_shlvl(char *var, char *shlvl, char *newshlvl);
 
-//envp_to_list_functions
+// envp_to_list_functions
 t_env					*env_to_list(char **envp, char *first_arg);
 void					ft_create_nodes(t_env **head, char *envp);
 t_env					*ft_one_node(char *envp);
@@ -260,17 +260,17 @@ t_env					*ft_one_node2(char *envp);
 char					*grep_env_value(char *envp, int i);
 void					add_missing_vars(t_env **env, int t1, int t2, int t3);
 
-//redirection_functions
+// redirection_functions
 int						check_handle_redirections(t_data *data);
 int						ft_handle_append(char *file_name);
 int						ft_handle_output(char *file_name);
 int						ft_handle_input(char *file_name);
 
-//heredoc_function
+// heredoc_function
 int						ft_exec_heredocs(t_data **data_add, t_env *envp,
 							t_quots *quots);
 
-//heredoc_utils_functions
+// heredoc_utils_functions
 char					*get_next_line(int fd);
 void					*ft_calloc(size_t count, size_t size);
 int						ft_strchr(const char *s, int c);
@@ -289,7 +289,7 @@ int						exec_unset(char **commande, t_env **envp);
 int						exec_exit(char **commande, t_env **envp, t_data **data,
 							t_hold **hold_vars);
 
-// built_ins_utils_functions 
+// built_ins_utils_functions
 void					ft_putstr_fd(char const *str);
 void					ft_putstr(char *str);
 int						ft_update_val(t_env **envp, char *var, char *val);
@@ -319,7 +319,7 @@ void					check_if_directory(char *path);
 void					exec_with_pipes(t_env **envp, t_data **data,
 							t_hold **hold_vars, t_quots *quots);
 
-//free_functions
+// free_functions
 void					ft_free_data_list_and_input(t_data **data, char *temp,
 							char *input);
 void					ft_free_list2(t_env *head);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_expansion2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 23:02:34 by medo              #+#    #+#             */
-/*   Updated: 2024/10/12 19:22:41 by momazouz         ###   ########.fr       */
+/*   Updated: 2024/10/13 15:53:10 by medo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,59 +97,3 @@ void	process_redirection(t_ParserContext *context, t_ParserState *state,
 		process_redirection_with_quotes(context, state, env);
 	free_env_if_needed(env);
 }
-
-// void process_redirection(t_ParserContext *context, t_ParserState *state,
-	// char **result, char *env, int j)
-// {
-//     if (state->quote == 0 && state->find_red == 1 && j > 1)
-//         handle_redirection_condition_1(context, state);
-//     else if (state->quote == 0 && state->buf_index > 0
-	// && state->check_first_space == 1 && env != NULL)
-//         handle_redirection_condition_2(context, state, env);
-//     else if (state->buf_index > 0 && state->check_first_space == 0
-	// && state->quote == 0 && env != NULL)
-//     {
-//         if (state->check_last_space == 1
-	// && ft_skip_space(state->input[state->i]) != 1
-	// && state->input[state->i] != '\0')
-//             handle_redirection_condition_1(context, state);
-//         else
-//             copy_to_buffer(state, result[0]);
-//     }
-//     else if (state->quote != 0 && state->input[state->i] == '"'
-	// && state->find_red == 1 && state->buf_index == 0 && env == NULL)
-//     {
-//         if (state->input[state->i + 1] == '\0'
-	// || ft_skip_space(state->input[state->i + 1]) == 1)
-//             handle_empty_redirection(context, state);
-//     }
-//     else if (state->quote != 0 && state->find_red == 1 && env != NULL)
-//         copy_to_buffer(state, env);
-//     else if (state->quote == 0 && state->check_last_space == 1
-	// && state->find_red == 1 && state->input[state->i] != ' ')
-//     {
-//         if (state->input[state->i] == '\0'
-	// || ft_skip_space(state->input[state->i]) == 1)
-//             handle_redirection_condition_3(context, state, result);
-//         else
-//             handle_redirection_condition_1(context, state);
-//     }
-//     else if (state->quote == 0 && state->buf_index == 0
-	// && state->find_red == 1 && env != NULL)
-//     {
-//         if (state->check_last_space != 1 && state->input[state->i] != '\0'
-	// && ft_skip_space(state->input[state->i]) != 1)
-//             copy_to_buffer(state, result[0]);
-//         else if (ft_skip_space(state->input[state->i]) == 1
-//	|| (state->input[state->i] == '\0' && state->check_first_space == 0)
-	// || state->check_first_space == 1)
-//             handle_redirection_condition_3(context, state, result);
-//     }
-//     else if (env == NULL && state->find_red == 1
-//	&& (state->input[state->i] == '\0'
-//		|| ft_skip_space(state->input[state->i]) == 1))
-//     {
-//         handle_redirection_condition_1(context, state);
-//     }
-//     free_env_if_needed(env);
-// }

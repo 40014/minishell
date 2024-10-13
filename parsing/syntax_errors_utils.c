@@ -6,11 +6,17 @@
 /*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 15:26:38 by medo              #+#    #+#             */
-/*   Updated: 2024/10/09 15:34:13 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/13 15:47:01 by medo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	init_error_state(t_ErrorState *state)
+{
+	state->i = 0;
+	state->quote = 0;
+}
 
 int	ft_handle_pipe(char *input, int *i)
 {

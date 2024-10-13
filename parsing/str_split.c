@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:51:59 by medo              #+#    #+#             */
-/*   Updated: 2024/10/11 09:53:19 by momazouz         ###   ########.fr       */
+/*   Updated: 2024/10/13 15:51:41 by medo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,126 +99,3 @@ char	**split_string(const char *input, t_ParserState *state)
 	check_last_space(input, state, ft_strlen(input));
 	return (result);
 }
-// idx = 0;
-// ptr = input;
-// while (*ptr)
-// {
-//     while (ft_skip_space(*ptr))
-//         ptr++;
-//     if (*ptr)
-//     {
-//         start = ptr;
-//         while (*ptr && !ft_skip_space(*ptr))
-//             ptr++;
-//         len = ptr - start;
-//         result[idx] = malloc((len + 1) * sizeof(char));
-//         if (result[idx] == NULL)
-//         {
-//             free_split_string_on_error(result, idx);
-//             return (NULL);
-//         }
-//         ft_strncpy(result[idx], start, len);
-//         if (*ptr && ft_skip_space(*ptr))
-//         {
-//             while (ft_skip_space(*ptr))
-//                 ptr++;
-//             if (*ptr == '\0')
-//             {
-//                 state->check_last_space = 1;
-//                 result[idx][len] = '\0';
-//             }
-//             else
-//             {
-//                 state->check_last_space = 0;
-//                 result[idx][len] = '\0';
-//             }
-//         }
-//         else
-//             result[idx][len] = '\0';
-//         idx++;
-//     }
-// }
-// result[idx] = NULL;
-// return (result);
-//}
-
-// char **split_string(const char *input, t_ParserState *state)
-// {
-//     const char *ptr;
-//     const char *start;
-//     int count;
-//     int in_word;
-//     char **result;
-//     int len;
-//     int idx;
-
-//     in_word = 0;
-//     count = 0;
-//     ptr = input;
-//     if (input == NULL)
-//         return (NULL);
-//     if (input[0] == ' ')
-//         state->check_first_space = 1;
-//     else
-//         state->check_first_space = 0;
-//     while (*ptr)
-//     {
-//         if (!ft_skip_space(*ptr))
-//         {
-//             if (!in_word)
-//             {
-//                 in_word = 1;
-//                 count++;
-//             }
-//         }
-//         else
-//             in_word = 0;
-//         ptr++;
-//     }
-//     result = malloc((count + 1) * sizeof(char*));
-//     if (result == NULL)
-//         return (NULL);
-//     idx = 0;
-//     ptr = input;
-//     while (*ptr)
-//     {
-//         while (ft_skip_space(*ptr))
-//         {
-//             ptr++;
-//         }
-//         if (*ptr)
-//         {
-//             start = ptr;
-//             while (*ptr && !ft_skip_space(*ptr))
-//                 ptr++;
-//             len = ptr - start;
-//             result[idx] = malloc((len + 1) * sizeof(char));
-//             if (result[idx] == NULL)
-//             {
-//                 free_split_string_on_error(result, idx);
-//                 return (NULL);
-//             }
-//             ft_strncpy(result[idx], start, len);
-//             if (*ptr && ft_skip_space(*ptr))
-//             {
-//                 while (ft_skip_space(*ptr))
-//                     ptr++;
-//                 if (*ptr == '\0')
-//                 {
-//                     state->check_last_space = 1;
-//                     result[idx][len] = '\0';
-//                 }
-//                 else
-//                 {
-//                     state->check_last_space = 0;
-//                     result[idx][len] = '\0';
-//                 }
-//             }
-//             else
-//                 result[idx][len] = '\0';
-//             idx++;
-//         }
-//     }
-//     result[idx] = NULL;
-//     return (result);
-// }
