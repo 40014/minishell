@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdrahm <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdrahm <hdrahm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:56:38 by hdrahm            #+#    #+#             */
-/*   Updated: 2024/10/13 08:56:44 by hdrahm           ###   ########.fr       */
+/*   Updated: 2024/10/13 13:17:11 by hdrahm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	exec_cd(char **commande, t_env **envp, int check, int wd_err)
 	{
 		if (getcwd(cur_path, PATH_MAX) != NULL)
 			ft_update_val(envp, "PWD=", cur_path);
-		if (commande[1] != NULL && wd_err == 0)
+		if (wd_err == 0)
 			ft_update_val(envp, "OLDPWD=", old_path);
 	}
 	return (check);
