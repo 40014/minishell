@@ -42,6 +42,7 @@ void	print_error_exit(char *str, t_env **envp, t_data **data,
 {
 	ft_print_in_stderr("exit: ", str, ": numeric argument required\n");
 	free_before_exit(hold_vars, envp, data, 0);
+	rl_clear_history();
 	exit(2);
 }
 
@@ -112,9 +113,11 @@ int	exec_exit(char **commande, t_env **envp, t_data **data, t_hold **hold_vars)
 	{
 		i = ft_atoi3(commande[1]);
 		free_before_exit(hold_vars, envp, data, 0);
+		rl_clear_history();
 		exit(i);
 	}
 	else
 		free_before_exit(hold_vars, envp, data, 0);
+	rl_clear_history();
 	exit(g_exit_code);
 }

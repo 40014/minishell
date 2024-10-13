@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hdrahm <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/13 10:14:32 by hdrahm            #+#    #+#             */
+/*   Updated: 2024/10/13 10:14:34 by hdrahm           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -222,8 +234,12 @@ t_redir_node			*create_redir_node(char *redir);
 // void ft_add_node(t_data **head, char **arguments, char **redirection);
 // t_data *creat_node(char **arguments, char **redirection);
 
-// execution functions
+// exec_in_pipes_functions
 void					handlle_sigint(int sig);
+void					return_to_std(int saved_stdin, int saved_stdout);
+int						checks_before_parse(t_hold_main *main_vars);
+
+// execution functions
 char					*print_prompt(t_env *envp);
 char					*ft_getenv(t_env *envp, char *var);
 int						ft_strcmp(char *s1, char *s2);
@@ -304,6 +320,8 @@ void					exec_with_pipes(t_env **envp, t_data **data,
 							t_hold **hold_vars, t_quots *quots);
 
 //free_functions
+void					ft_free_data_list_and_input(t_data **data, char *temp,
+							char *input);
 void					ft_free_list2(t_env *head);
 void					ft_free_arr(char **paths);
 
