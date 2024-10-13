@@ -76,10 +76,8 @@ void	add_update_last_commande(t_env **env, char *var_val)
 
 char	*ft_getenv(t_env *envp, char *var)
 {
-	int	j;
 	int	i;
-
-	j = 0;
+	
 	while (envp != NULL)
 	{
 		i = 0;

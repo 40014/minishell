@@ -108,14 +108,12 @@ int	exec_export(char **commande, t_env **envp)
 {
 	t_env	*temp;
 	int		j;
-	int		i;
 
 	j = 1;
 	if (commande[1] == NULL)
 		return (ft_print_export(*envp));
 	while (commande[j])
 	{
-		i = 0;
 		temp = *envp;
 		if (check_argument(commande[j]) == 0
 			|| check_argument(commande[j]) == 3)
