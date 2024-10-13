@@ -6,7 +6,7 @@
 /*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 23:02:34 by medo              #+#    #+#             */
-/*   Updated: 2024/10/13 15:53:10 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/13 18:14:41 by medo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ void	process_redirection_without_quotes(t_ParserContext *context,
 		handle_redi_buf_or_condit(context, state, result);
 	else if (env == NULL && state->find_red == 1
 		&& (state->input[state->i] == '\0'
-			|| ft_skip_space(state->input[state->i]) == 1))
+			|| ft_skip_space(state->input[state->i]) == 1)
+		&& state->buf_index == 0)
 		handle_redirection_condition_1(context, state);
 }
 
