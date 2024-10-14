@@ -6,11 +6,19 @@
 /*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:47:31 by medo              #+#    #+#             */
-/*   Updated: 2024/10/08 18:47:35 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/14 17:20:54 by medo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	is_quote_next(char c)
+{
+	if (c == '\'' || c == '"')
+		return (1);
+	else
+		return (0);
+}
 
 void	ft_process_quote(char *input, int *i, char *quote)
 {

@@ -6,7 +6,7 @@
 /*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 10:14:32 by hdrahm            #+#    #+#             */
-/*   Updated: 2024/10/13 15:56:48 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/14 17:21:08 by medo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct parser
 	int					flag_backslash;
 	int					check_last_space;
 	int					check_first_space;
+	int					find_dollar_herd;
 }						t_ParserState;
 
 typedef struct hold_main
@@ -125,10 +126,11 @@ typedef struct ParserContext
 
 extern int				g_exit_code;
 
+int						is_quote_next(char c);
 void					init_error_state(t_ErrorState *state);
 int						is_dollar_followed_by_quote(t_ParserState *state);
 int						check_parsing(t_hold_main *main_vars);
-int						ft_handle_dollar_herdoc(char c,
+int						ft_handle_dollar_herdoc(t_ParserState *state,
 							t_redir_node **redir_list);
 void					free_env_if_needed(char *env);
 void					handle_redi_buf_or_condit(t_ParserContext *context,

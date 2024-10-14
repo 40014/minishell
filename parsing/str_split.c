@@ -6,7 +6,7 @@
 /*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:51:59 by medo              #+#    #+#             */
-/*   Updated: 2024/10/13 15:51:41 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/14 17:33:59 by medo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int	count_words(const char *input)
 	count = 0;
 	while (*ptr)
 	{
-		if (!ft_skip_space(*ptr))
+		if (ft_skip_space(*ptr) == 0)
 		{
-			if (!in_word)
+			if (in_word == 0)
 			{
 				in_word = 1;
 				count++;

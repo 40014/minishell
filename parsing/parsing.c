@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:51:17 by medo              #+#    #+#             */
-/*   Updated: 2024/10/11 02:05:58 by momazouz         ###   ########.fr       */
+/*   Updated: 2024/10/14 17:03:57 by medo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,13 @@ void	handle_input_cases(t_ParserState *state, t_arg_node **arg_list,
 		handle_redirection(state, arg_list, redir_list);
 	else if (state->input[state->i] == '$' && (state->quote == 0
 			|| state->quote != '\'')
-		&& ft_handle_dollar_herdoc(state->input[state->i], redir_list) == 1)
+		&& ft_handle_dollar_herdoc(state, redir_list) == 1)
 	{
 		handle_dollar_sign(state, arg_list, redir_list);
 	}
 	else if (ft_skip_space(state->input[state->i]) == 1 && state->quote == 0)
 		add_buffer_to_args(state, arg_list, redir_list);
-	else
+	else if (state->find_dollar_herd == 0)
 		state->buffer[state->buf_index++] = state->input[state->i];
 }
 
@@ -94,7 +94,9 @@ char	**split_line_to_args(char *input, t_env *env_var, t_quots *quots,
 			continue ;
 		}
 		handle_input_cases(&state, &arg_list, redir_list, check);
-		state.i++;
+		if (state.find_dollar_herd == 0)
+			state.i++;
+		state.find_dollar_herd = 0;
 	}
 	finalize_args(&state, &arg_list, redir_list);
 	free(state.buffer);

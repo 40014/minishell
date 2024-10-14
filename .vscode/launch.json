@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/medo/Desktop/mini18",
-      "program": "/home/medo/Desktop/mini18/build/Debug/outDebug",
+      "cwd": "/home/medo/Desktop/mini34",
+      "program": "/home/medo/Desktop/mini34/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

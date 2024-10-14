@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 18:45:24 by medo              #+#    #+#             */
-/*   Updated: 2024/10/11 21:00:07 by momazouz         ###   ########.fr       */
+/*   Updated: 2024/10/14 16:29:58 by medo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	init_parser_state(t_ParserState *state, char *input, t_env *env_var,
 	state->flag_backslash = 0;
 	state->check_last_space = 0;
 	state->check_first_space = 0;
+	state->find_dollar_herd = 0;
 }
 
 t_ParserContext	initialize_parser_context(t_ParserState *state,
