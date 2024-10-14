@@ -33,12 +33,9 @@ int	exec_simple_commande(t_env **envp, t_data **data, t_hold **hold_vars)
 	else if (ft_strcmp((*data)->argumment[0], "pwd") == 0)
 		g_exit_code = exec_pwd((*data)->argumment, *envp);
 	else if (ft_strcmp((*data)->argumment[0], "cd") == 0)
-		g_exit_code = exec_cd((*data)->argumment, envp, 0, 0);
+		g_exit_code = exec_cd((*data)->argumment, envp);
 	else if (ft_strcmp((*data)->argumment[0], "export") == 0)
-	{
-		g_exit_code = 0;
 		g_exit_code = exec_export((*data)->argumment, envp);
-	}
 	else if (ft_strcmp((*data)->argumment[0], "env") == 0)
 		g_exit_code = exec_env((*data)->argumment, *envp);
 	else if (ft_strcmp((*data)->argumment[0], "unset") == 0)

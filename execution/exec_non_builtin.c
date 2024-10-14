@@ -83,11 +83,10 @@ void	exec_non_builtin_in_child(t_env *envp, char **commande)
 				"' not found\n");
 		else
 			ft_print_in_stderr(commande[0], ": commande not found\n", "");
-		exit(127);
 	}
 	ft_free_arr(paths);
 	ft_free_arr(envp_arr);
-	exit(0);
+	exit(127);
 }
 
 int	exec_non_builtin(char **commande, t_env **envp)

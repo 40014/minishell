@@ -49,6 +49,8 @@ int	get_child_exit_code(int pid, char *file_name, t_redir_node *red)
 	if (WIFSIGNALED(status) != 0)
 	{
 		g_exit_code = WTERMSIG(status) + 128;
+		if (g_exit_code == 130)
+			delete_heredoc_files();
 		free(file_name);
 		printf("\n");
 		return (-1);

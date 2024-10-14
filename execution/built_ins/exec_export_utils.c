@@ -76,9 +76,7 @@ int	check_argument(char *commande)
 	while (commande[i] != '=' && commande[i] != '\0')
 	{
 		if (commande[i + 1] == '=' && commande[i] == '+')
-		{
 			return (2);
-		}
 		else if (ft_isalpha(commande[i], 2) == 1)
 			return (1);
 		else

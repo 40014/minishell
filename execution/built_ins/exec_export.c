@@ -110,6 +110,7 @@ int	exec_export(char **commande, t_env **envp)
 	int		j;
 
 	j = 1;
+	g_exit_code = 0;
 	if (commande[1] == NULL)
 		return (ft_print_export(*envp));
 	while (commande[j])

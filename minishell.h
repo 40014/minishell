@@ -234,7 +234,7 @@ t_data					*creat_node(char **arguments,
 							t_redir_node *redirection);
 t_redir_node			*create_redir_node(char *redir);
 
-// exec_in_pipes_functions
+// main_utils_functions
 void					handlle_sigint(int sig);
 void					return_to_std(int saved_stdin, int saved_stdout);
 int						checks_before_parse(t_hold_main *main_vars);
@@ -281,8 +281,7 @@ void					delete_heredoc_files(void);
 // built_ins_functions
 int						exec_echo(char **commande);
 int						exec_pwd(char **commande, t_env *envp);
-int						exec_cd(char **commande, t_env **envp, int check,
-							int wd_err);
+int						exec_cd(char **commande, t_env **envp);
 int						exec_export(char **commande, t_env **envp);
 int						exec_env(char **commande, t_env *envp);
 int						exec_unset(char **commande, t_env **envp);

@@ -87,13 +87,31 @@ int	go_to_specific_path(t_env *envp, char *path)
 	return (0);
 }
 
-int	exec_cd(char **commande, t_env **envp, int check, int wd_err)
+void	update_pwds(int check, t_env **envp)
 {
 	char	cur_path[PATH_MAX];
-	char	old_path[PATH_MAX];
+	char	*pwd;
 
-	if (getcwd(old_path, PATH_MAX) == NULL)
-		wd_err = 1;
+	if (check == 0)
+	{
+		pwd = ft_getenv(*envp, "PWD");
+		if (pwd == NULL)
+		{
+			exec_unset((char *[]){"unset", "OLDPWD", NULL}, envp);
+			ft_create_nodes(envp, "OLDPWD");
+		}
+		else
+			ft_update_val(envp, "OLDPWD=", pwd);
+		if (getcwd(cur_path, PATH_MAX) != NULL)
+			ft_update_val(envp, "PWD=", cur_path);
+	}
+}
+
+int	exec_cd(char **commande, t_env **envp)
+{
+	int	check;
+
+	check = 0;
 	if (commande[1] != NULL && commande[2] != NULL)
 	{
 		ft_putstr_fd("too many arguments\n");
@@ -106,12 +124,6 @@ int	exec_cd(char **commande, t_env **envp, int check, int wd_err)
 		check = go_from_home(*envp, commande[1]);
 	else
 		check = go_to_specific_path(*envp, commande[1]);
-	if (check == 0)
-	{
-		if (getcwd(cur_path, PATH_MAX) != NULL)
-			ft_update_val(envp, "PWD=", cur_path);
-		if (wd_err == 0)
-			ft_update_val(envp, "OLDPWD=", old_path);
-	}
+	update_pwds(check, envp);
 	return (check);
 }
