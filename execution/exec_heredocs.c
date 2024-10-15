@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredocs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdrahm <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdrahm <hdrahm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:54:32 by hdrahm            #+#    #+#             */
-/*   Updated: 2024/10/13 08:54:34 by hdrahm           ###   ########.fr       */
+/*   Updated: 2024/10/15 16:45:06 by hdrahm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,16 @@ void	exec_heredoc_in_child(t_env *envp, t_quots *quots, int fd, char *del)
 	char	*line;
 	char	*temp;
 
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		line = get_next_line(0);
 		if (line == NULL)
+		{
+			ft_putstr_fd("warning: here-document");
+			ft_putstr_fd("delimited by end-of-file (wanted `");
+			ft_print_in_stderr(del, "')", "\n");
 			break ;
+		}
 		if (ft_find_del(line, del) == 1)
 		{
 			free(line);
@@ -34,6 +37,7 @@ void	exec_heredoc_in_child(t_env *envp, t_quots *quots, int fd, char *del)
 		free(temp);
 		free(line);
 	}
+	close(fd);
 	exit(0);
 }
 
@@ -72,15 +76,19 @@ int	ft_handle_heredoc(t_redir_node *red, t_env *envp, t_quots *quots)
 	id = ft_itoa(quots->id);
 	file_name = ft_strjoin("/tmp/heredoc_tmp", id, 1, 1);
 	free(id);
-	fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0600);
-	if (fd == -1)
-	{
-		perror(file_name);
-		return (-1);
-	}
 	pid = fork();
 	if (pid == 0)
+	{
+		fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0600);
+		if (fd == -1)
+		{
+			perror(file_name);
+			return (-1);
+		}
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_IGN);
 		exec_heredoc_in_child(envp, quots, fd, red->next->redirection);
+	}
 	if (get_child_exit_code(pid, file_name, red) == -1)
 		return (-1);
 	return (0);

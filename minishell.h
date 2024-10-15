@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hdrahm <hdrahm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 10:14:32 by hdrahm            #+#    #+#             */
-/*   Updated: 2024/10/14 17:21:08 by medo             ###   ########.fr       */
+/*   Updated: 2024/10/15 15:34:37 by hdrahm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ void					exec_commandes(t_env **envp, t_data **data,
 							t_hold **hold_vars, t_quots *quots);
 void					add_update_last_commande(t_env **env, char *var_val);
 int						exec_simple_commande(t_env **envp, t_data **data,
-							t_hold **hold_vars);
+							t_hold **hold_vars, t_quots *quots);
 char					*set_shlvl(char *var, char *shlvl, char *newshlvl);
 
 // envp_to_list_functions

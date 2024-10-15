@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdrahm <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdrahm <hdrahm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 10:15:35 by hdrahm            #+#    #+#             */
-/*   Updated: 2024/10/13 10:15:37 by hdrahm           ###   ########.fr       */
+/*   Updated: 2024/10/15 15:38:03 by hdrahm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	checks_before_parse(t_hold_main *main_vars)
 	main_vars->data = NULL;
 	main_vars->saved_stdout = dup(STDOUT_FILENO);
 	main_vars->saved_stdin = dup(STDIN_FILENO);
+	main_vars->quots.fdout = main_vars->saved_stdout;
+	main_vars->quots.fdin = main_vars->saved_stdin;
 	main_vars->temp = print_prompt(main_vars->env_var);
 	main_vars->input = readline(main_vars->temp);
 	main_vars->hold_vars->input = main_vars->input;
@@ -53,6 +55,8 @@ int	checks_before_parse(t_hold_main *main_vars)
 		return (1);
 	if (check_prompt(main_vars->input) == 3)
 	{
+		close(main_vars->saved_stdout);
+		close(main_vars->saved_stdin);
 		exec_exit((char *[]){"exit", NULL}, &main_vars->env_var,
 			&main_vars->data, &main_vars->hold_vars);
 	}

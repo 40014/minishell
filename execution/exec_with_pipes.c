@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_with_pipes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdrahm <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdrahm <hdrahm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:55:17 by hdrahm            #+#    #+#             */
-/*   Updated: 2024/10/13 08:55:21 by hdrahm           ###   ########.fr       */
+/*   Updated: 2024/10/15 15:35:16 by hdrahm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	create_pipes(t_data *temp, t_env **env, t_quots *quots, t_hold **hold_vars)
 			dup2(quots->fdout, 1);
 			close(quots->fdout);
 		}
-		exit(exec_simple_commande(env, &temp, hold_vars));
+		exit(exec_simple_commande(env, &temp, hold_vars, quots));
 	}
 	return (pid);
 }
@@ -60,12 +60,12 @@ void	get_last_child_exit_code(int pid)
 	signal(SIGINT, handlle_sigint);
 }
 
-void	close_fds(t_quots *quots)
+void	close_fds(int fdin, int fdout)
 {
-	if (quots->fdin != 0)
-		close(quots->fdin);
-	if (quots->fdout != 1)
-		close(quots->fdout);
+	if (fdin != 0)
+		close(fdin);
+	if (fdout != 1)
+		close(fdout);
 }
 
 void	exec_with_pipes(t_env **envp, t_data **data, t_hold **hold_vars,
@@ -91,7 +91,7 @@ void	exec_with_pipes(t_env **envp, t_data **data, t_hold **hold_vars,
 			quots->fdout = 1;
 		quots->fdout = fd[1];
 		pid = create_pipes(temp, envp, quots, hold_vars);
-		close_fds(quots);
+		close_fds(quots->fdin, quots->fdout);
 		quots->fdin = fd[0];
 		temp = temp->next;
 	}

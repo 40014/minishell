@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_comandes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdrahm <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hdrahm <hdrahm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:54:19 by hdrahm            #+#    #+#             */
-/*   Updated: 2024/10/13 08:54:21 by hdrahm           ###   ########.fr       */
+/*   Updated: 2024/10/15 16:17:14 by hdrahm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-int	exec_simple_commande(t_env **envp, t_data **data, t_hold **hold_vars)
+int	exec_simple_commande(t_env **envp, t_data **data, t_hold **hold_vars,
+		t_quots *quots)
 {
 	if (check_handle_redirections(*data) == 1)
 		return (g_exit_code);
@@ -41,7 +42,11 @@ int	exec_simple_commande(t_env **envp, t_data **data, t_hold **hold_vars)
 	else if (ft_strcmp((*data)->argumment[0], "unset") == 0)
 		g_exit_code = exec_unset((*data)->argumment, envp);
 	else if (ft_strcmp((*data)->argumment[0], "exit") == 0)
+	{
+		close(quots->fdout);
+		close(quots->fdin);
 		g_exit_code = exec_exit((*data)->argumment, envp, data, hold_vars);
+	}
 	else
 		g_exit_code = exec_non_builtin((*data)->argumment, envp);
 	return (g_exit_code);
@@ -64,7 +69,7 @@ void	exec_commandes(t_env **envp, t_data **data, t_hold **hold_vars,
 			i++;
 		if ((*data)->argumment[0])
 			add_update_last_commande(envp, (*data)->argumment[i - 1]);
-		exec_simple_commande(envp, data, hold_vars);
+		exec_simple_commande(envp, data, hold_vars, quots);
 		if ((*data)->argumment[0])
 			add_update_last_commande(envp, (*data)->argumment[i - 1]);
 	}
