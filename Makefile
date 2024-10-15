@@ -27,7 +27,7 @@ EXECUTION =	execution/exec_non_builtin.c execution/exec_with_pipes.c            
 			execution/prompt_utils.c execution/built_ins/exec_cd.c execution/env_to_list_utils.c\
 
 			
-CFLAGS	=	-Wall -Wextra -Werror -w -fsanitize=address -g3
+CFLAGS	=	-Wall -Wextra -Werror -fsanitize=address -g3
 
 all: $(NAME)
 
