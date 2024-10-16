@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/08 18:52:45 by medo              #+#    #+#             */
-/*   Updated: 2024/10/11 02:54:37 by momazouz         ###   ########.fr       */
+/*   Created: 2024/10/15 21:19:42 by momazouz          #+#    #+#             */
+/*   Updated: 2024/10/15 21:55:55 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ void	ft_printf_error(int i)
 	if (i == 2 || i == 3)
 	{
 		if (i == 2)
-			printf("unexpected EOF while looking for matching `\'' \n");
+			ft_putstr_fd("unexpected EOF while looking for matching `\'' \n");
 		else
-			printf("unexpected EOF while looking for matching `\"' \n");
+			ft_putstr_fd("unexpected EOF while looking for matching `\"' \n");
 	}
 	else if (i == 1)
-		printf("minishell: syntax error near unexpected token \n");
+		ft_putstr_fd("minishell: syntax error near unexpected token \n");
 }
 
 t_data	*creat_node(char **arguments, t_redir_node *redirection)

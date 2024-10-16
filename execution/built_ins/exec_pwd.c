@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pwd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdrahm <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:58:48 by hdrahm            #+#    #+#             */
-/*   Updated: 2024/10/13 08:58:49 by hdrahm           ###   ########.fr       */
+/*   Updated: 2024/10/15 21:58:30 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	exec_pwd(char **commande, t_env *envp)
+int	exec_pwd(char **commande)
 {
 	char	path[PATH_MAX];
 
@@ -26,14 +26,10 @@ int	exec_pwd(char **commande, t_env *envp)
 	}
 	if (getcwd(path, PATH_MAX) == NULL)
 	{
-		if (ft_getenv(envp, "PWD") == NULL)
-		{
-			ft_putstr_fd("pwd: error retrieving current directory: ");
-			ft_putstr_fd("getcwd: cannot access parent directories: ");
-			ft_putstr_fd("No such file or directory\n");
-		}
-		else
-			printf("%s\n", ft_getenv(envp, "PWD"));
+
+		ft_putstr_fd("pwd: error retrieving current directory: ");
+		ft_putstr_fd("getcwd: cannot access parent directories: ");
+		ft_putstr_fd("No such file or directory\n");
 	}
 	else
 		printf("%s\n", path);

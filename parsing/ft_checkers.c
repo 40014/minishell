@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_checkers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: medo <medo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/08 18:49:47 by medo              #+#    #+#             */
-/*   Updated: 2024/10/14 17:20:49 by medo             ###   ########.fr       */
+/*   Created: 2024/10/15 21:15:16 by momazouz          #+#    #+#             */
+/*   Updated: 2024/10/15 21:55:37 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	handle_errors(char *input)
 	}
 	if (check_herdoc_error(input) != 0)
 	{
-		printf("maximum here-document count exceeded\n");
+		ft_putstr_fd("maximum here-document count exceeded\n");
 		g_exit_code = 2;
 		return (2);
 	}

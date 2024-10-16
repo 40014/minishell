@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_comandes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdrahm <hdrahm@student.42.fr>              +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:54:19 by hdrahm            #+#    #+#             */
-/*   Updated: 2024/10/15 16:17:14 by hdrahm           ###   ########.fr       */
+/*   Updated: 2024/10/15 21:59:32 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	exec_simple_commande(t_env **envp, t_data **data, t_hold **hold_vars,
 	if (ft_strcmp((*data)->argumment[0], "echo") == 0)
 		g_exit_code = exec_echo((*data)->argumment);
 	else if (ft_strcmp((*data)->argumment[0], "pwd") == 0)
-		g_exit_code = exec_pwd((*data)->argumment, *envp);
+		g_exit_code = exec_pwd((*data)->argumment);
 	else if (ft_strcmp((*data)->argumment[0], "cd") == 0)
 		g_exit_code = exec_cd((*data)->argumment, envp);
 	else if (ft_strcmp((*data)->argumment[0], "export") == 0)

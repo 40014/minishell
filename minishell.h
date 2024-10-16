@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hdrahm <hdrahm@student.42.fr>              +#+  +:+       +#+        */
+/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 10:14:32 by hdrahm            #+#    #+#             */
-/*   Updated: 2024/10/15 15:34:37 by hdrahm           ###   ########.fr       */
+/*   Updated: 2024/10/15 21:59:03 by momazouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,7 +282,7 @@ void					delete_heredoc_files(void);
 
 // built_ins_functions
 int						exec_echo(char **commande);
-int						exec_pwd(char **commande, t_env *envp);
+int						exec_pwd(char **commande);
 int						exec_cd(char **commande, t_env **envp);
 int						exec_export(char **commande, t_env **envp);
 int						exec_env(char **commande, t_env *envp);
