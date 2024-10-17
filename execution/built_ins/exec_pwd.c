@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pwd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hdrahm <hdrahm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/13 08:58:48 by hdrahm            #+#    #+#             */
-/*   Updated: 2024/10/15 21:58:30 by momazouz         ###   ########.fr       */
+/*   Created: 2024/10/16 16:50:08 by hdrahm            #+#    #+#             */
+/*   Updated: 2024/10/16 18:14:58 by hdrahm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ int	exec_pwd(char **commande)
 	}
 	if (getcwd(path, PATH_MAX) == NULL)
 	{
-
 		ft_putstr_fd("pwd: error retrieving current directory: ");
 		ft_putstr_fd("getcwd: cannot access parent directories: ");
 		ft_putstr_fd("No such file or directory\n");
+		return (1);
 	}
 	else
 		printf("%s\n", path);

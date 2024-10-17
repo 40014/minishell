@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: momazouz <momazouz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hdrahm <hdrahm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 21:16:56 by momazouz          #+#    #+#             */
-/*   Updated: 2024/10/15 21:16:58 by momazouz         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:58:10 by hdrahm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	handle_input_cases(t_ParserState *state, t_arg_node **arg_list,
 	}
 	else if (ft_skip_space(state->input[state->i]) == 1 && state->quote == 0)
 		add_buffer_to_args(state, arg_list, redir_list);
-	else if (state->find_dollar_herd == 0)
+	else if (state->find_dollar_herd == 0 && state->buf_index < BUFSIZ - 1)
 		state->buffer[state->buf_index++] = state->input[state->i];
 }
 
